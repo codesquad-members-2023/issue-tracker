@@ -8,4 +8,4 @@
 |3| | |
 |4| | |
 |5| | |
-|6| | |
+|6|로이 이린 sarang_daddy snoop|https://github.com/codesquad-members-2023-team6/issue-tracker|
