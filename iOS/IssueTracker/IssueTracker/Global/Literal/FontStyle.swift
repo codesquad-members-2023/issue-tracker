@@ -8,6 +8,13 @@
 import UIKit.UIFont
 
 enum FontStyle {
+extension FontStyle {
+    struct FontTypeFace {
+        let font: UIFont
+        let lineHeight: CGFloat
+    }
+}
+
 private extension FontStyle {
     enum FontSize {
         static let doubleXLarge: FontDimension = .init(size: 32, lineHeight: 48)
