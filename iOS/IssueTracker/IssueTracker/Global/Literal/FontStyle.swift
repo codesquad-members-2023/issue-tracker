@@ -8,6 +8,52 @@
 import UIKit.UIFont
 
 enum FontStyle {
+    static let body: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.doubleXLarge.size, weight: .regular),
+        lineHeight: FontSize.doubleXLarge.lineHeight
+    )
+    static let bodyMedium: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.medium.size, weight: .bold),
+        lineHeight: FontSize.medium.lineHeight
+    )
+    static let title: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.large.size, weight: .bold),
+        lineHeight: FontSize.large.lineHeight
+    )
+    static let titleMedium: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.xLarge.size, weight: .regular),
+        lineHeight: FontSize.xLarge.lineHeight
+    )
+    static let titleStrong: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.doubleXLarge.size, weight: .regular),
+        lineHeight: FontSize.doubleXLarge.lineHeight
+    )
+    static let button: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.medium.size, weight: .bold),
+        lineHeight: FontSize.medium.lineHeight
+    )
+    static let buttonWeak: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.small.size, weight: .bold),
+        lineHeight: FontSize.small.lineHeight
+    )
+    static let buttonStrong: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.large.size, weight: .bold),
+        lineHeight: FontSize.large.lineHeight
+    )
+    static let placeHolder: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.medium.size, weight: .bold),
+        lineHeight: FontSize.medium.lineHeight
+    )
+    static let caption: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.small.size, weight: .bold),
+        lineHeight: FontSize.small.lineHeight
+    )
+    static let label: FontTypeFace = .init(
+        font: .systemFont(ofSize: FontSize.small.size, weight: .bold),
+        lineHeight: FontSize.small.lineHeight
+    )
+}
+
 extension FontStyle {
     struct FontTypeFace {
         let font: UIFont
