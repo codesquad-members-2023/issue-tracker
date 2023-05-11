@@ -13,6 +13,7 @@
 		4F3819FD2A0BA1320046B94D /* IssueTrackerTabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3819FB2A0BA1320046B94D /* IssueTrackerTabBar.storyboard */; };
 		4F3819FF2A0BA1350046B94D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F3819FE2A0BA1350046B94D /* Assets.xcassets */; };
 		4F381A022A0BA1350046B94D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F381A002A0BA1350046B94D /* LaunchScreen.storyboard */; };
+		4FD5C9772A0C91890096F53D /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD5C9762A0C91890096F53D /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		4F3819FE2A0BA1350046B94D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F381A012A0BA1350046B94D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F381A032A0BA1350046B94D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FD5C9762A0C91890096F53D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 		4F3819E92A0BA1320046B94D = {
 			isa = PBXGroup;
 			children = (
+				4FD5C9762A0C91890096F53D /* .swiftlint.yml */,
 				4F3819F42A0BA1320046B94D /* IssueTracker */,
 				4F3819F32A0BA1320046B94D /* Products */,
 			);
@@ -138,6 +141,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F381A062A0BA1350046B94D /* Build configuration list for PBXNativeTarget "IssueTracker" */;
 			buildPhases = (
+				4FD5C9732A0C8FD60096F53D /* SwiftLint Script */,
 				4F3819EE2A0BA1320046B94D /* Sources */,
 				4F3819EF2A0BA1320046B94D /* Frameworks */,
 				4F3819F02A0BA1320046B94D /* Resources */,
@@ -147,6 +151,8 @@
 			dependencies = (
 			);
 			name = IssueTracker;
+			packageProductDependencies = (
+			);
 			productName = IssueTracker;
 			productReference = 4F3819F22A0BA1320046B94D /* IssueTracker.app */;
 			productType = "com.apple.product-type.application";
@@ -175,6 +181,9 @@
 				Base,
 			);
 			mainGroup = 4F3819E92A0BA1320046B94D;
+			packageReferences = (
+				4FD5C97D2A0C99790096F53D /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			productRefGroup = 4F3819F32A0BA1320046B94D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -189,6 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FD5C9772A0C91890096F53D /* .swiftlint.yml in Resources */,
 				4F381A022A0BA1350046B94D /* LaunchScreen.storyboard in Resources */,
 				4F3819FF2A0BA1350046B94D /* Assets.xcassets in Resources */,
 				4F3819FD2A0BA1320046B94D /* IssueTrackerTabBar.storyboard in Resources */,
@@ -196,6 +206,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4FD5C9732A0C8FD60096F53D /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4F3819EE2A0BA1320046B94D /* Sources */ = {
@@ -420,6 +451,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4FD5C97D2A0C99790096F53D /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.52.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 4F3819EA2A0BA1320046B94D /* Project object */;
 }
