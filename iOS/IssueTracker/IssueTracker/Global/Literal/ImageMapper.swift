@@ -5,7 +5,7 @@
 //  Created by ilim on 2023/05/12.
 //
 
-import UIKit
+import UIKit.UIImage
 
 enum ImageMapper: String {
     case exclamation = "Exclamation"
