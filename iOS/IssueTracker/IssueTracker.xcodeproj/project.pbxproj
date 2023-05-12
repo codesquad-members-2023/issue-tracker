@@ -16,6 +16,7 @@
 		4FD5C9772A0C91890096F53D /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD5C9762A0C91890096F53D /* .swiftlint.yml */; };
 		4FF650C32A0D6A3800A9B220 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF650C22A0D6A3800A9B220 /* UIColor+Extension.swift */; };
 		4FF650C72A0D702900A9B220 /* ComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF650C62A0D702900A9B220 /* ComponentStyle.swift */; };
+		4FF650C92A0DDA0700A9B220 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF650C82A0DDA0700A9B220 /* Images.swift */; };
 		4FFC81742A0D51D0008C2575 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFC81732A0D51D0008C2575 /* FontStyle.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		4FD5C9762A0C91890096F53D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		4FF650C22A0D6A3800A9B220 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		4FF650C62A0D702900A9B220 /* ComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentStyle.swift; sourceTree = "<group>"; };
+		4FF650C82A0DDA0700A9B220 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		4FFC81732A0D51D0008C2575 /* FontStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,6 +157,7 @@
 				4FFC81732A0D51D0008C2575 /* FontStyle.swift */,
 				4FF650C22A0D6A3800A9B220 /* UIColor+Extension.swift */,
 				4FF650C62A0D702900A9B220 /* ComponentStyle.swift */,
+				4FF650C82A0DDA0700A9B220 /* Images.swift */,
 			);
 			path = Literal;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF650C92A0DDA0700A9B220 /* Images.swift in Sources */,
 				4F3819FA2A0BA1320046B94D /* IssueTrackerTabBarController.swift in Sources */,
 				4F3819F62A0BA1320046B94D /* AppDelegate.swift in Sources */,
 				4FF650C72A0D702900A9B220 /* ComponentStyle.swift in Sources */,
