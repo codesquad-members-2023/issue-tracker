@@ -1,5 +1,5 @@
 //
-//  Images.swift
+//  ImageMapper.swift
 //  IssueTracker
 //
 //  Created by ilim on 2023/05/12.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Images: String {
+enum ImageMapper: String {
     case exclamation = "Exclamation"
     case logotypeMedium = "LogotypeMedium"
     case milestone = "Milestone"
@@ -17,8 +17,8 @@ enum Images: String {
     case tag = "Tag"
 }
 
-extension Images {
-    static func imageMapper(from images: Images) -> UIImage? {
-        return UIImage(named: images.rawValue)
+extension ImageMapper {
+    func match() -> UIImage? {
+        return UIImage(named: self.rawValue)
     }
 }
