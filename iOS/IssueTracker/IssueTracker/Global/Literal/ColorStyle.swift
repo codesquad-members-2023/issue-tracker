@@ -1,13 +1,13 @@
 //
-//  UIColor+Extension.swift
+//  ColorStyle.swift
 //  IssueTracker
 //
 //  Created by ilim on 2023/05/12.
 //
 
-import UIKit
+import UIKit.UIColor
 
-extension UIColor {
+enum ColorStyle {
     static let gray50 = UIColor(named: "gray50")
     static let gray100 = UIColor(named: "gray100")
     static let gray200 = UIColor(named: "gray200")
@@ -18,7 +18,7 @@ extension UIColor {
     static let gray700 = UIColor(named: "gray700")
     static let gray800 = UIColor(named: "gray800")
     static let gray900 = UIColor(named: "gray900")
-    static let red = UIColor(named: "red")
-    static let purple = UIColor(named: "purple")
-    static let blue = UIColor(named: "blue")
+    static let issueTrackerRed = UIColor(named: "issueTrackerRed")
+    static let issueTrackerPurple = UIColor(named: "issueTrackerPurple")
+    static let issueTrackerBlue = UIColor(named: "issueTrackerBlue")
 }
