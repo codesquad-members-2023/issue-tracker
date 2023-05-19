@@ -9,12 +9,12 @@ import Foundation
 
 enum ComponentStyle {
     enum Radius {
-        static let regular = 10
-        static let large = 20
+        static let regular: Int = 10
+        static let large: Int = 20
     }
     
     enum Border {
-        static let regular = 1
-        static let bold = 4
+        static let regular: Int = 1
+        static let bold: Int = 4
     }
 }
