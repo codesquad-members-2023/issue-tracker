@@ -144,8 +144,6 @@
 		4F46D22A2A1670110003AEDD /* Issue */ = {
 			isa = PBXGroup;
 			children = (
-				4F46D2352A1670780003AEDD /* ViewModel */,
-				4F46D2342A1670720003AEDD /* ViewController */,
 				4F46D2332A16706D0003AEDD /* View */,
 			);
 			path = Issue;
@@ -223,25 +221,11 @@
 				4F46D2412A16717A0003AEDD /* IssueCommentCollectionViewCell.xib */,
 				4F46D23D2A16716C0003AEDD /* IssueHeaderCollectionViewCell.xib */,
 				4F46D2392A1671590003AEDD /* IssueListCollectionViewCell.xib */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		4F46D2342A1670720003AEDD /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
 				4F46D2382A1671590003AEDD /* IssueListCollectionViewCell.swift */,
 				4F46D23C2A16716C0003AEDD /* IssueHeaderCollectionViewCell.swift */,
 				4F46D2402A16717A0003AEDD /* IssueCommentCollectionViewCell.swift */,
 			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		4F46D2352A1670780003AEDD /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
+			path = View;
 			sourceTree = "<group>";
 		};
 		4FFC81572A0C80F5008C2575 /* Common */ = {
