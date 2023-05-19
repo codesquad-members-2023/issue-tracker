@@ -9,7 +9,7 @@ import UIKit.UIFont
 
 enum FontStyle {
     static let body: FontTypeFace = .init(
-        font: .systemFont(ofSize: FontSize.doubleXLarge.size, weight: .regular),
+        font: .systemFont(ofSize: FontSize.medium.size, weight: .regular),
         lineHeight: FontSize.doubleXLarge.lineHeight
     )
     static let bodyMedium: FontTypeFace = .init(
