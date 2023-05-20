@@ -8,11 +8,22 @@
 import UIKit
 
 class IssueTabViewController: UIViewController {
+    let fetcher = HTTPDataFetcher()
+    
     let collectionView = IssueCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     @IBOutlet var backPlane: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         backPlane.addSubview(collectionView)
+        
+        fetcher.fetchIssueData(completion: { result in
+            switch result {
+            case .success(let jsonString):
+                print(jsonString)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
