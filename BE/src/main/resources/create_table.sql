@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`USER` (
     `id` VARCHAR(45) NOT NULL,
     `password` VARCHAR(45) NOT NULL,
     `nickname` VARCHAR(45) NOT NULL,
+    `img_url` VARCHAR(512) NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE,
-    UNIQUE INDEX `nickname_UNIQUE` (`nickname` ASC) VISIBLE)
+    UNIQUE INDEX `img_url_UNIQUE` (`img_url` ASC) VISIBLE)
     ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `issue_tracker_database`.`MILESTONE`
@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`ISSUE` (
                                                                 `title` VARCHAR(45) NULL,
     `contents` MEDIUMTEXT NULL,
     `state` TINYINT(1) NULL,
-    `created_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `created_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `last_updated_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_id` VARCHAR(45) NOT NULL,
     `milestone_name` VARCHAR(45) NULL,
     PRIMARY KEY (`number`),
@@ -60,18 +61,19 @@ CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`ISSUE` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`COMMENT` (
                                                                   `id` INT NOT NULL,
-                                                                  `contents` MEDIUMTEXT NOT NULL,
-                                                                  `created_data` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+                                                                  `contents` TEXT NOT NULL,
+                                                                  `created_data` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                                                  `last_updated_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                                                   `deleted` TINYINT(1) NULL,
     `user_id` VARCHAR(45) NOT NULL,
     `issue_number` INT NOT NULL,
-    INDEX `fk_comment_user_id_idx` (`user_id` ASC) VISIBLE,
     PRIMARY KEY (`id`),
     INDEX `fk_comment_issue_number_idx` (`issue_number` ASC) VISIBLE,
+    INDEX `fk_comment_user_id_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_comment_user_id`
     FOREIGN KEY (`user_id`)
     REFERENCES `issue_tracker_database`.`USER` (`id`)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE,
     CONSTRAINT `fk_comment_issue_number`
     FOREIGN KEY (`issue_number`)
@@ -109,23 +111,9 @@ CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`ASSIGNS` (
     ON UPDATE CASCADE)
     ENGINE = InnoDB;
 -- -----------------------------------------------------
--- Table `issue_tracker_database`.`IMAGE_FOR_USER`
+-- Table `issue_tracker_database`.`ISSUE_LABEL_RELATION`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`IMAGE_FOR_USER` (
-    `url` VARCHAR(200) NOT NULL,
-    `user_id` VARCHAR(45) NOT NULL,
-    UNIQUE INDEX `url_UNIQUE` (`url` ASC) VISIBLE,
-    INDEX `fk_IMAGE_FOR_USER_USER1_idx` (`user_id` ASC) VISIBLE,
-    CONSTRAINT `fk_IMAGE_FOR_USER_USER1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `issue_tracker_database`.`USER` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-    ENGINE = InnoDB;
--- -----------------------------------------------------
--- Table `issue_tracker_database`.`issue_label_relation`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`issue_label_relation` (
+CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`ISSUE_LABEL_RELATION` (
                                                                                `issue_number` INT NOT NULL,
                                                                                `label_name` VARCHAR(45) NOT NULL,
     INDEX `fk_issue_label_relation_issue_number_idx` (`issue_number` ASC) VISIBLE,
@@ -133,13 +121,13 @@ CREATE TABLE IF NOT EXISTS `issue_tracker_database`.`issue_label_relation` (
     CONSTRAINT `fk_issue_label_relation_issue_number`
     FOREIGN KEY (`issue_number`)
     REFERENCES `issue_tracker_database`.`ISSUE` (`number`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
     CONSTRAINT `fk_issue_label_relation_label_name`
     FOREIGN KEY (`label_name`)
     REFERENCES `issue_tracker_database`.`LABEL` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
     ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
