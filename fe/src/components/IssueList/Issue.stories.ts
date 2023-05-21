@@ -12,41 +12,49 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    id: 10,
+    issueId: 10,
     title: 'issue title',
     userName: 'lily',
     profileUrl:
       'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
     isOpen: true,
-    createdAt: 'time',
-    closedAt: 'time',
+    elapseTime: {
+      days: 12,
+      hours: 2,
+      minutes: 49,
+      seconds: 22,
+    },
     milestoneName: 'milestone',
-    labels: [],
+    labelList: [],
   },
 };
 
 export const Secondary: Story = {
   args: {
-    id: 10,
+    issueId: 10,
     title:
       '글자가 길어지면 어떻게 될까요오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오오',
     userName: 'lily',
     profileUrl:
       'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
     isOpen: true,
-    createdAt: 'time',
-    closedAt: 'time',
+    elapseTime: {
+      days: 12,
+      hours: 2,
+      minutes: 49,
+      seconds: 22,
+    },
     milestoneName: 'milestone',
-    labels: [
+    labelList: [
       {
-        id: 20123,
-        title: 'Jayden',
+        labelId: 20123,
+        labelName: 'Jayden',
         backgroundColor: 'orange',
         fontColor: 'black',
       },
       {
-        id: 20123,
-        title: 'Lily',
+        labelId: 20123,
+        labelName: 'Lily',
         backgroundColor: 'pink',
         fontColor: 'black',
       },

@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Profile from '../../common/Profile';
-import Logo from '../../common/Logo';
+import Logo from '@common/Logo';
+import Profile from '@common/Profile';
 
 interface Props {
-  url?: string;
+  url: string;
 }
 
 const Header: React.FC<Props> = ({ url }) => {
   return (
-    <header className="h-24 flex justify-between items-center">
-      <Logo />
+    <header className="mb-[59px] flex items-center justify-between">
+      <Logo size="Medium" />
       <Profile url={url} />
     </header>
   );

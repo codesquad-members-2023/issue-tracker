@@ -1,22 +1,34 @@
 import React from 'react';
 
-const FilterBar: React.FC = () => {
+import { ReactComponent as Search } from '@assets/search.svg';
+import Button from '@common/Button';
+
+interface Props {
+  onClick: () => void;
+}
+
+const FilterBar: React.FC<Props> = ({ onClick }) => {
   return (
-    <div className="w-auto flex justify-start ">
-      <button className="w-32 h-10 flex justify-center items-center gap-x-3 rounded-l-2xl border border-gray-200 bg-white text-gray-500 font-bold">
-        <span>필터</span>
-        <img src="/assets/ChevronDown.svg" alt="chevron-down" />
-      </button>
+    <div className="flex w-auto justify-start rounded-2xl border border-gray-200">
+      <Button
+        title="필터"
+        onClick={onClick}
+        size="Small"
+        color="Gray"
+        type="Ghost"
+        hasDropDown={true}
+        condition="Press"
+      />
       <form
         action=""
-        className="w-[472px] pl-10 flex justify-start gap-x-3 rounded-r-2xl border border-gray-200 bg-gray-100"
+        className="flex w-[472px] items-center justify-start gap-x-3 rounded-r-2xl bg-gray-100 pl-6"
       >
-        <img src="/assets/Search.svg" alt="search" className="w-4" />
+        <Search stroke="#6E7191" className="w-4 self-center" />
         <input
           type="text"
           // TODO(Lily): value 값을 현재 선택된 필터 항목을 props로 받아서 처리
           value="is:issue is:open"
-          className="w-96 bg-gray-100 text-gray-500"
+          className="w-96 bg-gray-100 text-gray-600"
         />
       </form>
     </div>

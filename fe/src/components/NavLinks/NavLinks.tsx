@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from '@common/Button';
+
 interface Props {
   countAllLabels: number;
   countAllMilestones: number;
@@ -7,22 +9,28 @@ interface Props {
 
 const NavLinks: React.FC<Props> = ({ countAllLabels, countAllMilestones }) => {
   return (
-    <div className="w-80 h-10 flex justify-around items-center">
-      <div className="w-40 h-full flex justify-center items-center gap-1 border rounded-l-2xl border-gray-200">
-        <img className="w-4" src="/assets/Label.svg" alt="link to label list" />
-        <span className="text-base font-semibold text-gray-600">
-          레이블({countAllLabels})
-        </span>
-      </div>
-      <div className="w-40 h-full flex justify-center items-center gap-1 border rounded-r-2xl border-gray-200">
-        <img
-          className="w-4"
-          src="/assets/Milestone.svg"
-          alt="link to milestone list"
+    <div className="flex h-10 w-80 rounded-2xl border border-gray-200">
+      <div className="flex w-1/2 justify-center  border-r">
+        <Button
+          title={`레이블(${countAllLabels})`}
+          onClick={() => console.log('레이블')}
+          size="Small"
+          color="Gray"
+          type="Ghost"
+          iconName="label"
+          condition="Press"
         />
-        <span className="font-semibold text-gray-600">
-          마일스톤({countAllMilestones})
-        </span>
+      </div>
+      <div className="flex w-1/2 justify-center">
+        <Button
+          title={`마일스톤(${countAllMilestones})`}
+          onClick={() => console.log('마일스톤')}
+          size="Small"
+          color="Gray"
+          type="Ghost"
+          iconName="milestone"
+          condition="Press"
+        />
       </div>
     </div>
   );

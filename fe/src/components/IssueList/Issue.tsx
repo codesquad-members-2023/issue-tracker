@@ -1,76 +1,96 @@
 import React from 'react';
 
-import { LabelRow } from './IssueList';
-import Profile from '../../common/Profile';
-import Label from '../../common/Label';
+import Profile from '@common/Profile';
+import Label from '@common/Label';
+import { LabelRow, elapseTime } from './IssueList';
+import { ReactComponent as AlertCircle } from '@assets/alertCircle.svg';
+import { ReactComponent as Archive } from '@assets/archive.svg';
+import { ReactComponent as Milestone } from '@assets/milestone.svg';
 
 interface Props {
-  id: number;
+  issueId: number;
   title: string;
   userName: string;
   profileUrl: string;
   isOpen: boolean;
-  createdAt: string;
-  closedAt: string;
-  milestoneName: string;
-  labels: LabelRow[];
+  labelList: LabelRow[];
+  elapseTime: elapseTime;
+  milestoneName?: string;
   onIssueTitleClick: (id: number) => void;
 }
 
 const Issue: React.FC<Props> = ({
-  id,
+  issueId,
   title,
   userName,
   profileUrl,
   isOpen,
-  createdAt,
-  closedAt,
+  elapseTime,
   milestoneName,
-  labels,
+  labelList,
   onIssueTitleClick,
 }) => {
+  const { days, hours, minutes } = elapseTime;
+  const elapsedMessage = isOpen
+    ? `${days !== 0 ? `${days}일 ` : ''}${hours !== 0 ? `${hours}시간 ` : ''}${
+        minutes !== 0 ? `${minutes}분 ` : ''
+      }전, ${userName}님에 의해 작성되었습니다.`
+    : `${days !== 0 ? `${days}일 ` : ''}${
+        hours !== 0 ? `${hours}시간 ` : ''
+      } ${minutes}분 전, ${userName}님에 의해 닫혔습니다.`;
+
   return (
-    <div className="flex px-8 py-4 border-t">
-      <div className="mr-4">{/* TODO(Lily): add check box */}c</div>
+    <div className="flex border-t px-8 py-4">
+      <div className="mr-8 mt-2">
+        <input
+          type="checkbox"
+          checked={false}
+          onChange={() => console.log('check')}
+        />
+      </div>
       <div>
-        <div className="flex mb-1">
+        <div className="mb-1 flex items-center">
           {isOpen ? (
-            <img className="mr-1" src="assets/openedIssue.svg" />
+            <AlertCircle stroke="#007AFF" />
           ) : (
-            <img className="mr-1" src="assets/closedIssue.svg" />
+            <Archive stroke="#4E4B66" />
           )}
           {/* TODO(Lily): 라우터 설치 및 설정 이후에 Link 태그로 바꾸기 */}
           <button
-            className="mr-1 text-lg text-neutral-strong font-bold"
-            onClick={() => onIssueTitleClick(id)}
+            className="mx-2 text-left text-lg font-bold text-neutral-strong"
+            onClick={() => onIssueTitleClick(issueId)}
           >
             {title}
           </button>
-          {labels.map(label => (
-            <Label
-              key={label.id}
-              labelName={label.title}
-              backgroundColor={label.backgroundColor}
-              fontColor={label.fontColor}
-            />
-          ))}
-        </div>
-        <div className="flex">
-          <span className="mr-2 text-neutral-weak">#{id}</span>
-          <span className="mr-2 text-neutral-weak">
-            {/* TODO(Lily): 경과 시간 계산은 위에서 하고 계산 된 값을 props로 받아서 처리하기 */}
-            {isOpen
-              ? `이 이슈가 ${createdAt}분 전, ${userName}님에 의해 작성되었습니다.`
-              : `이 이슈가 ${closedAt}분 전, ${userName}에 의해 닫혔습니다.`}
-          </span>
           <div className="flex">
-            <img className="mr-1" src="assets/milestone.svg" />
-            <span className="text-neutral-weak">{milestoneName}</span>
+            {labelList.map(label => {
+              const { labelId, labelName, backgroundColor, fontColor } = label;
+              return (
+                <Label
+                  key={labelId}
+                  labelName={labelName}
+                  backgroundColor={backgroundColor}
+                  fontColor={fontColor}
+                />
+              );
+            })}
           </div>
         </div>
+        {/* TODO: issue info 세로 가운데 정렬 */}
+        <div className="flex">
+          <span className="mr-4 text-gray-600">#{issueId}</span>
+          <span className="mr-4 text-gray-600">{elapsedMessage}</span>
+          {milestoneName && (
+            <div className="flex items-center">
+              <Milestone fill="#6E7191" />
+              <span className="ml-2 text-gray-600">{milestoneName}</span>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="w-5 h-5 flex grow justify-end self-center">
-        <Profile url={profileUrl} />
+      {/* FIXME(Jayden): Profile 태그의 상위 태그의 높이가 고정 */}
+      <div className="flex grow items-center justify-end">
+        <Profile url={profileUrl} width={20} height={20} />
       </div>
     </div>
   );
