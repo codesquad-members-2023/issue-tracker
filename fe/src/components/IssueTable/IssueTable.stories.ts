@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import IssueList from './IssueList';
+import IssueTable from './IssueTable';
 
 const meta = {
   title: 'Main/IssueList',
-  component: IssueList,
+  component: IssueTable,
   argTypes: {},
-} satisfies Meta<typeof IssueList>;
+} satisfies Meta<typeof IssueTable>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -4,7 +4,7 @@ import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
-import IssueList, { IssueRow } from '@components/IssueList/IssueList';
+import IssueList, { IssueRow } from '@components/IssueTable/IssueTable';
 import FilterList from '@components/FilterList/FilterList';
 import { api } from 'src/api';
 import { FILTER_DROPDOWN_LIST } from '@constants/Mainpage';
@@ -75,7 +75,6 @@ const MainPage = () => {
       const res = await fetch(`${api}`);
       // const res = await fetch('/issues');
       const data = await res.json();
-
       if (res.status === 200) {
         setData(data);
         mapIssues(data);

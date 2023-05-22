@@ -53,7 +53,7 @@ interface Props {
   onStatusTabClick: (status: boolean) => void;
 }
 
-const IssueList: React.FC<Props> = ({
+const IssueTable: React.FC<Props> = ({
   issues,
   users,
   labels,
@@ -246,4 +246,4 @@ const IssueList: React.FC<Props> = ({
   );
 };
 
-export default IssueList;
+export default IssueTable;
