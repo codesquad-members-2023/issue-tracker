@@ -6,9 +6,10 @@ import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
 import IssueList, {
   IssueRow,
-  elapseTime,
+  ElapseTime,
 } from '@components/IssueList/IssueList';
 import FilterList from '@components/FilterList/FilterList';
+import { api } from 'src/api';
 
 export type DropdownItems = {
   filter: boolean;
@@ -76,7 +77,7 @@ const MainPage = () => {
     [issueItems]
   );
 
-  const getTimeElapsed = (startTime: string): elapseTime => {
+  const getTimeElapsed = (startTime: string): ElapseTime => {
     const start = new Date(startTime);
     const now = new Date();
 
@@ -114,7 +115,7 @@ const MainPage = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('http://43.200.199.205:8080/api/');
+      const res = await fetch(`${api}`);
       // const res = await fetch('/issues');
       const data = await res.json();
 
@@ -179,4 +180,5 @@ const MainPage = () => {
     </section>
   );
 };
+
 export default MainPage;

@@ -13,7 +13,7 @@ export interface LabelRow {
   fontColor: string;
 }
 
-export interface elapseTime {
+export interface ElapseTime {
   days: number;
   hours: number;
   minutes: number;
@@ -27,7 +27,7 @@ export interface IssueRow {
   userName: string;
   profileUrl: string;
   isOpen: boolean;
-  elapseTime: elapseTime;
+  elapseTime: ElapseTime;
   milestoneName?: string;
   labelList: LabelRow[];
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Profile from '@common/Profile';
 import Label from '@common/Label';
-import { LabelRow, elapseTime } from './IssueList';
+import { LabelRow, ElapseTime } from './IssueList';
 import { ReactComponent as AlertCircle } from '@assets/alertCircle.svg';
 import { ReactComponent as Archive } from '@assets/archive.svg';
 import { ReactComponent as Milestone } from '@assets/milestone.svg';
@@ -14,7 +14,7 @@ interface Props {
   profileUrl: string;
   isOpen: boolean;
   labelList: LabelRow[];
-  elapseTime: elapseTime;
+  elapseTime: ElapseTime;
   milestoneName?: string;
   onIssueTitleClick: (id: number) => void;
 }
