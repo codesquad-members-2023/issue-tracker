@@ -4,7 +4,7 @@ import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
-import IssueList, { IssueRow } from '@components/IssueTable/IssueTable';
+import IssueTable, { IssueRow } from '@components/IssueTable/IssueTable';
 import FilterList from '@components/FilterList/FilterList';
 import { api } from 'src/api';
 import { FILTER_DROPDOWN_LIST } from '@constants/Mainpage';
@@ -54,7 +54,7 @@ const MainPage = () => {
   );
 
   const mapIssues = (data: any) => {
-    const issueItem: IssueRow[] = data.issues
+    const issueItems: IssueRow[] = data.issues
       .filter((issue: any) => issue.isOpen === isOpenIssues)
       .map((issue: any) => {
         const elapseTime = issue.isOpen
@@ -67,7 +67,7 @@ const MainPage = () => {
         };
       });
 
-    setIssueItems(issueItem);
+    setIssueItems(issueItems);
   };
 
   const fetchData = async () => {
@@ -120,7 +120,7 @@ const MainPage = () => {
           />
         </div>
       </div>
-      <IssueList
+      <IssueTable
         users={data.userList}
         labels={data.labelList}
         milestones={data.milestoneList}

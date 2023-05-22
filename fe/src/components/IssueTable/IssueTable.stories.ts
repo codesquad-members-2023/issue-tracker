@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import IssueTable from './IssueTable';
 
 const meta = {
-  title: 'Main/IssueList',
+  title: 'Main/IssueTable',
   component: IssueTable,
   argTypes: {},
 } satisfies Meta<typeof IssueTable>;

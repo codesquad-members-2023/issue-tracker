@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Profile from '../Profile';
+import { ReactComponent as CheckOffCircle } from '@assets/checkOffCircle.svg';
+import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 
 export interface FilterItemRaw {
   id: number;
@@ -20,8 +22,13 @@ const FilterItem: React.FC<FilterItemRaw> = ({
   width,
   height,
 }) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const handleIsCheckedClick = () => {
+    setIsChecked(!isChecked);
+  };
   return (
-    <div
+    <button
+      onClick={handleIsCheckedClick}
       className={`flex items-center gap-x-1 text-gray-700 ${
         bold && 'font-bold'
       }`}
@@ -34,7 +41,8 @@ const FilterItem: React.FC<FilterItemRaw> = ({
         ></div>
       )}
       <span>{title}</span>
-    </div>
+      {isChecked ? <CheckOnCircle /> : <CheckOffCircle />}
+    </button>
   );
 };
 

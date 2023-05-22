@@ -1,7 +1,6 @@
 import React from 'react';
 
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
-// import checkOffCircle from '@assets/checkOffCircle.svg';
 import { ReactComponent as CheckOffCircle } from '@assets/checkOffCircle.svg';
 import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 
@@ -37,7 +36,8 @@ const FilterList: React.FC<Props> = ({
           <button className={filterItemStyle} onClick={onClick}>
             <span>{title} 없는 이슈</span>
             {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
-            {canSelectMultipleItems && <CheckOffCircle />}
+            {/* FIXME(Jayden): FilterItem에 있는 로직과 중복 제거 => '없는 이슈'에 대한 로직을 따숨길 수 없을까요? '*/}
+            {<CheckOffCircle />}
           </button>
         )}
         {items.map(item => {
@@ -53,7 +53,6 @@ const FilterList: React.FC<Props> = ({
                 backgroundColor={backgroundColor}
               />
               {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
-              {canSelectMultipleItems && <CheckOffCircle />}
             </button>
           );
         })}
