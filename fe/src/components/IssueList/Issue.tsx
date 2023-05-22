@@ -2,7 +2,8 @@ import React from 'react';
 
 import Profile from '@common/Profile';
 import Label from '@common/Label';
-import { LabelRow, ElapseTime } from './IssueList';
+import { LabelRow } from './IssueList';
+import { ElapseTime } from '@utils/getTimeElapsed';
 import { ReactComponent as AlertCircle } from '@assets/alertCircle.svg';
 import { ReactComponent as Archive } from '@assets/archive.svg';
 import { ReactComponent as Milestone } from '@assets/milestone.svg';

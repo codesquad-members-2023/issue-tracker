@@ -4,13 +4,11 @@ import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
-import IssueList, {
-  IssueRow,
-  ElapseTime,
-} from '@components/IssueList/IssueList';
+import IssueList, { IssueRow } from '@components/IssueList/IssueList';
 import FilterList from '@components/FilterList/FilterList';
 import { api } from 'src/api';
 import { FILTER_DROPDOWN_LIST } from '@constants/Mainpage';
+import { getTimeElapsed } from '@utils/getTimeElapsed';
 
 export type DropdownItems = {
   filter: boolean;
@@ -54,25 +52,6 @@ const MainPage = () => {
     () => issueItems.filter((item: IssueRow) => item.isOpen === isOpenIssues),
     [issueItems]
   );
-
-  const getTimeElapsed = (startTime: string): ElapseTime => {
-    const start = new Date(startTime);
-    const now = new Date();
-
-    const elapsedTime = now.getTime() - start.getTime();
-    const elapsedSeconds = Math.floor(elapsedTime / 1000);
-    const days = Math.floor(elapsedSeconds / 86400);
-    const hours = Math.floor((elapsedSeconds % 86400) / 3600);
-    const minutes = Math.floor(((elapsedSeconds % 86400) % 3600) / 60);
-    const seconds = elapsedSeconds % 60;
-
-    return {
-      days,
-      hours,
-      minutes,
-      seconds,
-    };
-  };
 
   const mapIssues = (data: any) => {
     const issueItem: IssueRow[] = data.issues

@@ -5,19 +5,13 @@ import Button from '@common/Button';
 
 import { DropdownItems } from '../../pages/MainPage';
 import FilterList from '@components/FilterList/FilterList';
+import { ElapseTime } from '@utils/getTimeElapsed';
 
 export interface LabelRow {
   labelId: number;
   labelName: string;
   backgroundColor: string;
   fontColor: string;
-}
-
-export interface ElapseTime {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
 }
 
 export interface IssueRow {
