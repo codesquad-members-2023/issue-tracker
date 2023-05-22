@@ -1,44 +1,59 @@
-import Icon from '@components/Icon/Icon';
-import { DropdownElement } from './DropdownElement/DropdownElement';
+import { Icon } from '@components/index';
+import { DropdownPanel } from './DropdownPanel/DropdownPanel';
+import styles from './Dropdown.module.css';
+import classNames from 'classnames/bind';
+import { useRef, useState } from 'react';
 
 export const Dropdown = ({
-	isOpen,
-	btnOnClick,
-	optionOnClick,
-	btnText,
-	hasRadioBtn,
-	options,
-	header,
-	selectedId,
+  optionOnClick,
+  btnText,
+  hasRadioBtn,
+  options,
+  header,
+  selected,
+  isOpen,
+  toggleOpen,
+  panelPosition,
+  width,
 }) => {
-	return (
-		<>
-			<button onClick={btnOnClick}>
-				{btnText}
-				<Icon name="chevronDown"></Icon>
-			</button>
-			{isOpen && (
-				<div>
-					<DropdownElement type="header" contents={header}></DropdownElement>
-					{options.map((option, i) => {
-						const isSelected = selectedId === option.id;
-						return (
-							<DropdownElement
-								id={option.id}
-								type="option"
-								key={i}
-								profile={option.profile ?? null}
-								contents={option.contents}
-								isSelected={isSelected}
-								hasRadioBtn={hasRadioBtn}
-								_onClick={optionOnClick}
-							></DropdownElement>
-						);
-					})}
-				</div>
-			)}
-		</>
-	);
-};
+  const cx = classNames.bind(styles);
+  const buttonClassNames = `${cx('button')} typo-m typo-bold`;
+  const btnElement = useRef(null);
+  const [btnCoordinate, setBtnCoordinate] = useState();
 
-export default Dropdown;
+  const handleBtnClick = () => {
+    const { top, left, height, right } =
+      btnElement.current.getBoundingClientRect();
+    setBtnCoordinate({ top, left, height, right });
+    toggleOpen();
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleBtnClick}
+        className={buttonClassNames}
+        ref={btnElement}
+        style={{ width }}
+      >
+        {btnText}
+        <Icon
+          name="chevronDown"
+          fill="var(--color-light-neutral-text-weak)"
+        ></Icon>
+      </button>
+      {isOpen && (
+        <DropdownPanel
+          header={header}
+          options={options}
+          selected={selected}
+          hasRadioBtn={hasRadioBtn}
+          optionOnClick={optionOnClick}
+          toggleOpen={toggleOpen}
+          btnCoordinate={btnCoordinate}
+          panelPosition={panelPosition}
+        ></DropdownPanel>
+      )}
+    </>
+  );
+};

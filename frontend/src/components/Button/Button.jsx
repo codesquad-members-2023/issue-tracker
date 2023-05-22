@@ -1,54 +1,58 @@
 import styles from './Button.module.css';
 import classNames from 'classnames/bind';
+import { Icon } from '@components/index';
 
 export const Button = ({
-	icon,
-	text,
-	type,
-	status,
-	color,
-	btnSize,
-	_onClick,
+  iconName,
+  text,
+  type,
+  status = 'default',
+  color = 'black',
+  width,
+  btnSize = 'l',
+  _onClick,
+  style,
+  id = '',
+  textColor,
 }) => {
-	const cx = classNames.bind(styles);
+  const cx = classNames.bind(styles);
 
-	const btnSizeKind =
-		btnSize === 'l'
-			? cx('size-l')
-			: btnSize === 'm'
-			? cx('size-m')
-			: cx('size-s');
+  const btnSizeKind = cx(`size-${btnSize}`);
+  const textSizeClass = `typo-${btnSize}`;
+  const btnStatus = cx(`status-${status}`);
+  const btnType = type === 'ghost' ? cx('type-ghost') : cx('type-contained');
+  const btnColor =
+    type === 'outline' ? cx(`outline-color-${color}`) : cx(`color-${color}`);
 
-	const btnStatus =
-		status === 'hover'
-			? cx('status-hover')
-			: status === 'press'
-			? cx('status-press')
-			: status === 'disabled'
-			? cx('status-disabled')
-			: status === 'active'
-			? cx('status-active')
-			: cx('status-default');
+  const getTextColor = () => {
+    if (type === 'ghost') {
+      return 'var(--color-light-neutral-text)';
+    }
+    if (type === 'outline') {
+      if (color === 'blue') {
+        return 'var(--color-light-accent-text-weak)';
+      }
+      return 'var(--color-light-neutral-text)';
+    }
+    return 'var(--color-light-accent-text)';
+  };
+  const typoColor = textColor ?? getTextColor(type);
 
-	const btnType = type === 'ghost' ? cx('type-ghost') : cx('type-contained');
+  const buttonClassNames = `${cx(
+    'btn'
+  )} ${btnColor} ${btnSizeKind} ${btnStatus} ${btnType}`;
 
-	const btnColor =
-		color === 'blue'
-			? type === 'outline'
-				? cx('outline-color-blue')
-				: cx('color-blue')
-			: type === 'outline'
-			? cx('outline-color-black')
-			: cx('color-blue');
-
-	const buttonClassNames = `${cx(
-		'btn'
-	)} ${btnColor} ${btnSizeKind} ${btnStatus} ${btnType}`;
-
-	return (
-		<button className={buttonClassNames} onClick={_onClick}>
-			{icon}
-			{text}
-		</button>
-	);
+  return (
+    <button
+      className={buttonClassNames}
+      onClick={_onClick}
+      style={{ ...style, width }}
+      id={id}
+    >
+      {iconName && <Icon name={iconName} fill={typoColor}></Icon>}
+      <span style={{ color: typoColor }} className={textSizeClass}>
+        {text}
+      </span>
+    </button>
+  );
 };
