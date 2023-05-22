@@ -51,6 +51,7 @@ interface Props {
   onIssueTitleClick: () => void;
   onDropdownTitleClick: (title: keyof DropdownItems) => void;
   onStatusTabClick: (status: boolean) => void;
+  filterIssues: (filterType: string, filterItem: string) => void;
 }
 
 const IssueTable: React.FC<Props> = ({
@@ -65,6 +66,7 @@ const IssueTable: React.FC<Props> = ({
   onIssueTitleClick,
   onDropdownTitleClick,
   onStatusTabClick,
+  filterIssues,
 }) => {
   return (
     <div className="w-160 box-border rounded-2xl border">
@@ -116,7 +118,7 @@ const IssueTable: React.FC<Props> = ({
                   items={users.map(user => {
                     return {
                       id: user.userId,
-                      title: user.userName,
+                      name: user.userName,
                       imgUrl: user.profileUrl,
                     };
                   })}
@@ -143,15 +145,13 @@ const IssueTable: React.FC<Props> = ({
                   items={labels.map(label => {
                     return {
                       id: label.labelId,
-                      title: label.labelName,
+                      name: label.labelName,
                       backgroundColor: label.backgroundColor,
                       fontColor: label.fontColor,
                     };
                   })}
                   isNullAvailability={true}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>
@@ -171,12 +171,10 @@ const IssueTable: React.FC<Props> = ({
                   items={milestones.map(milestone => {
                     return {
                       id: milestone.milestoneId,
-                      title: milestone.milestoneName,
+                      name: milestone.milestoneName,
                     };
                   })}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>
@@ -196,14 +194,12 @@ const IssueTable: React.FC<Props> = ({
                   items={users.map(user => {
                     return {
                       id: user.userId,
-                      title: user.userName,
+                      name: user.userName,
                       imgUrl: user.profileUrl,
                     };
                   })}
                   isNullAvailability={false}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>

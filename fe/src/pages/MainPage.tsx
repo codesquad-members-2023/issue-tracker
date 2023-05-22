@@ -70,6 +70,27 @@ const MainPage = () => {
     setIssueItems(issueItems);
   };
 
+  const filterIssues = (filterType: string, filterItem: string) => {
+    const filteredIssueItems = issueItems.filter((issue: any) => {
+      if (filterType === '레이블') {
+        return issue.labelList.some(
+          (label: any) => label.labelName === filterItem
+        );
+      } else if (filterType === '마일스톤') {
+        return issue.milestoneName === filterItem;
+      } else if (filterType === '담당자') {
+        // TODO: 서버에서 issues의 각 issue마다 담당자 정보를 받아와야될듯
+        return issue.userName === filterItem;
+      } else if (filterType === '작성자') {
+        return issue.userName === filterItem;
+      } else {
+        return true;
+      }
+    });
+
+    setIssueItems(filteredIssueItems);
+  };
+
   const fetchData = async () => {
     try {
       const res = await fetch(`${api}`);
@@ -99,9 +120,7 @@ const MainPage = () => {
             title="이슈"
             items={FILTER_DROPDOWN_LIST}
             isNullAvailability={false}
-            onClick={() => {
-              console.log('test');
-            }}
+            onClick={filterIssues}
           />
         )}
         <div className="flex gap-x-4">
@@ -132,6 +151,7 @@ const MainPage = () => {
         status={isOpenIssues}
         onDropdownTitleClick={handleClickDropdown}
         onStatusTabClick={handleClickStatusTab}
+        filterIssues={filterIssues}
       />
     </section>
   );

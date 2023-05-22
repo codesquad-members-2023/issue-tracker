@@ -6,7 +6,7 @@ import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 
 export interface FilterItemRaw {
   id: number;
-  title: string;
+  name: string;
   bold?: boolean;
   imgUrl?: string;
   backgroundColor?: string;
@@ -15,7 +15,7 @@ export interface FilterItemRaw {
 }
 
 const FilterItem: React.FC<FilterItemRaw> = ({
-  title,
+  name,
   bold = false,
   imgUrl,
   backgroundColor,
@@ -23,12 +23,14 @@ const FilterItem: React.FC<FilterItemRaw> = ({
   height,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
-  const handleIsCheckedClick = () => {
+  const handleClickIsChecked = () => {
     setIsChecked(!isChecked);
   };
   return (
     <button
-      onClick={handleIsCheckedClick}
+      onClick={() => {
+        handleClickIsChecked();
+      }}
       className={`flex items-center gap-x-1 text-gray-700 ${
         bold && 'font-bold'
       }`}
@@ -40,7 +42,7 @@ const FilterItem: React.FC<FilterItemRaw> = ({
           style={{ backgroundColor }}
         ></div>
       )}
-      <span>{title}</span>
+      <span>{name}</span>
       {isChecked ? <CheckOnCircle /> : <CheckOffCircle />}
     </button>
   );
