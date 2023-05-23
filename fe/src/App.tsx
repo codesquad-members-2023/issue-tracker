@@ -6,8 +6,8 @@ import IssueDetailPage from './pages/IssueDetailPage';
 function App() {
   return (
     <div className="App">
-      <MainPage />
       <IssueDetailPage />
+      <MainPage />
     </div>
   );
 }
