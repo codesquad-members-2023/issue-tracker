@@ -5,19 +5,13 @@ import Button from '@common/Button';
 
 import { DropdownItems } from '../../pages/MainPage';
 import FilterList from '@components/FilterList/FilterList';
+import { ElapseTime } from '@utils/getTimeElapsed';
 
 export interface LabelRow {
   labelId: number;
   labelName: string;
   backgroundColor: string;
   fontColor: string;
-}
-
-export interface ElapseTime {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
 }
 
 export interface IssueRow {
@@ -57,9 +51,10 @@ interface Props {
   onIssueTitleClick: () => void;
   onDropdownTitleClick: (title: keyof DropdownItems) => void;
   onStatusTabClick: (status: boolean) => void;
+  filterIssues: (filterType: string, filterItem: string) => void;
 }
 
-const IssueList: React.FC<Props> = ({
+const IssueTable: React.FC<Props> = ({
   issues,
   users,
   labels,
@@ -71,6 +66,7 @@ const IssueList: React.FC<Props> = ({
   onIssueTitleClick,
   onDropdownTitleClick,
   onStatusTabClick,
+  filterIssues,
 }) => {
   return (
     <div className="w-160 box-border rounded-2xl border">
@@ -122,7 +118,7 @@ const IssueList: React.FC<Props> = ({
                   items={users.map(user => {
                     return {
                       id: user.userId,
-                      title: user.userName,
+                      name: user.userName,
                       imgUrl: user.profileUrl,
                     };
                   })}
@@ -149,15 +145,13 @@ const IssueList: React.FC<Props> = ({
                   items={labels.map(label => {
                     return {
                       id: label.labelId,
-                      title: label.labelName,
+                      name: label.labelName,
                       backgroundColor: label.backgroundColor,
                       fontColor: label.fontColor,
                     };
                   })}
                   isNullAvailability={true}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>
@@ -177,12 +171,10 @@ const IssueList: React.FC<Props> = ({
                   items={milestones.map(milestone => {
                     return {
                       id: milestone.milestoneId,
-                      title: milestone.milestoneName,
+                      name: milestone.milestoneName,
                     };
                   })}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>
@@ -202,14 +194,12 @@ const IssueList: React.FC<Props> = ({
                   items={users.map(user => {
                     return {
                       id: user.userId,
-                      title: user.userName,
+                      name: user.userName,
                       imgUrl: user.profileUrl,
                     };
                   })}
                   isNullAvailability={false}
-                  onClick={() => {
-                    console.log('test');
-                  }}
+                  onClick={filterIssues}
                 />
               )}
             </div>
@@ -252,4 +242,4 @@ const IssueList: React.FC<Props> = ({
   );
 };
 
-export default IssueList;
+export default IssueTable;

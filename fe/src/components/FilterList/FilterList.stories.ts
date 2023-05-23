@@ -15,23 +15,23 @@ export const Primary: Story = {
     items: [
       {
         id: 231,
-        title: '열린 이슈',
+        name: '열린 이슈',
       },
       {
         id: 131232,
-        title: '내가 작성한 이슈',
+        name: '내가 작성한 이슈',
       },
       {
         id: 1223,
-        title: '나에게 할당된 이슈',
+        name: '나에게 할당된 이슈',
       },
       {
         id: 1223,
-        title: '내가 댓글을 남긴 이슈',
+        name: '내가 댓글을 남긴 이슈',
       },
       {
         id: 1223,
-        title: '닫힌 이슈',
+        name: '닫힌 이슈',
       },
     ],
     isNullAvailability: false,
@@ -44,31 +44,31 @@ export const Assignee: Story = {
     items: [
       {
         id: 231,
-        title: 'Jayden',
+        name: 'Jayden',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 131232,
-        title: 'Chloe',
+        name: 'Chloe',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 1223,
-        title: 'sam',
+        name: 'sam',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 1223,
-        title: 'Lily',
+        name: 'Lily',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 1223,
-        title: 'zello',
+        name: 'zello',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
@@ -83,13 +83,13 @@ export const Label: Story = {
     items: [
       {
         id: 231,
-        title: 'documentation',
+        name: 'documentation',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 131232,
-        title: 'bug',
+        name: 'bug',
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
@@ -104,7 +104,7 @@ export const Milestone: Story = {
     items: [
       {
         id: 231,
-        title: '그룹프로젝트: 이슈트래커',
+        name: '그룹프로젝트: 이슈트래커',
       },
     ],
     isNullAvailability: true,
@@ -117,11 +117,11 @@ export const NoMultipleItems: Story = {
     items: [
       {
         id: 231,
-        title: '선택한 이슈 열기',
+        name: '선택한 이슈 열기',
       },
       {
         id: 231,
-        title: '선택한 이슈 닫기',
+        name: '선택한 이슈 닫기',
       },
     ],
     isNullAvailability: false,

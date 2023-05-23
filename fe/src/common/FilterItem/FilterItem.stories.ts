@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     id: 123123,
-    title: 'Lily',
+    name: 'Lily',
     imgUrl:
       'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
     width: 20,
@@ -23,7 +23,7 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     id: 13213,
-    title: '열린이슈',
+    name: '열린이슈',
     bold: true,
     imgUrl: '',
     width: 16,
@@ -34,7 +34,7 @@ export const Secondary: Story = {
 export const noImageUrl: Story = {
   args: {
     id: 123425,
-    title: 'assignee',
+    name: 'assignee',
     imgUrl: '',
   },
 };
@@ -42,7 +42,7 @@ export const noImageUrl: Story = {
 export const backgroundColorItem: Story = {
   args: {
     id: 123425,
-    title: 'assignee',
+    name: 'assignee',
     backgroundColor: 'red',
   },
 };

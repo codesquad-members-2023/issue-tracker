@@ -4,12 +4,11 @@ import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
-import IssueList, {
-  IssueRow,
-  ElapseTime,
-} from '@components/IssueList/IssueList';
+import IssueTable, { IssueRow } from '@components/IssueTable/IssueTable';
 import FilterList from '@components/FilterList/FilterList';
 import { api } from 'src/api';
+import { FILTER_DROPDOWN_LIST } from '@constants/Mainpage';
+import { getTimeElapsed } from '@utils/getTimeElapsed';
 
 export type DropdownItems = {
   filter: boolean;
@@ -18,29 +17,6 @@ export type DropdownItems = {
   milestone: boolean;
   writer: boolean;
 };
-
-const issueDropdownList = [
-  {
-    id: 0,
-    title: '열린 이슈',
-  },
-  {
-    id: 1,
-    title: '내가 작성한 이슈',
-  },
-  {
-    id: 2,
-    title: '나에게 할당된 이슈',
-  },
-  {
-    id: 3,
-    title: '내가 댓글을 남긴 이슈',
-  },
-  {
-    id: 4,
-    title: '닫힌 이슈',
-  },
-];
 
 const MainPage = () => {
   // TODO: 올바른 타입 명시
@@ -77,27 +53,8 @@ const MainPage = () => {
     [issueItems]
   );
 
-  const getTimeElapsed = (startTime: string): ElapseTime => {
-    const start = new Date(startTime);
-    const now = new Date();
-
-    const elapsedTime = now.getTime() - start.getTime();
-    const elapsedSeconds = Math.floor(elapsedTime / 1000);
-    const days = Math.floor(elapsedSeconds / 86400);
-    const hours = Math.floor((elapsedSeconds % 86400) / 3600);
-    const minutes = Math.floor(((elapsedSeconds % 86400) % 3600) / 60);
-    const seconds = elapsedSeconds % 60;
-
-    return {
-      days,
-      hours,
-      minutes,
-      seconds,
-    };
-  };
-
   const mapIssues = (data: any) => {
-    const issueItem: IssueRow[] = data.issues
+    const issueItems: IssueRow[] = data.issues
       .filter((issue: any) => issue.isOpen === isOpenIssues)
       .map((issue: any) => {
         const elapseTime = issue.isOpen
@@ -110,7 +67,28 @@ const MainPage = () => {
         };
       });
 
-    setIssueItems(issueItem);
+    setIssueItems(issueItems);
+  };
+
+  const filterIssues = (filterType: string, filterItem: string) => {
+    const filteredIssueItems = issueItems.filter((issue: any) => {
+      if (filterType === '레이블') {
+        return issue.labelList.some(
+          (label: any) => label.labelName === filterItem
+        );
+      } else if (filterType === '마일스톤') {
+        return issue.milestoneName === filterItem;
+      } else if (filterType === '담당자') {
+        // TODO: 서버에서 issues의 각 issue마다 담당자 정보를 받아와야될듯
+        return issue.userName === filterItem;
+      } else if (filterType === '작성자') {
+        return issue.userName === filterItem;
+      } else {
+        return true;
+      }
+    });
+
+    setIssueItems(filteredIssueItems);
   };
 
   const fetchData = async () => {
@@ -118,7 +96,6 @@ const MainPage = () => {
       const res = await fetch(`${api}`);
       // const res = await fetch('/issues');
       const data = await res.json();
-
       if (res.status === 200) {
         setData(data);
         mapIssues(data);
@@ -141,11 +118,9 @@ const MainPage = () => {
         {isDropdownOpen.filter && (
           <FilterList
             title="이슈"
-            items={issueDropdownList}
+            items={FILTER_DROPDOWN_LIST}
             isNullAvailability={false}
-            onClick={() => {
-              console.log('test');
-            }}
+            onClick={filterIssues}
           />
         )}
         <div className="flex gap-x-4">
@@ -164,7 +139,7 @@ const MainPage = () => {
           />
         </div>
       </div>
-      <IssueList
+      <IssueTable
         users={data.userList}
         labels={data.labelList}
         milestones={data.milestoneList}
@@ -176,6 +151,7 @@ const MainPage = () => {
         status={isOpenIssues}
         onDropdownTitleClick={handleClickDropdown}
         onStatusTabClick={handleClickStatusTab}
+        filterIssues={filterIssues}
       />
     </section>
   );

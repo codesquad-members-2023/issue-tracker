@@ -19,7 +19,9 @@
     "paths": {
       "@common/*": ["src/common/*"],
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/utils/*"],
     }
   },
   "include": ["src", "craco.config.js"],

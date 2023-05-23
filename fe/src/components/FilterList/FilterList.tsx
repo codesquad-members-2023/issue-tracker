@@ -1,7 +1,6 @@
 import React from 'react';
 
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
-// import checkOffCircle from '@assets/checkOffCircle.svg';
 import { ReactComponent as CheckOffCircle } from '@assets/checkOffCircle.svg';
 import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 
@@ -10,7 +9,7 @@ interface Props {
   items: FilterItemRaw[];
   isNullAvailability?: boolean;
   canSelectMultipleItems?: boolean;
-  onClick: () => void;
+  onClick: (filterType: string, filterItem: string) => void;
 }
 
 const FilterList: React.FC<Props> = ({
@@ -34,26 +33,30 @@ const FilterList: React.FC<Props> = ({
       </div>
       <div className="w-full rounded-b-lg bg-white">
         {isNullAvailability && (
-          <button className={filterItemStyle} onClick={onClick}>
+          <button className={filterItemStyle} onClick={() => onClick('', '')}>
             <span>{title} 없는 이슈</span>
             {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
-            {canSelectMultipleItems && <CheckOffCircle />}
+            {/* FIXME(Jayden): FilterItem에 있는 로직과 중복 제거 => '없는 이슈'에 대한 로직을 따숨길 수 없을까요? '*/}
+            {<CheckOffCircle />}
           </button>
         )}
         {items.map(item => {
-          const { id, title, imgUrl, backgroundColor } = item;
+          const { id, name, imgUrl, backgroundColor } = item;
           return (
-            <button key={id} className={filterItemStyle} onClick={onClick}>
+            <button
+              key={id}
+              className={filterItemStyle}
+              onClick={() => onClick(title, name)}
+            >
               <FilterItem
                 id={id}
-                title={title}
+                name={name}
                 imgUrl={imgUrl}
                 width={20}
                 height={20}
                 backgroundColor={backgroundColor}
               />
               {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
-              {canSelectMultipleItems && <CheckOffCircle />}
             </button>
           );
         })}
