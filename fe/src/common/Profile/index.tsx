@@ -10,9 +10,8 @@ const Profile: React.FC<Props> = ({ url, width = 32, height = 32 }) => {
   return (
     <img
       src={url}
-      width={width}
-      height={height}
       className="h-fit rounded-full"
+      style={{ width: width, height: height }}
       alt="profile"
     />
   );
