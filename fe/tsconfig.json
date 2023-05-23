@@ -22,6 +22,7 @@
       "@assets/*": ["src/assets/*"],
       "@constants/*": ["src/constants/*"],
       "@utils/*": ["src/utils/*"],
+      "@customTypes/*": ["src/customTypes/*"],
     }
   },
   "include": ["src", "craco.config.js"],
