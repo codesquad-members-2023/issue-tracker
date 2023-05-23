@@ -1,62 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
-import { ReactComponent as CheckOffCircle } from '@assets/checkOffCircle.svg';
-import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 
 interface Props {
   title: string;
   items: FilterItemRaw[];
-  isNullAvailability?: boolean;
-  canSelectMultipleItems?: boolean;
-  onClick: (filterType: string, filterItem: string) => void;
 }
 
-const FilterList: React.FC<Props> = ({
-  title,
-  items,
-  isNullAvailability = true,
-  canSelectMultipleItems = true,
-  onClick,
-}) => {
-  const filterItemStyle =
-    'flex w-full justify-between items-center border-t px-4 py-2 text-gray-700';
+const FilterList: React.FC<Props> = ({ title, items }) => {
+  const [checkedItem, setCheckedItem] = useState(0);
+
+  const onItemClick = (id: number) => {
+    setCheckedItem(id);
+  };
 
   return (
-    <div
-      className={`absolute top-12 z-10 flex w-60 flex-col items-center rounded-lg border ${
-        title !== '이슈' && 'right-0'
-      }`}
-    >
+    <div className="absolute top-12 z-10 flex w-60 flex-col items-center rounded-lg border">
       <div className="w-full rounded-t-lg bg-gray-100 py-2 pl-4 text-left text-sm">
         {title} 필터
       </div>
       <div className="w-full rounded-b-lg bg-white">
-        {isNullAvailability && (
-          <button className={filterItemStyle} onClick={() => onClick('', '')}>
-            <span>{title} 없는 이슈</span>
-            {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
-            {/* FIXME(Jayden): FilterItem에 있는 로직과 중복 제거 => '없는 이슈'에 대한 로직을 따숨길 수 없을까요? '*/}
-            {<CheckOffCircle />}
-          </button>
-        )}
+        {/* TODO(Lily): 담당자, 레이블, 마일스톤 없는 이슈 추가 */}
         {items.map(item => {
           const { id, name, imgUrl, backgroundColor } = item;
           return (
             <button
               key={id}
-              className={filterItemStyle}
-              onClick={() => onClick(title, name)}
+              className="flex w-full items-center justify-between border-t text-gray-700"
+              onClick={() => onItemClick(id)}
             >
               <FilterItem
                 id={id}
                 name={name}
+                isChecked={id === checkedItem ? true : false}
                 imgUrl={imgUrl}
                 width={20}
                 height={20}
                 backgroundColor={backgroundColor}
               />
-              {/* TODO(Lily): item이 선택되면 checkOnCircle로 바꾸기 */}
             </button>
           );
         })}
