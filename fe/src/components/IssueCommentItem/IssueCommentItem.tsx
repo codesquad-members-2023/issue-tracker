@@ -21,7 +21,6 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
         <section className="flex gap-x-2">
-          {/* Profile - userName - commentTime */}
           <Profile url={TEMP_PROFILE_URL} />
           <span className="text-md text-gray-900">{comment.userName}</span>
           <span className="text-md text-gray-600">
@@ -29,8 +28,6 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
           </span>
         </section>
         <section className="flex items-center gap-x-4">
-          {/* writerTag - editButton - emotionButton */}
-          {/* TODO(Jayden): 추후 로그인 기능 구현 시, 로그인 유저가 남긴 코멘트일 때만 작성자 태그, 편집 버튼 보이게 처리 */}
           {isWriterComment && (
             <>
               <Tag tagType="writer" writerName={comment.userName} />

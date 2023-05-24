@@ -36,18 +36,15 @@ const IssueDetailPage = () => {
       <div className="mt-6 h-6 border-t border-t-gray-300"></div>
       <section className="flex h-fit justify-start gap-x-8">
         <section className="flex h-fit w-4/5 flex-col justify-between gap-y-6">
-          {/* IssueCommentList - IssueCommentItem */}
           {issueDetailData && (
             <IssueCommentList
               comments={issueDetailData.commentList}
               issue={issueDetailData.issue}
             />
           )}
-          {/* IssueCommentInput - AddFileButton */}
           <IssueCommentInput />
         </section>
         <section className="h-fit">
-          {/* IssueSubInfo */}
           {issueDetailData && (
             <IssueSubInfo
               issue={issueDetailData.issue}
@@ -55,7 +52,6 @@ const IssueDetailPage = () => {
               milestone={issueDetailData.milestone}
             />
           )}
-          {/* DeleteIssueButton */}
           <div className="flex justify-end pr-8">
             <Button
               title="이슈 삭제"

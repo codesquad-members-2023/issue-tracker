@@ -69,7 +69,6 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           gap="gap-x-40"
         />
         <div className="flex w-full flex-wrap gap-y-2">
-          {/* MilestoneProgressBar */}
           <MilestoneProgressBar progress={milestone.progress} />
           <div>{milestone.milestoneName}</div>
         </div>

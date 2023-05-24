@@ -89,7 +89,6 @@ const Issue: React.FC<Props> = ({
           )}
         </div>
       </div>
-      {/* FIXME(Jayden): Profile 태그의 상위 태그의 높이가 고정 */}
       <div className="flex grow items-center justify-end">
         <Profile url={profileUrl} width={20} height={20} />
       </div>
