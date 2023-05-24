@@ -2,9 +2,8 @@ import React from 'react';
 
 import Issue from './Issue';
 import Button from '@common/Button';
-
-import { DropdownItems } from '../../pages/MainPage';
 import FilterList from '@components/FilterList/FilterList';
+import { DropdownItems } from '../../pages/MainPage';
 import { ElapseTime } from '@utils/getTimeElapsed';
 
 export interface LabelRow {

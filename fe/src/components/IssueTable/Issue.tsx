@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Profile from '@common/Profile';
 import Label from '@common/Label';
@@ -49,7 +50,7 @@ const Issue: React.FC<Props> = ({
           onChange={() => console.log('check')}
         />
       </div>
-      <div>
+      <Link to={`issues/${issueId}`}>
         <div className="mb-1 flex items-center">
           {isOpen ? (
             <AlertCircle stroke="#007AFF" />
@@ -88,7 +89,7 @@ const Issue: React.FC<Props> = ({
             </div>
           )}
         </div>
-      </div>
+      </Link>
       <div className="flex grow items-center justify-end">
         <Profile url={profileUrl} width={20} height={20} />
       </div>

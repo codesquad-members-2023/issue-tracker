@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
@@ -7,11 +8,14 @@ import IssueCommentInput from '@components/IssueCommentInput/IssueCommentInput';
 import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
+import { BASE_API } from '../api';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
-const TEMP_ISSUE_API = 'http://43.200.199.205:8080/api/issues/1';
 
 const IssueDetailPage = () => {
+  const { issueId } = useParams<{ issueId: string }>();
+  const ISSUE_DETAIL_API = `${BASE_API}issues/${issueId}`;
+
   const [issueDetailData, setIssueDetailData] = useState<IssueDetailData>(); // [data, setData
   const fetchData = async (api: string) => {
     try {
@@ -24,7 +28,7 @@ const IssueDetailPage = () => {
   };
 
   useEffect(() => {
-    fetchData(TEMP_ISSUE_API);
+    fetchData(ISSUE_DETAIL_API);
   }, []);
 
   return (

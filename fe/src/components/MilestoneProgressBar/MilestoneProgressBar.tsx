@@ -6,7 +6,6 @@ interface MilestoneProgressBarProps {
 
 const MilestoneProgressBar = (props: MilestoneProgressBarProps) => {
   const { progress } = props;
-  console.log(progress);
   return (
     <div className="relative h-2 w-full bg-gray-200">
       <div

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Button from '@common/Button';
 
@@ -13,14 +14,16 @@ const IssueController = () => {
         iconName="edit"
         fontSize="text-sm"
       />
-      <Button
-        title="이슈 닫기"
-        onClick={() => console.log('이슈 닫기')}
-        size="Small"
-        type="Outline"
-        iconName="archive"
-        fontSize="text-sm"
-      />
+      <Link to={'/'}>
+        <Button
+          title="이슈 닫기"
+          onClick={() => console.log('이슈 닫기')}
+          size="Small"
+          type="Outline"
+          iconName="archive"
+          fontSize="text-sm"
+        />
+      </Link>
     </div>
   );
 };
