@@ -101,18 +101,10 @@ export const Primary: Story = {
         milestoneId: 0,
         milestoneName: '',
         description: '',
-        isOpen: true,
       },
     ],
     countOpenedIssues: 10,
     countClosedIssues: 20,
-    isDropdownOpen: {
-      filter: false,
-      assignee: false,
-      label: false,
-      milestone: false,
-      writer: false,
-    },
     status: true,
   },
 };
@@ -143,13 +135,6 @@ export const Secondary: Story = {
     ],
     countOpenedIssues: 0,
     countClosedIssues: 0,
-    isDropdownOpen: {
-      filter: false,
-      assignee: false,
-      label: false,
-      milestone: false,
-      writer: false,
-    },
     status: true,
   },
 };

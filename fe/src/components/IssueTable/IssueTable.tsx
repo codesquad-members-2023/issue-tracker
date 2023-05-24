@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Issue from './Issue';
 import Button from '@common/Button';
 import FilterList from '@components/FilterList/FilterList';
 import { DropdownItems } from '../../pages/MainPage';
 import { ElapseTime } from '@utils/getTimeElapsed';
+
+export type FilterOptions = {
+  filter: string;
+  assignee: string;
+  label: string;
+  milestone: string;
+  writer: string;
+};
 
 export interface LabelRow {
   labelId: number;
@@ -33,8 +41,6 @@ export interface UserRow {
 export interface MilestoneRow {
   milestoneId: number;
   description?: string;
-  // createdAt: string;
-  // closedAt?: string;
   milestoneName: string;
 }
 
@@ -45,10 +51,7 @@ interface Props {
   milestones: MilestoneRow[];
   countOpenedIssues: number;
   countClosedIssues: number;
-  isDropdownOpen: DropdownItems;
   status: boolean;
-  onIssueTitleClick: () => void;
-  onDropdownTitleClick: (title: keyof DropdownItems) => void;
   onStatusTabClick: (status: boolean) => void;
   filterIssues: (filterType: string, filterItem: string) => void;
 }
@@ -60,13 +63,11 @@ const IssueTable: React.FC<Props> = ({
   milestones,
   countOpenedIssues,
   countClosedIssues,
-  isDropdownOpen,
   status,
-  onIssueTitleClick,
-  onDropdownTitleClick,
   onStatusTabClick,
-  filterIssues,
 }) => {
+  const [openedFilter, setOpenedFilter] = useState('');
+
   return (
     <div className="w-160 box-border rounded-2xl border">
       <div className="box-border rounded-t-2xl bg-gray-100 px-8 py-4">
@@ -81,7 +82,7 @@ const IssueTable: React.FC<Props> = ({
             </div>
             <div className="flex gap-x-3">
               <Button
-                title={`열린 이슈(${countOpenedIssues})`}
+                title={`열린 이슈(${countOpenedIssues || 0})`}
                 type="Ghost"
                 color="Gray"
                 size="Small"
@@ -90,7 +91,7 @@ const IssueTable: React.FC<Props> = ({
                 onClick={() => onStatusTabClick(true)}
               />
               <Button
-                title={`닫힌 이슈(${countClosedIssues})`}
+                title={`닫힌 이슈(${countClosedIssues || 0})`}
                 type="Ghost"
                 color="Gray"
                 size="Small"
@@ -104,103 +105,94 @@ const IssueTable: React.FC<Props> = ({
             <div className="relative">
               <Button
                 title="담당자"
-                onClick={() => onDropdownTitleClick('assignee')}
+                onClick={() => setOpenedFilter('assignee')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
               />
-              {isDropdownOpen.assignee && (
-                <FilterList
-                  title="담당자"
-                  items={users.map(user => {
-                    return {
-                      id: user.userId,
-                      name: user.userName,
-                      imgUrl: user.profileUrl,
-                    };
-                  })}
-                  isNullAvailability={true}
-                  onClick={() => {
-                    console.log('test');
-                  }}
-                />
-              )}
+              <FilterList
+                title="담당자"
+                items={users.map(user => {
+                  return {
+                    id: user.userId,
+                    name: user.userName,
+                    isChecked: false,
+                    imgUrl: user.profileUrl,
+                  };
+                })}
+                isOpen={openedFilter === 'assignee' ? true : false}
+              />
             </div>
             <div className="relative">
               <Button
                 title="레이블"
-                onClick={() => onDropdownTitleClick('label')}
+                onClick={() => setOpenedFilter('label')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
               />
-              {isDropdownOpen.label && (
-                <FilterList
-                  title="레이블"
-                  items={labels.map(label => {
-                    return {
-                      id: label.labelId,
-                      name: label.labelName,
-                      backgroundColor: label.backgroundColor,
-                      fontColor: label.fontColor,
-                    };
-                  })}
-                  isNullAvailability={true}
-                  onClick={filterIssues}
-                />
-              )}
+              <FilterList
+                title="레이블"
+                items={labels.map(label => {
+                  return {
+                    id: label.labelId,
+                    name: label.labelName,
+                    isChecked: false,
+                    backgroundColor: label.backgroundColor,
+                    fontColor: label.fontColor,
+                  };
+                })}
+                isOpen={openedFilter === 'label' ? true : false}
+              />
             </div>
             <div className="relative">
               <Button
                 title="마일스톤"
-                onClick={() => onDropdownTitleClick('milestone')}
+                onClick={() => setOpenedFilter('milestone')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
               />
-              {isDropdownOpen.milestone && (
-                <FilterList
-                  title="마일스톤"
-                  items={milestones.map(milestone => {
-                    return {
-                      id: milestone.milestoneId,
-                      name: milestone.milestoneName,
-                    };
-                  })}
-                  onClick={filterIssues}
-                />
-              )}
+              <FilterList
+                title="마일스톤"
+                items={milestones.map(milestone => {
+                  return {
+                    id: milestone.milestoneId,
+                    name: milestone.milestoneName,
+                    isChecked: false,
+                  };
+                })}
+                isOpen={openedFilter === 'milestone' ? true : false}
+              />
             </div>
             <div className="relative">
               <Button
                 title="작성자"
-                onClick={() => onDropdownTitleClick('writer')}
+                onClick={() => setOpenedFilter('writer')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
               />
-              {isDropdownOpen.writer && (
-                <FilterList
-                  title="작성자"
-                  items={users.map(user => {
-                    return {
-                      id: user.userId,
-                      name: user.userName,
-                      imgUrl: user.profileUrl,
-                    };
-                  })}
-                  isNullAvailability={false}
-                  onClick={filterIssues}
-                />
-              )}
+              <FilterList
+                title="작성자"
+                items={users.map(user => {
+                  return {
+                    id: user.userId,
+                    name: user.userName,
+                    isChecked: false,
+                    imgUrl: user.profileUrl,
+                  };
+                })}
+                isOpen={openedFilter === 'assignee' ? true : false}
+              />
             </div>
           </div>
         </div>
@@ -228,7 +220,7 @@ const IssueTable: React.FC<Props> = ({
               elapseTime={elapseTime}
               milestoneName={milestoneName}
               labelList={labelList}
-              onIssueTitleClick={onIssueTitleClick}
+              onIssueTitleClick={() => console.log('')}
             />
           );
         })

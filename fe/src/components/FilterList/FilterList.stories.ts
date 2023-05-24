@@ -39,6 +39,7 @@ export const Primary: Story = {
         isChecked: false,
       },
     ],
+    isOpen: false,
   },
 };
 
@@ -82,6 +83,7 @@ export const Assignee: Story = {
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
     ],
+    isOpen: false,
     // isNullAvailability: true,
   },
 };
@@ -103,6 +105,7 @@ export const Label: Story = {
         backgroundColor: 'tomato',
       },
     ],
+    isOpen: false,
   },
 };
 
@@ -116,6 +119,7 @@ export const Milestone: Story = {
         isChecked: false,
       },
     ],
+    isOpen: false,
   },
 };
 
@@ -134,6 +138,7 @@ export const NoMultipleItems: Story = {
         isChecked: false,
       },
     ],
+    isOpen: false,
     // isNullAvailability: false,
     // isMultipleItemSelectable: false,
   },
