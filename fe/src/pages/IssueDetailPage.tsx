@@ -4,6 +4,7 @@ import Header from '@components/Header/Header';
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
+import IssueController from '@components/IssueController/IssueController';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 const TEMP_PROFILE_URL =
@@ -31,10 +32,11 @@ const IssueDetailPage = () => {
     <>
       {/* Header (TODO(Jayden): 추후 router로 빼기) */}
       <Header url={TEMP_PROFILE_URL} />
-      <section>
+      <section className="flex justify-between">
         {/* IssueMainInfo */}
         {issueDetailData && <IssueMainInfo issueDetailData={issueDetailData} />}
         {/* IssueController - EditIssueTitleButton/CloseIssueButton*/}
+        <IssueController />
       </section>
       <section>
         <section>
