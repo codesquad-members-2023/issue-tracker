@@ -6,6 +6,7 @@ import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import IssueController from '@components/IssueController/IssueController';
 import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
+import IssueCommentInput from '@components/IssueCommentInput/IssueCommentInput';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 const TEMP_PROFILE_URL =
@@ -38,7 +39,7 @@ const IssueDetailPage = () => {
       </section>
       <div className="mt-6 h-6 border-t border-t-gray-300"></div>
       <section className="h-fit">
-        <section className="h-fit">
+        <section className="flex h-fit flex-col justify-between gap-y-6">
           {/* IssueCommentList - IssueCommentItem */}
           {issueDetailData && (
             <IssueCommentList
@@ -47,7 +48,7 @@ const IssueDetailPage = () => {
             />
           )}
           {/* IssueCommentInput - AddFileButton */}
-          {/* AddCommentButton */}
+          <IssueCommentInput />
         </section>
         <section>
           {/* IssueSubInfo */}

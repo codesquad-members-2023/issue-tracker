@@ -16,7 +16,7 @@ const TEMP_PROFILE_URL =
 
 const IssueCommentItem = (props: IssueCommentItemProps) => {
   const { comment, isWriterComment } = props;
-  const { days, hours, minutes } = getTimeElapsed(comment.createdAt);
+  const { days, hours, minutes, seconds } = getTimeElapsed(comment.createdAt);
   return (
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
@@ -25,7 +25,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
           <Profile url={TEMP_PROFILE_URL} />
           <span className="text-md text-gray-900">{comment.userName}</span>
           <span className="text-md text-gray-600">
-            {days}일 {hours}시간 {minutes}분 전
+            {days}일 {hours}시간 {minutes}분 {seconds}초 전
           </span>
         </section>
         <section className="flex items-center gap-x-4">
