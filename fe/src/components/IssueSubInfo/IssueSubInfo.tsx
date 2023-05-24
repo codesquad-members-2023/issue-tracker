@@ -19,7 +19,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
   const { issue, labels, milestone } = props;
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
-      <section className="flex flex-col justify-between border border-b-gray-300 p-8">
+      <section className="flex flex-col justify-between border-b border-b-gray-300 p-8">
         <Button
           title="담당자"
           onClick={() => console.log('이슈 상세 담당자')}
@@ -35,7 +35,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           <span className="text-gray-900">{issue.userName}</span>
         </div>
       </section>
-      <section className="flex flex-col justify-between border border-b-gray-300 p-8">
+      <section className="flex flex-col justify-between border-b border-b-gray-300 p-8">
         <Button
           title="레이블"
           onClick={() => console.log('이슈 상세 레이블')}
