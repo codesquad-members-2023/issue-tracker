@@ -29,7 +29,7 @@ const FilterItem: React.FC<FilterItemRaw> = ({
 }) => {
   return (
     <button
-      className={`mx-4 my-2 flex items-center bg-white text-gray-700 ${
+      className={`flex w-full items-center gap-x-2 border-t bg-white px-4 py-2 text-gray-700 ${
         isClicked && 'font-bold'
       }`}
       onClick={() => onItemClick(name, id)}
