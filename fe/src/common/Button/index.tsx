@@ -35,7 +35,7 @@ interface Props {
   iconName?: SVGNames;
   condition?: 'Enabled' | 'Hover' | 'Press' | 'Disabled';
   size?: 'Large' | 'Medium' | 'Small';
-  color?: 'Blue' | 'Gray';
+  color?: 'Blue' | 'Gray' | 'Red';
   fontSize?: string;
   hasDropDown?: boolean;
   onClick: () => void;
@@ -123,6 +123,8 @@ function getColor(color: string) {
       return 'blue';
     case 'Gray':
       return 'gray-900';
+    case 'Red':
+      return 'red';
     default:
       return 'blue';
   }
@@ -162,6 +164,8 @@ function getHex(color: string) {
       return '#007AFF';
     case 'Gray':
       return '#14142B';
+    case 'Red':
+      return '#FF3B30';
     default:
       return '#007AFF';
   }

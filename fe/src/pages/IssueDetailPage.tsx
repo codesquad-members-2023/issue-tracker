@@ -6,6 +6,7 @@ import IssueController from '@components/IssueController/IssueController';
 import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
 import IssueCommentInput from '@components/IssueCommentInput/IssueCommentInput';
 import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
+import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
@@ -60,6 +61,19 @@ const IssueDetailPage = () => {
             />
           )}
           {/* DeleteIssueButton */}
+          <div className="flex justify-end pr-8">
+            <Button
+              title="이슈 삭제"
+              onClick={() => {
+                console.log('이슈 삭제');
+              }}
+              type="Ghost"
+              isFlexible={true}
+              iconName="trash"
+              fontSize="text-sm"
+              color="Red"
+            />
+          </div>
         </section>
       </section>
     </>
