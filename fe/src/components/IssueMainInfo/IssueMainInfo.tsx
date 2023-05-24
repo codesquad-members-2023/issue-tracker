@@ -9,7 +9,7 @@ interface IssueMainInfoProps {
 
 const IssueMainInfo = (props: IssueMainInfoProps) => {
   const { issueDetailData } = props;
-  const { issue, labelList } = issueDetailData;
+  const { issue, commentList } = issueDetailData;
   const time = issue.open ? issue.createdAt : issue.closedAt;
   const { days, hours, minutes } = getTimeElapsed(time);
   return (
@@ -23,7 +23,7 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
         <span className="text-md text-gray-600">
           이 이슈가 {days}일 {hours}시간 {minutes}분 전에 {issue.userName}
           님에 의해 {issue.open ? '열렸습니다.' : '닫혔습니다.'} 코멘트 •{' '}
-          {labelList.length}개
+          {commentList.length}개
         </span>
       </div>
     </div>

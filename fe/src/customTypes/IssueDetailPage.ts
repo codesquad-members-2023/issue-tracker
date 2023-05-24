@@ -44,3 +44,7 @@ export type CommentList = IssueDetailData['commentList'];
 export type Comment = CommentList[number];
 
 export type Issue = IssueDetailData['issue'];
+
+export type LabelList = IssueDetailData['labelList'];
+
+export type Milestone = IssueDetailData['milestone'];

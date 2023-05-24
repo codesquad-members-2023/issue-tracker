@@ -39,6 +39,7 @@ interface Props {
   fontSize?: string;
   hasDropDown?: boolean;
   onClick: () => void;
+  gap?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -52,6 +53,7 @@ const Button: React.FC<Props> = ({
   fontSize = 'text-base',
   hasDropDown = false,
   onClick,
+  gap = 'gap-x-2',
 }) => {
   const widthHeight = getWidthHeight(size);
   const opacity = getOpacity(condition);
@@ -61,11 +63,11 @@ const Button: React.FC<Props> = ({
       className={`${isFlexible && 'w-auto'} ${widthHeight} ${getType(
         type,
         getColor(color)
-      )} ${opacity} flex items-center justify-center gap-x-2 rounded-2xl font-bold`}
+      )} ${opacity} flex items-center justify-center ${gap} rounded-2xl font-bold`}
       onClick={onClick}
     >
       {getSvgComponent(iconName, getHexByType(color, type))}
-      <span className={`${fontSize}`}>{title}</span>
+      <span className={`${fontSize} whitespace-nowrap`}>{title}</span>
       {hasDropDown && <CheveronDown stroke={getHexByType(color, type)} />}
     </button>
   );

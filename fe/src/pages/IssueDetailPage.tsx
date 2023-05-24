@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import Header from '@components/Header/Header';
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
-
-import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import IssueController from '@components/IssueController/IssueController';
 import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
 import IssueCommentInput from '@components/IssueCommentInput/IssueCommentInput';
+import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
+import { IssueDetailData } from '@customTypes/IssueDetailPage';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 const TEMP_PROFILE_URL =
@@ -38,8 +38,8 @@ const IssueDetailPage = () => {
         <IssueController />
       </section>
       <div className="mt-6 h-6 border-t border-t-gray-300"></div>
-      <section className="h-fit">
-        <section className="flex h-fit flex-col justify-between gap-y-6">
+      <section className="flex h-fit justify-start gap-x-8">
+        <section className="flex h-fit w-4/5 flex-col justify-between gap-y-6">
           {/* IssueCommentList - IssueCommentItem */}
           {issueDetailData && (
             <IssueCommentList
@@ -50,8 +50,15 @@ const IssueDetailPage = () => {
           {/* IssueCommentInput - AddFileButton */}
           <IssueCommentInput />
         </section>
-        <section>
+        <section className="h-fit">
           {/* IssueSubInfo */}
+          {issueDetailData && (
+            <IssueSubInfo
+              issue={issueDetailData.issue}
+              labels={issueDetailData.labelList}
+              milestone={issueDetailData.milestone}
+            />
+          )}
           {/* DeleteIssueButton */}
         </section>
       </section>
