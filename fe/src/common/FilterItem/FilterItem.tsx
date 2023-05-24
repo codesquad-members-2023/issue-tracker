@@ -7,30 +7,32 @@ import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 export interface FilterItemRaw {
   id: number;
   name: string;
-  isChecked: boolean;
-  bold?: boolean;
+  isClicked: boolean;
   imgUrl?: string;
-  backgroundColor?: string;
   width?: number;
   height?: number;
+  backgroundColor?: string;
   isMultipleItemSelectable?: boolean;
+  onItemClick: (type: string, id: number) => void;
 }
 
 const FilterItem: React.FC<FilterItemRaw> = ({
+  id,
   name,
-  isChecked,
-  bold,
-  imgUrl,
-  backgroundColor,
+  isClicked,
   width,
   height,
+  imgUrl,
+  backgroundColor,
   isMultipleItemSelectable = true,
+  onItemClick,
 }) => {
   return (
-    <div
-      className={`mx-4 my-2 flex grow items-center gap-x-1 text-gray-700 ${
-        bold && 'font-bold'
+    <button
+      className={`mx-4 my-2 flex items-center bg-white text-gray-700 ${
+        isClicked && 'font-bold'
       }`}
+      onClick={() => onItemClick(name, id)}
     >
       {imgUrl && <Profile url={imgUrl} width={width} height={height} />}
       {backgroundColor && (
@@ -38,8 +40,8 @@ const FilterItem: React.FC<FilterItemRaw> = ({
       )}
       <span className="flex grow">{name}</span>
       {isMultipleItemSelectable &&
-        (isChecked ? <CheckOnCircle /> : <CheckOffCircle />)}
-    </div>
+        (isClicked ? <CheckOnCircle /> : <CheckOffCircle />)}
+    </button>
   );
 };
 

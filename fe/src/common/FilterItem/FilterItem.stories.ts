@@ -13,7 +13,7 @@ export const Primary: Story = {
   args: {
     id: 123123,
     name: 'Lily',
-    isChecked: true,
+    isClicked: false,
     imgUrl:
       'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
     width: 20,
@@ -25,8 +25,7 @@ export const Secondary: Story = {
   args: {
     id: 13213,
     name: '열린이슈',
-    isChecked: false,
-    bold: true,
+    isClicked: false,
     imgUrl: '',
     width: 16,
     height: 16,
@@ -38,7 +37,7 @@ export const noImageUrl: Story = {
   args: {
     id: 123425,
     name: 'assignee',
-    isChecked: false,
+    isClicked: true,
     imgUrl: '',
   },
 };
@@ -47,7 +46,7 @@ export const backgroundColorItem: Story = {
   args: {
     id: 123425,
     name: 'assignee',
-    isChecked: false,
+    isClicked: false,
     backgroundColor: 'red',
   },
 };
