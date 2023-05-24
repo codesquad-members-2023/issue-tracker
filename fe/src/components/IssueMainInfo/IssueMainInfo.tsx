@@ -11,7 +11,7 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
   const { issueDetailData } = props;
   const { issue, labelList } = issueDetailData;
   const time = issue.open ? issue.createdAt : issue.closedAt;
-  const { days, hours, minutes, seconds } = getTimeElapsed(time);
+  const { days, hours, minutes } = getTimeElapsed(time);
   return (
     <div>
       <h1 className="text-2xl text-gray-900">

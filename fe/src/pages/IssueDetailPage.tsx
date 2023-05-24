@@ -5,6 +5,7 @@ import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import IssueController from '@components/IssueController/IssueController';
+import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 const TEMP_PROFILE_URL =
@@ -18,7 +19,6 @@ const IssueDetailPage = () => {
       const res = await fetch(api);
       const data = await res.json();
       setIssueDetailData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -33,14 +33,16 @@ const IssueDetailPage = () => {
       {/* Header (TODO(Jayden): 추후 router로 빼기) */}
       <Header url={TEMP_PROFILE_URL} />
       <section className="flex justify-between">
-        {/* IssueMainInfo */}
         {issueDetailData && <IssueMainInfo issueDetailData={issueDetailData} />}
-        {/* IssueController - EditIssueTitleButton/CloseIssueButton*/}
         <IssueController />
       </section>
-      <section>
-        <section>
+      <div className="mt-6 h-6 border-t border-t-gray-300"></div>
+      <section className="h-fit">
+        <section className="h-fit">
           {/* IssueCommentList - IssueCommentItem */}
+          {issueDetailData && (
+            <IssueCommentList comments={issueDetailData.commentList} />
+          )}
           {/* IssueCommentInput - AddFileButton */}
           {/* AddCommentButton */}
         </section>
