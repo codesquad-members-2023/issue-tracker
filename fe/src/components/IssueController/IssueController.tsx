@@ -14,7 +14,7 @@ const IssueController = () => {
         iconName="edit"
         fontSize="text-sm"
       />
-      <Link to={'/'}>
+      <Link to={'/'} className="h-fit">
         <Button
           title="이슈 닫기"
           onClick={() => console.log('이슈 닫기')}
