@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Header from '@components/Header/Header';
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
 import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
@@ -10,8 +9,6 @@ import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
-const TEMP_PROFILE_URL =
-  'https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80';
 const TEMP_ISSUE_API = 'http://43.200.199.205:8080/api/issues/1';
 
 const IssueDetailPage = () => {
@@ -32,8 +29,6 @@ const IssueDetailPage = () => {
 
   return (
     <>
-      {/* Header (TODO(Jayden): 추후 router로 빼기) */}
-      <Header url={TEMP_PROFILE_URL} />
       <section className="flex justify-between">
         {issueDetailData && <IssueMainInfo issueDetailData={issueDetailData} />}
         <IssueController />

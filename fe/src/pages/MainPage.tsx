@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
@@ -110,9 +109,8 @@ const MainPage = () => {
   }, [isOpenIssues]);
 
   return (
-    <section className="mx-10 my-[27px]">
+    <>
       {/* ref: https://ko.javascript.info/optional-chaining */}
-      <Header url={data.user?.profileUrl} />
       <div className="relative mb-6 flex justify-between">
         <FilterBar onClick={() => handleClickDropdown('filter')} />
         {isDropdownOpen.filter && (
@@ -153,7 +151,7 @@ const MainPage = () => {
         onStatusTabClick={handleClickStatusTab}
         filterIssues={filterIssues}
       />
-    </section>
+    </>
   );
 };
 
