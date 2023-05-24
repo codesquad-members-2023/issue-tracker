@@ -4,6 +4,7 @@ import Button from '@common/Button';
 import Profile from '@common/Profile';
 import { Issue, LabelList, Milestone } from '@customTypes/IssueDetailPage';
 import Label from '@common/Label';
+import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 
 const TEMP_PROFILE_URL =
   'https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80';
@@ -67,8 +68,9 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           condition="Press"
           gap="gap-x-40"
         />
-        <div className="flex w-fit flex-wrap gap-y-1">
+        <div className="flex w-full flex-wrap gap-y-2">
           {/* MilestoneProgressBar */}
+          <MilestoneProgressBar progress={milestone.progress} />
           <div>{milestone.milestoneName}</div>
         </div>
       </section>
