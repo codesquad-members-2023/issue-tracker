@@ -42,3 +42,5 @@ export interface IssueDetailData {
 export type CommentList = IssueDetailData['commentList'];
 
 export type Comment = CommentList[number];
+
+export type Issue = IssueDetailData['issue'];

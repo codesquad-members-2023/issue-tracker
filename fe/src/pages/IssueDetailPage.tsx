@@ -41,7 +41,10 @@ const IssueDetailPage = () => {
         <section className="h-fit">
           {/* IssueCommentList - IssueCommentItem */}
           {issueDetailData && (
-            <IssueCommentList comments={issueDetailData.commentList} />
+            <IssueCommentList
+              comments={issueDetailData.commentList}
+              issue={issueDetailData.issue}
+            />
           )}
           {/* IssueCommentInput - AddFileButton */}
           {/* AddCommentButton */}

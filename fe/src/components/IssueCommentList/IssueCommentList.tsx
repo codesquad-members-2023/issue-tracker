@@ -1,18 +1,24 @@
 import React from 'react';
 
-import { CommentList } from '@customTypes/IssueDetailPage';
+import { CommentList, Issue } from '@customTypes/IssueDetailPage';
 import IssueCommentItem from '@components/IssueCommentItem/IssueCommentItem';
 
 interface CommentListProps {
   comments: CommentList;
+  issue: Issue;
 }
 
 const IssueCommentList = (props: CommentListProps) => {
-  const { comments } = props;
+  const { comments, issue } = props;
+  const { userName } = issue;
   return (
     <ul className="flex h-full flex-col justify-between gap-6">
       {comments.map(comment => (
-        <IssueCommentItem key={comment.commentId} comment={comment} />
+        <IssueCommentItem
+          key={comment.commentId}
+          comment={comment}
+          isWriterComment={comment.userName === userName}
+        />
       ))}
     </ul>
   );

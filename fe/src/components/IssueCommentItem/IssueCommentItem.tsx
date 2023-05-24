@@ -8,15 +8,15 @@ import Button from '@common/Button';
 
 interface IssueCommentItemProps {
   comment: Comment;
+  isWriterComment: boolean;
 }
 
 const TEMP_PROFILE_URL =
   'https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80';
 
 const IssueCommentItem = (props: IssueCommentItemProps) => {
-  const { comment } = props;
+  const { comment, isWriterComment } = props;
   const { days, hours, minutes } = getTimeElapsed(comment.createdAt);
-  console.log(props);
   return (
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
@@ -30,20 +30,25 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
         </section>
         <section className="flex items-center gap-x-4">
           {/* writerTag - editButton - emotionButton */}
-          <Tag tagType="writer" writerName={comment.userName} />
-          <Button
-            title="편집"
-            onClick={() => {
-              console.log('편집');
-            }}
-            isFlexible={true}
-            size="Small"
-            color="Gray"
-            type="Ghost"
-            condition="Press"
-            iconName="edit"
-            fontSize={'text-sm'}
-          />
+          {/* TODO(Jayden): 추후 로그인 기능 구현 시, 로그인 유저가 남긴 코멘트일 때만 작성자 태그, 편집 버튼 보이게 처리 */}
+          {isWriterComment && (
+            <>
+              <Tag tagType="writer" writerName={comment.userName} />
+              <Button
+                title="편집"
+                onClick={() => {
+                  console.log('편집');
+                }}
+                isFlexible={true}
+                size="Small"
+                color="Gray"
+                type="Ghost"
+                condition="Press"
+                iconName="edit"
+                fontSize={'text-sm'}
+              />
+            </>
+          )}
           <Button
             title="반응"
             onClick={() => {
