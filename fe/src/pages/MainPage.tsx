@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import Header from '@components/Header/Header';
 import FilterBar from '@components/FilterBar/FilterBar';
 import NavLinks from '@components/NavLinks/NavLinks';
 import Button from '@common/Button';
 import IssueTable, { IssueRow } from '@components/IssueTable/IssueTable';
 import FilterList from '@components/FilterList/FilterList';
-import { api } from 'src/api';
+import { BASE_API } from 'src/api';
 import { FILTER_DROPDOWN_LIST } from '@constants/Mainpage';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 
@@ -93,7 +92,7 @@ const MainPage = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${api}`);
+      const res = await fetch(`${BASE_API}`);
       // const res = await fetch('/issues');
       const data = await res.json();
       if (res.status === 200) {
@@ -110,9 +109,8 @@ const MainPage = () => {
   }, [isOpenIssues]);
 
   return (
-    <section className="mx-10 my-[27px]">
+    <>
       {/* ref: https://ko.javascript.info/optional-chaining */}
-      <Header url={data.user?.profileUrl} />
       <div className="relative mb-6 flex justify-between">
         <FilterBar onClick={() => handleClickDropdown('filter')} />
         {isDropdownOpen.filter && (
@@ -153,7 +151,7 @@ const MainPage = () => {
         onStatusTabClick={handleClickStatusTab}
         filterIssues={filterIssues}
       />
-    </section>
+    </>
   );
 };
 
