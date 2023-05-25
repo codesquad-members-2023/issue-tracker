@@ -68,10 +68,12 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           condition="Press"
           gap="gap-x-40"
         />
-        <div className="flex w-full flex-wrap gap-y-2">
-          <MilestoneProgressBar progress={milestone.progress} />
-          <div>{milestone.milestoneName}</div>
-        </div>
+        {
+          <div className="flex w-full flex-wrap gap-y-2">
+            <MilestoneProgressBar progress={milestone?.progress} />
+            <div>{milestone.milestoneName}</div>
+          </div>
+        }
       </section>
     </div>
   );

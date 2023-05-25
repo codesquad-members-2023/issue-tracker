@@ -1,29 +1,59 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import Button from '@common/Button';
 
-const IssueController = () => {
+interface IssueControllerProps {
+  isIssueTitleEdit: boolean;
+  handleClickIsIssueTitleEdit: () => void;
+}
+
+const IssueController = (props: IssueControllerProps) => {
+  // TODO(Jayden): 각 버튼마다 fetch 함수 연결 혹은 link 연결
+  const { isIssueTitleEdit, handleClickIsIssueTitleEdit } = props;
   return (
     <div className="flex gap-x-2">
-      <Button
-        title="제목 편집"
-        onClick={() => console.log('제목 편집')}
-        size="Small"
-        type="Outline"
-        iconName="edit"
-        fontSize="text-sm"
-      />
-      <Link to={'/'} className="h-fit">
-        <Button
-          title="이슈 닫기"
-          onClick={() => console.log('이슈 닫기')}
-          size="Small"
-          type="Outline"
-          iconName="archive"
-          fontSize="text-sm"
-        />
-      </Link>
+      {isIssueTitleEdit ? (
+        <>
+          <Button
+            title="편집 취소"
+            onClick={handleClickIsIssueTitleEdit}
+            size="Small"
+            type="Outline"
+            iconName="edit"
+            fontSize="text-sm"
+          />
+          <Button
+            title="편집 완료"
+            onClick={handleClickIsIssueTitleEdit}
+            size="Small"
+            type="Contained"
+            iconName="edit"
+            fontSize="text-sm"
+          />
+        </>
+      ) : (
+        <>
+          <Button
+            title="제목 편집"
+            onClick={() => {
+              handleClickIsIssueTitleEdit();
+              fetch;
+            }}
+            size="Small"
+            type="Outline"
+            iconName="edit"
+            fontSize="text-sm"
+          />
+          <Button
+            title="이슈 닫기"
+            onClick={() => console.log('이슈 닫기')}
+            size="Small"
+            type="Outline"
+            iconName="archive"
+            fontSize="text-sm"
+          />
+        </>
+      )}
     </div>
   );
 };

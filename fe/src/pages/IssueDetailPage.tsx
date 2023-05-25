@@ -31,11 +31,23 @@ const IssueDetailPage = () => {
     fetchData(ISSUE_DETAIL_API);
   }, []);
 
+  const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
+  const handleClickIsIssueTitleEdit = () => {
+    setIsIssueTitleEdit(!isIssueTitleEdit);
+  };
   return (
     <>
       <section className="flex justify-between">
-        {issueDetailData && <IssueMainInfo issueDetailData={issueDetailData} />}
-        <IssueController />
+        {issueDetailData && (
+          <IssueMainInfo
+            issueDetailData={issueDetailData}
+            isIssueDetailTitleEdit={isIssueTitleEdit}
+          />
+        )}
+        <IssueController
+          isIssueTitleEdit={isIssueTitleEdit}
+          handleClickIsIssueTitleEdit={handleClickIsIssueTitleEdit}
+        />
       </section>
       <div className="mt-6 h-6 border-t border-t-gray-300"></div>
       <section className="flex h-fit justify-start gap-x-8">
