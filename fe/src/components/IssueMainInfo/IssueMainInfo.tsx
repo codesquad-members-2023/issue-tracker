@@ -46,7 +46,7 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
         <span className="text-md text-gray-600">
           이 이슈가 {days}일 {hours}시간 {minutes}분 전에 {issue.userName}
           님에 의해 {issue.open ? '열렸습니다.' : '닫혔습니다.'} 코멘트 •{' '}
-          {commentList.length}개
+          {commentList.length + 1}개
         </span>
       </div>
     </div>
