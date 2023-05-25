@@ -6,13 +6,13 @@ import FilterList from '@components/FilterList/FilterList';
 import { DropdownItems } from '../../pages/MainPage';
 import { ElapseTime } from '@utils/getTimeElapsed';
 
-export type FilterOptions = {
-  filter: string;
-  assignee: string;
-  label: string;
-  milestone: string;
-  writer: string;
-};
+export interface FilterOptions {
+  filter?: number;
+  assignee?: number;
+  label?: number;
+  milestone?: number;
+  writer?: number;
+}
 
 export interface LabelRow {
   labelId: number;
@@ -29,8 +29,8 @@ export interface IssueRow {
   profileUrl: string;
   isOpen: boolean;
   elapseTime: ElapseTime;
-  milestoneName?: string;
   labelList: LabelRow[];
+  milestoneName?: string;
 }
 
 export interface UserRow {
@@ -38,10 +38,11 @@ export interface UserRow {
   userName: string;
   profileUrl: string;
 }
+
 export interface MilestoneRow {
   milestoneId: number;
-  description?: string;
   milestoneName: string;
+  description?: string;
 }
 
 interface Props {
@@ -52,8 +53,9 @@ interface Props {
   countOpenedIssues: number;
   countClosedIssues: number;
   status: boolean;
+  filterOptions: FilterOptions;
   onStatusTabClick: (status: boolean) => void;
-  filterIssues: (filterType: string, filterItem: string) => void;
+  updateFilterOption: (type: keyof FilterOptions, id: number) => void;
 }
 
 const IssueTable: React.FC<Props> = ({
@@ -64,9 +66,16 @@ const IssueTable: React.FC<Props> = ({
   countOpenedIssues,
   countClosedIssues,
   status,
+  filterOptions,
+  updateFilterOption,
   onStatusTabClick,
 }) => {
-  const [openedFilter, setOpenedFilter] = useState('');
+  const [openedFilterList, setOpenedFilterList] = useState('');
+
+  const onItemClick = (type: keyof FilterOptions, id: number) => {
+    updateFilterOption(type, id);
+    setOpenedFilterList('');
+  };
 
   return (
     <div className="w-160 box-border rounded-2xl border">
@@ -105,7 +114,7 @@ const IssueTable: React.FC<Props> = ({
             <div className="relative">
               <Button
                 title="담당자"
-                onClick={() => setOpenedFilter('assignee')}
+                onClick={() => setOpenedFilterList('assignee')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
@@ -113,22 +122,25 @@ const IssueTable: React.FC<Props> = ({
                 isFlexible={true}
               />
               <FilterList
-                title="담당자"
+                title="assignee"
                 items={users.map(user => {
+                  const { userId, userName, profileUrl } = user;
                   return {
-                    id: user.userId,
-                    name: user.userName,
-                    isChecked: false,
-                    imgUrl: user.profileUrl,
+                    id: userId,
+                    name: userName,
+                    isClicked:
+                      filterOptions['assignee'] === userId ? true : false,
+                    imgUrl: profileUrl,
                   };
                 })}
-                isOpen={openedFilter === 'assignee' ? true : false}
+                isOpen={openedFilterList === 'assignee' ? true : false}
+                onItemClick={onItemClick}
               />
             </div>
             <div className="relative">
               <Button
                 title="레이블"
-                onClick={() => setOpenedFilter('label')}
+                onClick={() => setOpenedFilterList('label')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
@@ -136,23 +148,25 @@ const IssueTable: React.FC<Props> = ({
                 isFlexible={true}
               />
               <FilterList
-                title="레이블"
+                title="label"
                 items={labels.map(label => {
+                  const { labelId, labelName, backgroundColor } = label;
                   return {
-                    id: label.labelId,
-                    name: label.labelName,
-                    isChecked: false,
-                    backgroundColor: label.backgroundColor,
-                    fontColor: label.fontColor,
+                    id: labelId,
+                    name: labelName,
+                    isClicked:
+                      filterOptions['label'] === labelId ? true : false,
+                    backgroundColor: backgroundColor,
                   };
                 })}
-                isOpen={openedFilter === 'label' ? true : false}
+                isOpen={openedFilterList === 'label' ? true : false}
+                onItemClick={onItemClick}
               />
             </div>
             <div className="relative">
               <Button
                 title="마일스톤"
-                onClick={() => setOpenedFilter('milestone')}
+                onClick={() => setOpenedFilterList('milestone')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
@@ -160,21 +174,24 @@ const IssueTable: React.FC<Props> = ({
                 isFlexible={true}
               />
               <FilterList
-                title="마일스톤"
+                title="milestone"
                 items={milestones.map(milestone => {
+                  const { milestoneId, milestoneName } = milestone;
                   return {
-                    id: milestone.milestoneId,
-                    name: milestone.milestoneName,
-                    isChecked: false,
+                    id: milestoneId,
+                    name: milestoneName,
+                    isClicked:
+                      filterOptions['milestone'] === milestoneId ? true : false,
                   };
                 })}
-                isOpen={openedFilter === 'milestone' ? true : false}
+                isOpen={openedFilterList === 'milestone' ? true : false}
+                onItemClick={onItemClick}
               />
             </div>
             <div className="relative">
               <Button
                 title="작성자"
-                onClick={() => setOpenedFilter('writer')}
+                onClick={() => setOpenedFilterList('writer')}
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
@@ -182,16 +199,19 @@ const IssueTable: React.FC<Props> = ({
                 isFlexible={true}
               />
               <FilterList
-                title="작성자"
+                title="writer"
                 items={users.map(user => {
+                  const { userId, userName, profileUrl } = user;
                   return {
-                    id: user.userId,
-                    name: user.userName,
-                    isChecked: false,
-                    imgUrl: user.profileUrl,
+                    id: userId,
+                    name: userName,
+                    isClicked:
+                      filterOptions['writer'] === userId ? true : false,
+                    imgUrl: profileUrl,
                   };
                 })}
-                isOpen={openedFilter === 'assignee' ? true : false}
+                isOpen={openedFilterList === 'writer' ? true : false}
+                onItemClick={onItemClick}
               />
             </div>
           </div>

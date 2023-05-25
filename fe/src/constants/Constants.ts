@@ -25,11 +25,3 @@ export const FILTER_DROPDOWN_LIST = [
     onFilterItemClick: () => console.log(''),
   },
 ];
-
-export const ISSUE_OPTIONS = {
-  ISSUE: '이슈',
-  ASSIGNEE: '담당자',
-  LABEL: '레이블',
-  MILESTONE: '마일스톤',
-  WRITER: '작성자',
-};

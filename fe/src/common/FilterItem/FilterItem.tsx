@@ -13,26 +13,30 @@ export interface FilterItemRaw {
   height?: number;
   backgroundColor?: string;
   isMultipleItemSelectable?: boolean;
-  onItemClick: (type: string, id: number) => void;
 }
 
-const FilterItem: React.FC<FilterItemRaw> = ({
-  id,
-  name,
-  isClicked,
-  width,
-  height,
-  imgUrl,
-  backgroundColor,
-  isMultipleItemSelectable = true,
-  onItemClick,
-}) => {
+interface Props {
+  item: FilterItemRaw;
+  onItemClick: (id: number) => void;
+}
+
+const FilterItem: React.FC<Props> = ({ item, onItemClick }) => {
+  const {
+    id,
+    name,
+    isClicked,
+    imgUrl,
+    width,
+    height,
+    backgroundColor,
+    isMultipleItemSelectable = true,
+  } = item;
   return (
     <button
-      className={`flex w-full items-center gap-x-2 border-t bg-white px-4 py-2 text-gray-700 ${
+      className={`flex w-full items-center gap-x-2 border-t px-4 py-2 text-gray-700 ${
         isClicked && 'font-bold'
       }`}
-      onClick={() => onItemClick(name, id)}
+      onClick={() => onItemClick(id)}
     >
       {imgUrl && <Profile url={imgUrl} width={width} height={height} />}
       {backgroundColor && (

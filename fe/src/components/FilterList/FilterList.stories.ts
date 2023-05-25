@@ -11,32 +11,32 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    title: '이슈',
+    title: 'filter',
     items: [
       {
         id: 1,
         name: '열린 이슈',
-        isChecked: true,
+        isClicked: true,
       },
       {
         id: 2,
         name: '내가 작성한 이슈',
-        isChecked: false,
+        isClicked: false,
       },
       {
         id: 3,
         name: '나에게 할당된 이슈',
-        isChecked: false,
+        isClicked: false,
       },
       {
         id: 4,
         name: '내가 댓글을 남긴 이슈',
-        isChecked: false,
+        isClicked: false,
       },
       {
         id: 5,
         name: '닫힌 이슈',
-        isChecked: false,
+        isClicked: false,
       },
     ],
     isOpen: false,
@@ -45,40 +45,40 @@ export const Primary: Story = {
 
 export const Assignee: Story = {
   args: {
-    title: '담당자',
+    title: 'assignee',
     items: [
       {
         id: 1,
         name: 'Jayden',
-        isChecked: false,
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 2,
         name: 'Chloe',
-        isChecked: false,
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 3,
         name: 'sam',
-        isChecked: false,
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 4,
         name: 'Lily',
-        isChecked: false,
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
         id: 5,
         name: 'zello',
-        isChecked: false,
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
@@ -90,18 +90,18 @@ export const Assignee: Story = {
 
 export const Label: Story = {
   args: {
-    title: '레이블',
+    title: 'label',
     items: [
       {
         id: 1,
         name: 'documentation',
-        isChecked: false,
+        isClicked: false,
         backgroundColor: 'pink',
       },
       {
         id: 2,
         name: 'bug',
-        isChecked: false,
+        isClicked: false,
         backgroundColor: 'tomato',
       },
     ],
@@ -111,12 +111,12 @@ export const Label: Story = {
 
 export const Milestone: Story = {
   args: {
-    title: '마일스톤',
+    title: 'milestone',
     items: [
       {
         id: 1,
         name: '그룹프로젝트: 이슈트래커',
-        isChecked: false,
+        isClicked: false,
       },
     ],
     isOpen: false,
@@ -125,17 +125,17 @@ export const Milestone: Story = {
 
 export const NoMultipleItems: Story = {
   args: {
-    title: '상태 변경',
+    title: 'filter',
     items: [
       {
         id: 2,
         name: '선택한 이슈 열기',
-        isChecked: false,
+        isClicked: false,
       },
       {
         id: 3,
         name: '선택한 이슈 닫기',
-        isChecked: false,
+        isClicked: false,
       },
     ],
     isOpen: false,

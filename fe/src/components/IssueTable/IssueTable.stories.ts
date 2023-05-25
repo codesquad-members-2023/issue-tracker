@@ -15,7 +15,7 @@ export const Primary: Story = {
   args: {
     issues: [
       {
-        issueId: 10,
+        issueId: 1,
         title: 'issue title',
         content: 'issue content',
         userName: 'user name',
@@ -45,7 +45,7 @@ export const Primary: Story = {
         ],
       },
       {
-        issueId: 10,
+        issueId: 2,
         title: 'issue title',
         content: 'issue content',
         userName: 'user name',
@@ -91,21 +91,22 @@ export const Primary: Story = {
     labels: [
       {
         labelId: 0,
-        labelName: '',
-        backgroundColor: '',
-        fontColor: '',
+        labelName: 'label1',
+        backgroundColor: 'tomato',
+        fontColor: 'white',
       },
     ],
     milestones: [
       {
         milestoneId: 0,
-        milestoneName: '',
+        milestoneName: 'milestone1',
         description: '',
       },
     ],
     countOpenedIssues: 10,
     countClosedIssues: 20,
     status: true,
+    filterOptions: { filter: 2 },
   },
 };
 
@@ -136,5 +137,6 @@ export const Secondary: Story = {
     countOpenedIssues: 0,
     countClosedIssues: 0,
     status: true,
+    filterOptions: { milestone: 0 },
   },
 };
