@@ -49,7 +49,7 @@ const IssueDetailPage = () => {
           handleClickIsIssueTitleEdit={handleClickIsIssueTitleEdit}
         />
       </section>
-      <div className="mt-6 h-6 border-t border-t-gray-300"></div>
+      <div className="mt-6 h-6 border-t border-t-gray-300" />
       <section className="flex h-fit justify-start gap-x-8">
         <section className="flex h-fit w-4/5 flex-col justify-between gap-y-6">
           {issueDetailData && (

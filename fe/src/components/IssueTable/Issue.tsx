@@ -50,20 +50,20 @@ const Issue: React.FC<Props> = ({
           onChange={() => console.log('check')}
         />
       </div>
-      <Link to={`issues/${issueId}`}>
+      <div>
         <div className="mb-1 flex items-center">
           {isOpen ? (
             <AlertCircle stroke="#007AFF" />
           ) : (
             <Archive stroke="#4E4B66" />
           )}
-          {/* TODO(Lily): 라우터 설치 및 설정 이후에 Link 태그로 바꾸기 */}
-          <button
+          <Link
+            to={`issues/${issueId}`}
             className="mx-2 text-left text-lg font-bold text-neutral-strong"
             onClick={() => onIssueTitleClick(issueId)}
           >
             {title}
-          </button>
+          </Link>
           <div className="flex">
             {labelList.map(label => {
               const { labelId, labelName, backgroundColor, fontColor } = label;
@@ -89,7 +89,7 @@ const Issue: React.FC<Props> = ({
             </div>
           )}
         </div>
-      </Link>
+      </div>
       <div className="flex grow items-center justify-end">
         <Profile url={profileUrl} width={20} height={20} />
       </div>

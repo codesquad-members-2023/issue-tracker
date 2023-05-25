@@ -111,7 +111,6 @@ const MainPage = () => {
 
   return (
     <>
-      {/* ref: https://ko.javascript.info/optional-chaining */}
       <div className="relative mb-6 flex justify-between">
         <FilterBar onClick={() => handleClickDropdown('filter')} />
         {isDropdownOpen.filter && (

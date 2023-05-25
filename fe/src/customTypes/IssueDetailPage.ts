@@ -57,12 +57,8 @@ export interface IssueDetailData {
   }[];
 }
 
-export type CommentList = IssueDetailData['commentList'];
-
-export type Comment = CommentList[number];
-
 export type Issue = IssueDetailData['issue'];
-
 export type AttachedLabelList = IssueDetailData['attachedLabelList'];
-
 export type AttachedMilestone = IssueDetailData['attachedMilestone'];
+export type CommentList = IssueDetailData['commentList'];
+export type Comment = CommentList[number];
