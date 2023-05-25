@@ -54,15 +54,16 @@ const MainPage = () => {
 
   const mapIssues = (data: any) => {
     const issueItems: IssueRow[] = data.issues
-      .filter((issue: any) => issue.isOpen === isOpenIssues)
+      .filter((issue: any) => issue.open === isOpenIssues)
       .map((issue: any) => {
-        const elapseTime = issue.isOpen
+        const elapseTime = issue.open
           ? getTimeElapsed(issue.createdAt)
           : getTimeElapsed(issue.closedAt);
 
         return {
           ...issue,
           elapseTime,
+          isOpen: issue.open,
         };
       });
 

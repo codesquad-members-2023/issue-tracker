@@ -11,9 +11,6 @@ interface IssueCommentItemProps {
   isWriterComment: boolean;
 }
 
-const TEMP_PROFILE_URL =
-  'https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80';
-
 const IssueCommentItem = (props: IssueCommentItemProps) => {
   const { comment, isWriterComment } = props;
   const { days, hours, minutes, seconds } = getTimeElapsed(comment.createdAt);
@@ -21,7 +18,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
         <section className="flex gap-x-2">
-          <Profile url={TEMP_PROFILE_URL} />
+          <Profile url={comment.profileUrl} />
           <span className="text-md text-gray-900">{comment.userName}</span>
           <span className="text-md text-gray-600">
             {days}일 {hours}시간 {minutes}분 {seconds}초 전
