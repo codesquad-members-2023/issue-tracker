@@ -10,7 +10,7 @@ interface CommentListProps {
 
 const IssueCommentList = (props: CommentListProps) => {
   const { comments, issue } = props;
-  const { userName } = issue;
+  const { userName, profileUrl } = issue;
   return (
     <ul className="flex h-full flex-col justify-between gap-6">
       {comments.map(comment => (

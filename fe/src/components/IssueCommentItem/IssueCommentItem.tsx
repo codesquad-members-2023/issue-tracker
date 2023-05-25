@@ -21,7 +21,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
         <section className="flex gap-x-2">
-          <Profile url={TEMP_PROFILE_URL} />
+          <Profile url={comment.profileUrl} />
           <span className="text-md text-gray-900">{comment.userName}</span>
           <span className="text-md text-gray-600">
             {days}일 {hours}시간 {minutes}분 {seconds}초 전

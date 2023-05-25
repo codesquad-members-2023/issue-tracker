@@ -9,21 +9,21 @@ export interface IssueDetailData {
     createdAt: string;
     closedAt: string;
   };
-  milestone: {
+  attachedMilestone: {
     milestoneId: number;
     milestoneName: string;
     countAllIssues: number;
     countAllClosedIssues: number;
     progress: number; // 5(%)
   };
-  labelList: {
+  attachedLabelList: {
     labelId: number;
     labelName: string;
     backgroundColor: string;
     fontColor: string;
   }[];
 
-  assigneeList: {
+  attachedAssigneeList: {
     userId: number;
     userName: string;
     profileUrl: string;
@@ -37,6 +37,24 @@ export interface IssueDetailData {
     createdAt: string;
     updateAt: string;
   }[];
+  userList: {
+    // 담당자 필터, 작성자 필터에 같이 사용
+    userId: number; // id
+    userName: string; // username
+    profileUrl: string;
+  }[];
+  labelList: {
+    labelId: number;
+    labelName: string;
+    backgroundColor: string;
+    fontColor: string;
+    description: string;
+  }[];
+  milestoneList: {
+    milestoneId: number;
+    milestoneName: string;
+    description: string;
+  }[];
 }
 
 export type CommentList = IssueDetailData['commentList'];
@@ -45,6 +63,6 @@ export type Comment = CommentList[number];
 
 export type Issue = IssueDetailData['issue'];
 
-export type LabelList = IssueDetailData['labelList'];
+export type AttachedLabelList = IssueDetailData['attachedLabelList'];
 
-export type Milestone = IssueDetailData['milestone'];
+export type AttachedMilestone = IssueDetailData['attachedMilestone'];

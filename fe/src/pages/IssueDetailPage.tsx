@@ -64,8 +64,8 @@ const IssueDetailPage = () => {
           {issueDetailData && (
             <IssueSubInfo
               issue={issueDetailData.issue}
-              labels={issueDetailData.labelList}
-              milestone={issueDetailData.milestone}
+              attachedLabels={issueDetailData.attachedLabelList}
+              attachedMilestone={issueDetailData.attachedMilestone}
             />
           )}
           <div className="flex justify-end pr-8">
