@@ -4,6 +4,7 @@ import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
 import { FilterOptions } from '@components/IssueTable/IssueTable';
 
 const filterOptions: Record<keyof FilterOptions, string> = {
+  page: '페이지',
   filter: '이슈',
   assignee: '담당자',
   label: '레이블',

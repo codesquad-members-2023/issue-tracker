@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import Issue from './Issue';
 import Button from '@common/Button';
 import FilterList from '@components/FilterList/FilterList';
-import { DropdownItems } from '../../pages/MainPage';
 import { ElapseTime } from '@utils/getTimeElapsed';
 
 export interface FilterOptions {
+  page?: number;
   filter?: number;
   assignee?: number;
   label?: number;

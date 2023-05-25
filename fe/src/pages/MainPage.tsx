@@ -57,7 +57,11 @@ const MainPage = () => {
     fetchData();
   }, [isOpenIssues]);
 
+  // TODO(Lily): 아래 코드들은 정리 예정
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
+  const [page, setPage] = useState(1);
+  const BASE_QUERY_STRING = '?offset=10';
+  const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}`;
 
   const updateFilterOption = (type: keyof FilterOptions, id: number) => {
     const updatedFilterOptions = { ...filterOptions };
@@ -70,6 +74,38 @@ const MainPage = () => {
 
     setFilterOptions(updatedFilterOptions);
   };
+
+  const buildQueryString = (filterOptions: FilterOptions): string => {
+    const params = [];
+
+    for (const [key, value] of Object.entries(filterOptions)) {
+      if (value !== undefined) {
+        params.push(`${key}=${value}`);
+      }
+    }
+
+    return `?${params.join('&')}`;
+  };
+
+  const filterQueryString = useMemo(() => {
+    return `${pageQueryString}&${buildQueryString(filterOptions)}`;
+  }, [filterOptions]);
+
+  useEffect(() => {
+    async () => {
+      try {
+        const res = await fetch(`${BASE_API}/${filterQueryString}`);
+        const data = await res.json();
+
+        console.log(data);
+        if (res.status === 200) {
+          mapIssues(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, [filterQueryString]);
 
   return (
     <>
