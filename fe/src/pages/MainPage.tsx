@@ -60,8 +60,8 @@ const MainPage = () => {
   // TODO(Lily): 아래 코드들은 정리 예정
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
   const [page, setPage] = useState(1);
-  const BASE_QUERY_STRING = '?offset=10';
-  const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}`;
+  const BASE_QUERY_STRING = 'issues/?offset=10';
+  const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
 
   const updateFilterOption = (type: keyof FilterOptions, id: number) => {
     const updatedFilterOptions = { ...filterOptions };
@@ -75,29 +75,38 @@ const MainPage = () => {
     setFilterOptions(updatedFilterOptions);
   };
 
-  const buildQueryString = (filterOptions: FilterOptions): string => {
-    const params = [];
+  // const buildQueryString = (filterOptions: FilterOptions): string => {
+  //   const params = [];
 
-    for (const [key, value] of Object.entries(filterOptions)) {
-      if (value !== undefined) {
-        params.push(`${key}=${value}`);
-      }
-    }
+  //   for (const [key, value] of Object.entries(filterOptions)) {
+  //     if (value !== undefined) {
+  //       params.push(`${key}=${value}`);
+  //     }
+  //   }
 
-    return `?${params.join('&')}`;
-  };
+  //   return `?${params.join('&')}`;
+  // };
 
   const filterQueryString = useMemo(() => {
-    return `${pageQueryString}&${buildQueryString(filterOptions)}`;
-  }, [filterOptions]);
+    const statusOption = isOpenIssues ? 'open' : 'closed';
+    const queryStrings = {
+      status: statusOption,
+      ...filterOptions,
+    };
+    const queryString = Object.entries(queryStrings)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
 
+    return `${pageQueryString}${queryString}`;
+  }, [filterOptions, isOpenIssues, pageQueryString]);
+
+  console.log(BASE_API, filterQueryString);
   useEffect(() => {
-    async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${BASE_API}/${filterQueryString}`);
+        const res = await fetch(`${BASE_API}${filterQueryString}`);
         const data = await res.json();
-
-        console.log(data);
+        console.log('fetched!', data);
         if (res.status === 200) {
           mapIssues(data);
         }
@@ -105,6 +114,8 @@ const MainPage = () => {
         console.log(error);
       }
     };
+
+    fetchData();
   }, [filterQueryString]);
 
   return (
@@ -134,18 +145,20 @@ const MainPage = () => {
           />
         </div>
       </div>
-      <IssueTable
-        issues={issueItems}
-        users={data.userList}
-        labels={data.labelList}
-        milestones={data.milestoneList}
-        countOpenedIssues={data.countOpenedIssues}
-        countClosedIssues={data.countClosedIssues}
-        status={isOpenIssues}
-        filterOptions={filterOptions}
-        onStatusTabClick={handleClickStatusTab}
-        updateFilterOption={updateFilterOption}
-      />
+      {Object.keys(data).length && (
+        <IssueTable
+          issues={issueItems}
+          users={data.userList}
+          labels={data.labelList}
+          milestones={data.milestoneList}
+          countOpenedIssues={data.countOpenedIssues}
+          countClosedIssues={data.countClosedIssues}
+          status={isOpenIssues}
+          filterOptions={filterOptions}
+          onStatusTabClick={handleClickStatusTab}
+          updateFilterOption={updateFilterOption}
+        />
+      )}
     </>
   );
 };
