@@ -108,7 +108,9 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${BASE_API}${filterQueryString}`);
+        const res = await fetch(`${BASE_API}${filterQueryString}`, {
+          mode: 'cors',
+        });
         const data = await res.json();
 
         if (res.status === 200) {
