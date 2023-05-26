@@ -75,18 +75,6 @@ const MainPage = () => {
     setFilterOptions(updatedFilterOptions);
   };
 
-  // const buildQueryString = (filterOptions: FilterOptions): string => {
-  //   const params = [];
-
-  //   for (const [key, value] of Object.entries(filterOptions)) {
-  //     if (value !== undefined) {
-  //       params.push(`${key}=${value}`);
-  //     }
-  //   }
-
-  //   return `?${params.join('&')}`;
-  // };
-
   const filterQueryString = useMemo(() => {
     const statusOption = isOpenIssues ? 'open' : 'closed';
     const queryStrings = {
@@ -100,13 +88,29 @@ const MainPage = () => {
     return `${pageQueryString}${queryString}`;
   }, [filterOptions, isOpenIssues, pageQueryString]);
 
-  console.log(BASE_API, filterQueryString);
+  const generateFilterString = (
+    isOpenIssues: boolean,
+    filterOptions: FilterOptions
+  ): string => {
+    const isOpen = isOpenIssues ? ' is:open' : ' is:closed';
+
+    const formattedOptions = Object.entries(filterOptions)
+      .map(([key, value]) => `${key}:${value}`)
+      .join(' ');
+
+    return `is:issue${isOpen} ${formattedOptions}`;
+  };
+
+  const filterString = useMemo(() => {
+    return generateFilterString(isOpenIssues, filterOptions);
+  }, [filterQueryString]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch(`${BASE_API}${filterQueryString}`);
         const data = await res.json();
-        console.log('fetched!', data);
+
         if (res.status === 200) {
           mapIssues(data);
         }
@@ -121,14 +125,7 @@ const MainPage = () => {
   return (
     <>
       <div className="relative mb-6 flex justify-between">
-        <FilterBar onClick={() => console.log('')} />
-        {/* {isDropdownOpen.filter && (
-          <FilterList
-            title="이슈"
-            items={FILTER_DROPDOWN_LIST}
-            onClick={filterIssues}
-          />
-        )} */}
+        <FilterBar searchValue={filterString} onClick={() => console.log('')} />
         <div className="flex gap-x-4">
           <NavLinks
             countAllMilestones={data.countAllMilestones}
