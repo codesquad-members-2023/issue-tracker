@@ -29,6 +29,7 @@ const FilterBar: React.FC<Props> = ({ searchValue, onClick }) => {
           type="text"
           value={searchValue}
           className="w-96 bg-gray-100 text-gray-600"
+          onChange={() => console.log('')}
         />
       </form>
     </div>
