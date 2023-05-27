@@ -1,7 +1,63 @@
-insert into issue (title, description, is_open, member_id) values ('듀이입니다', '듀이는 테스트 중...', '0', '1');
-insert into issue (title, description, is_open, member_id, milestone_id) values ('만쥬입니다', '만쥬는 테스트 중...', '1', '2', '1');
-insert into issue (title, description, is_open, member_id) values ('코어입니다', '코어는 테스트 중...', '0', '2');
-insert into issue (title, description, is_open, member_id, milestone_id) values ('해나입니다', '해나는 테스트 중...', '1', '5', '2');
-insert into issue (title, description, is_open, member_id) values ('하림입니다', '하림는 테스트 중...', '0', '3');
-insert into issue (title, description, is_open, member_id, milestone_id) values ('다온입니다', '다온는 테스트 중...', '1', '4', '2');
-insert into issue (title, description, is_open, member_id, milestone_id) values ('포코입니다', '포코는 테스트 중...', '0', '1', '2');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('다온', 'https://avatars.githubusercontent.com/u/115215178?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('포코', 'https://avatars.githubusercontent.com/u/101160636?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('듀이', 'https://avatars.githubusercontent.com/u/115435482?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('만쥬', 'https://avatars.githubusercontent.com/u/20828490?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('코어', 'https://avatars.githubusercontent.com/u/85631282?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('해나', 'https://avatars.githubusercontent.com/u/97685264?s=40&v=4');
+INSERT INTO MEMBER (NAME, FILE_URL)
+VALUES ('하림', 'https://avatars.githubusercontent.com/u/90844696?s=40&v=4');
+
+INSERT INTO MILESTONE (TITLE, DESCRIPTION, DUE_DATE)
+VALUES ('테스크01', '테스크01 내용', '2023-05-10');
+INSERT INTO MILESTONE (TITLE, DESCRIPTION, IS_OPEN)
+VALUES ('테스크02', '테스크02 내용', 0);
+
+INSERT INTO ISSUE (WRITER_ID, TITLE, DESCRIPTION, CREATE_DATE_TIME, MILESTONE_ID)
+VALUES (2, '[FE] 이슈', 'FE 이슈 발생 입니다.', '2023-05-10T10:10:00', 1);
+INSERT INTO ISSUE (WRITER_ID, TITLE, DESCRIPTION, CREATE_DATE_TIME, MILESTONE_ID)
+VALUES (4, '[BE] 이슈', 'BE 이슈 발생 입니다.', '2023-05-10T14:35:00', 1);
+INSERT INTO ISSUE (WRITER_ID, TITLE, DESCRIPTION, CREATE_DATE_TIME, MILESTONE_ID)
+VALUES (7, '[iOS] 이슈', 'iOS 이슈 발생 입니다.', '2023-05-10T20:20:00', 2);
+INSERT INTO ISSUE (WRITER_ID, TITLE, DESCRIPTION, CREATE_DATE_TIME)
+VALUES (4, '[BE] 테스트', '테스트 입니다!', '2023-05-10T22:22:00');
+
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (1, 1);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (2, 1);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (3, 2);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (4, 2);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (5, 2);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (6, 3);
+INSERT INTO ASSIGNEE (MEMBER_ID, ISSUE_ID)
+VALUES (7, 3);
+
+INSERT INTO LABEL (TITLE, DESCRIPTION, BG_COLOR_CODE)
+VALUES ('FE', 'FE 담당', '#655CC7');
+INSERT INTO LABEL (TITLE, DESCRIPTION, BG_COLOR_CODE)
+VALUES ('BE', 'BE 담당', '#EC8D8D');
+INSERT INTO LABEL (TITLE, DESCRIPTION, BG_COLOR_CODE)
+VALUES ('iOS', 'iOS 담당', '#A3D485');
+INSERT INTO LABEL (TITLE, DESCRIPTION, BG_COLOR_CODE)
+VALUES ('bug', '버그 상황', '#14D6B6');
+
+INSERT INTO ISSUE_LABEL (LABEL_ID, ISSUE_ID)
+VALUES (1, 1);
+INSERT INTO ISSUE_LABEL (LABEL_ID, ISSUE_ID)
+VALUES (4, 1);
+INSERT INTO ISSUE_LABEL (LABEL_ID, ISSUE_ID)
+VALUES (2, 2);
+INSERT INTO ISSUE_LABEL (LABEL_ID, ISSUE_ID)
+VALUES (4, 2);
+INSERT INTO ISSUE_LABEL (LABEL_ID, ISSUE_ID)
+VALUES (3, 3);
