@@ -10,6 +10,7 @@ import {
 } from '@services/issue';
 import { IssueList } from '@containers/index';
 import { isFilterApplied } from '@services/issue';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const IssuePage = () => {
   const cx = classNames.bind(styles);
@@ -21,13 +22,32 @@ export const IssuePage = () => {
 
   const [filters, setFilters] = useState(initialFilter);
   const [issueData, setIssueData] = useState([]);
+  const [assigneeList, setAssigneeList] = useState([]);
   const [labelList, setLabelList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [milestoneList, setMilestoneList] = useState([]);
   const [labelAndMilestoneInfo, setLabelAndMilestoneInfo] = useState(tabDatas);
   const [issueCount, setIssueCounts] = useState({ open: 0, closed: 0 });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const noneLabel = {
+      title: '레이블이 없는 이슈',
+      index: -1,
+    };
+
+    const noneAssignee = {
+      profile: '',
+      name: '담당자가 없는 이슈',
+      index: -1,
+    };
+
+    const noneMilestone = {
+      title: '마일스톤이 없는 이슈',
+      index: -1,
+    };
+
     (async () => {
       const queries = {
         ...filters,
@@ -43,9 +63,11 @@ export const IssuePage = () => {
       } = response;
 
       setIssueData(issueList);
-      setLabelList(labelList);
+      setLabelList([noneLabel, ...labelList]);
       setUserList(userList);
-      setMilestoneList(milestoneList);
+      setMilestoneList([noneMilestone, ...milestoneList]);
+      setAssigneeList([noneAssignee, ...userList]);
+
       setIssueCounts({
         open: openIssueCount,
         closed: closedIssueCount,
@@ -61,6 +83,10 @@ export const IssuePage = () => {
   }, [filters]);
 
   const handleFilterClearBtnClick = () => setFilters(initialFilter);
+
+  const handleWriteBtnClick = () => {
+    navigate('/write');
+  };
 
   const filterClearButtonInfo = {
     iconName: 'xSquare',
@@ -79,20 +105,13 @@ export const IssuePage = () => {
           <div className={headerLeftClassNames}>
             <Filterbar options={options}></Filterbar>
             {isFilterApplied(filters, initialFilter) && (
-              <Button
-                iconName={filterClearButtonInfo.iconName}
-                type={filterClearButtonInfo.type}
-                text={filterClearButtonInfo.text}
-                width={filterClearButtonInfo.width}
-                btnSize={filterClearButtonInfo.btnSize}
-                style={filterClearButtonInfo.style}
-                _onClick={filterClearButtonInfo._onClick}
-              />
+              <Button {...filterClearButtonInfo} />
             )}
           </div>
           <div className={headerRightClassNames}>
             <Tab buttonDatas={labelAndMilestoneInfo}></Tab>
             <Button
+              _onClick={handleWriteBtnClick}
               text={CTAbtn}
               btnSize="s"
               color="blue"
@@ -104,6 +123,7 @@ export const IssuePage = () => {
           <IssueList
             issueData={issueData}
             userList={userList}
+            assigneeList={assigneeList}
             milestoneList={milestoneList}
             labelList={labelList}
             issueCount={issueCount}
