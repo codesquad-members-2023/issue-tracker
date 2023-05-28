@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import IssueList from './IssueList';
+import IssueTable from './IssueTable';
 
 const meta = {
-  title: 'Main/IssueList',
-  component: IssueList,
+  title: 'Main/IssueTable',
+  component: IssueTable,
   argTypes: {},
-} satisfies Meta<typeof IssueList>;
+} satisfies Meta<typeof IssueTable>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -15,7 +15,7 @@ export const Primary: Story = {
   args: {
     issues: [
       {
-        issueId: 10,
+        issueId: 1,
         title: 'issue title',
         content: 'issue content',
         userName: 'user name',
@@ -45,7 +45,7 @@ export const Primary: Story = {
         ],
       },
       {
-        issueId: 10,
+        issueId: 2,
         title: 'issue title',
         content: 'issue content',
         userName: 'user name',
@@ -91,29 +91,22 @@ export const Primary: Story = {
     labels: [
       {
         labelId: 0,
-        labelName: '',
-        backgroundColor: '',
-        fontColor: '',
+        labelName: 'label1',
+        backgroundColor: 'tomato',
+        fontColor: 'white',
       },
     ],
     milestones: [
       {
         milestoneId: 0,
-        milestoneName: '',
+        milestoneName: 'milestone1',
         description: '',
-        isOpen: true,
       },
     ],
     countOpenedIssues: 10,
     countClosedIssues: 20,
-    isDropdownOpen: {
-      filter: false,
-      assignee: false,
-      label: false,
-      milestone: false,
-      writer: false,
-    },
     status: true,
+    filterOptions: { filter: 2 },
   },
 };
 
@@ -143,13 +136,7 @@ export const Secondary: Story = {
     ],
     countOpenedIssues: 0,
     countClosedIssues: 0,
-    isDropdownOpen: {
-      filter: false,
-      assignee: false,
-      label: false,
-      milestone: false,
-      writer: false,
-    },
     status: true,
+    filterOptions: { milestone: 0 },
   },
 };

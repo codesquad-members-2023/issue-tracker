@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FilterList from './FilterList';
 
 const meta = {
-  title: 'Common/FilterList',
+  title: 'Main/FilterList',
   component: FilterList,
 } satisfies Meta<typeof FilterList>;
 
@@ -11,120 +11,135 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    title: '이슈',
+    title: 'filter',
     items: [
       {
-        id: 231,
-        title: '열린 이슈',
+        id: 1,
+        name: '열린 이슈',
+        isClicked: true,
       },
       {
-        id: 131232,
-        title: '내가 작성한 이슈',
+        id: 2,
+        name: '내가 작성한 이슈',
+        isClicked: false,
       },
       {
-        id: 1223,
-        title: '나에게 할당된 이슈',
+        id: 3,
+        name: '나에게 할당된 이슈',
+        isClicked: false,
       },
       {
-        id: 1223,
-        title: '내가 댓글을 남긴 이슈',
+        id: 4,
+        name: '내가 댓글을 남긴 이슈',
+        isClicked: false,
       },
       {
-        id: 1223,
-        title: '닫힌 이슈',
+        id: 5,
+        name: '닫힌 이슈',
+        isClicked: false,
       },
     ],
-    isNullAvailability: false,
+    isOpen: false,
   },
 };
 
 export const Assignee: Story = {
   args: {
-    title: '담당자',
+    title: 'assignee',
     items: [
       {
-        id: 231,
-        title: 'Jayden',
+        id: 1,
+        name: 'Jayden',
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
-        id: 131232,
-        title: 'Chloe',
+        id: 2,
+        name: 'Chloe',
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
-        id: 1223,
-        title: 'sam',
+        id: 3,
+        name: 'sam',
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
-        id: 1223,
-        title: 'Lily',
+        id: 4,
+        name: 'Lily',
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
       {
-        id: 1223,
-        title: 'zello',
+        id: 5,
+        name: 'zello',
+        isClicked: false,
         imgUrl:
           'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
       },
     ],
-    isNullAvailability: true,
+    isOpen: false,
+    // isNullAvailability: true,
   },
 };
 
 export const Label: Story = {
   args: {
-    title: '레이블',
+    title: 'label',
     items: [
       {
-        id: 231,
-        title: 'documentation',
-        imgUrl:
-          'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
+        id: 1,
+        name: 'documentation',
+        isClicked: false,
+        backgroundColor: 'pink',
       },
       {
-        id: 131232,
-        title: 'bug',
-        imgUrl:
-          'https://lh3.googleusercontent.com/ogw/AOLn63F6B2eAe4HzDtvFPJU2zTjgdOtSHvHt-FnbIYcYgqU=s64-c-mo',
+        id: 2,
+        name: 'bug',
+        isClicked: false,
+        backgroundColor: 'tomato',
       },
     ],
-    isNullAvailability: true,
+    isOpen: false,
   },
 };
 
 export const Milestone: Story = {
   args: {
-    title: '마일스톤',
+    title: 'milestone',
     items: [
       {
-        id: 231,
-        title: '그룹프로젝트: 이슈트래커',
+        id: 1,
+        name: '그룹프로젝트: 이슈트래커',
+        isClicked: false,
       },
     ],
-    isNullAvailability: true,
+    isOpen: false,
   },
 };
 
 export const NoMultipleItems: Story = {
   args: {
-    title: '상태 변경',
+    title: 'filter',
     items: [
       {
-        id: 231,
-        title: '선택한 이슈 열기',
+        id: 2,
+        name: '선택한 이슈 열기',
+        isClicked: false,
       },
       {
-        id: 231,
-        title: '선택한 이슈 닫기',
+        id: 3,
+        name: '선택한 이슈 닫기',
+        isClicked: false,
       },
     ],
-    isNullAvailability: false,
-    canSelectMultipleItems: false,
+    isOpen: false,
+    // isNullAvailability: false,
+    // isMultipleItemSelectable: false,
   },
 };

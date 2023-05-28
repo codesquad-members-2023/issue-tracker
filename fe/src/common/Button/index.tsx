@@ -35,10 +35,11 @@ interface Props {
   iconName?: SVGNames;
   condition?: 'Enabled' | 'Hover' | 'Press' | 'Disabled';
   size?: 'Large' | 'Medium' | 'Small';
-  color?: 'Blue' | 'Gray';
+  color?: 'Blue' | 'Gray' | 'Red';
   fontSize?: string;
   hasDropDown?: boolean;
   onClick: () => void;
+  gap?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -52,6 +53,7 @@ const Button: React.FC<Props> = ({
   fontSize = 'text-base',
   hasDropDown = false,
   onClick,
+  gap = 'gap-x-2',
 }) => {
   const widthHeight = getWidthHeight(size);
   const opacity = getOpacity(condition);
@@ -61,11 +63,11 @@ const Button: React.FC<Props> = ({
       className={`${isFlexible && 'w-auto'} ${widthHeight} ${getType(
         type,
         getColor(color)
-      )} ${opacity} flex items-center justify-center gap-x-2 rounded-2xl font-bold`}
+      )} ${opacity} flex items-center justify-center ${gap} rounded-2xl font-bold`}
       onClick={onClick}
     >
       {getSvgComponent(iconName, getHexByType(color, type))}
-      <span className={`${fontSize}`}>{title}</span>
+      <span className={`${fontSize} whitespace-nowrap`}>{title}</span>
       {hasDropDown && <CheveronDown stroke={getHexByType(color, type)} />}
     </button>
   );
@@ -121,6 +123,8 @@ function getColor(color: string) {
       return 'blue';
     case 'Gray':
       return 'gray-900';
+    case 'Red':
+      return 'red';
     default:
       return 'blue';
   }
@@ -160,6 +164,8 @@ function getHex(color: string) {
       return '#007AFF';
     case 'Gray':
       return '#14142B';
+    case 'Red':
+      return '#FF3B30';
     default:
       return '#007AFF';
   }

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Profile from '@common/Profile';
 import Label from '@common/Label';
-import { LabelRow, elapseTime } from './IssueList';
+import { LabelRow } from './IssueTable';
+import { ElapseTime } from '@utils/getTimeElapsed';
 import { ReactComponent as AlertCircle } from '@assets/alertCircle.svg';
 import { ReactComponent as Archive } from '@assets/archive.svg';
 import { ReactComponent as Milestone } from '@assets/milestone.svg';
@@ -14,7 +16,7 @@ interface Props {
   profileUrl: string;
   isOpen: boolean;
   labelList: LabelRow[];
-  elapseTime: elapseTime;
+  elapseTime: ElapseTime;
   milestoneName?: string;
   onIssueTitleClick: (id: number) => void;
 }
@@ -48,7 +50,7 @@ const Issue: React.FC<Props> = ({
           onChange={() => console.log('check')}
         />
       </div>
-      <div>
+      <Link to={`issues/${issueId}`}>
         <div className="mb-1 flex items-center">
           {isOpen ? (
             <AlertCircle stroke="#007AFF" />
@@ -87,8 +89,7 @@ const Issue: React.FC<Props> = ({
             </div>
           )}
         </div>
-      </div>
-      {/* FIXME(Jayden): Profile 태그의 상위 태그의 높이가 고정 */}
+      </Link>
       <div className="flex grow items-center justify-end">
         <Profile url={profileUrl} width={20} height={20} />
       </div>
