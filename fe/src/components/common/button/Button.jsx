@@ -15,14 +15,6 @@ const sizes = {
   },
 };
 
-// const sizeStyles = css`
-//   ${({ size }) => css`
-//     width: ${sizes[size].width};
-//     height: ${sizes[size].height};
-//     border-radius: ${sizes[size].borderRadius};
-//   `}
-// `;
-
 const types = {
   container: {
     backgroundColor: '#007AFF',
@@ -40,14 +32,6 @@ const types = {
   },
 };
 
-// const typeStyles = css`
-//   ${({ type }) => css`
-//     color: ${types[type].color};
-//     background-color: ${types[type].backgroundColor};
-//     outline: ${types[type].outline};
-//   `}
-// `;
-
 const states = {
   default: {
     opacity: '1',
@@ -63,12 +47,6 @@ const states = {
     opacity: '0.32',
   },
 };
-
-// const stateStyles = css`
-//   ${({ state }) => css`
-//     opacity: ${states[state].opacity};
-//   `}
-// `;
 
 const sizeStyles = css`
   ${({ size }) =>
@@ -105,6 +83,10 @@ const StyledButton = styled.button`
   ${sizeStyles}
   ${typeStyles}
   ${stateStyles}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 `;
 
 const Button = ({ children, flexible, type, elementPattern, state, size, ...rest }) => {

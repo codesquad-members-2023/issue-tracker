@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Checkbox from '../../../../../common/Checkbox';
-import Label from './Label';
-import UserImage from '../../../../../assets/userImage/UserImage.svg';
-import OpenIssueStatusIcon from '../../../../../assets/icons/OpenIssueStatusIcon.svg';
-import MilestoneIcon from '../../../../../assets/icons/MilestoneIcon.svg';
+import ListItemRight from './listItemRight/ListItemRight';
+import ListItemLeft from './listItemLeft/ListItemLeft';
 
 const IssueTableListItemBlock = styled.li`
   display: flex;
@@ -15,99 +12,11 @@ const IssueTableListItemBlock = styled.li`
   border-bottom: 1px solid ${({ theme }) => theme.COLOR.GRAY300};
 `;
 
-const IssueTableListItemRight = styled.div`
-  margin-right: 10px;
-`;
-
-const IssueTableListItemLeft = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: auto;
-`;
-
-const IssueTableListItemLeftContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-left: 20px;
-`;
-
-const ListItemLeftContentTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  & img {
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const ListItemLeftContentBottom = styled.div`
-  display: flex;
-  gap: 12px;
-`;
-
-const IssueTitle = styled.div`
-  font-size: ${({ theme }) => theme.FONT_SIZE.L}px;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT.BOLD};
-  line-height: 32px;
-`;
-
-const IssueLabelBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 5px;
-`;
-
-const IssueInfo = styled.div`
-  display: flex;
-  gap: 3px;
-  color: ${({ theme }) => theme.COLOR.GRAY600};
-  font-size: ${({ theme }) => theme.FONT_SIZE.M}px;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT.REGULAR};
-  line-height: 28px;
-`;
-
-const UserIcon = styled.div`
-  width: 20px;
-  height: 20px;
-  background-image: url(${UserImage});
-`;
-
-const IssueTableListItem = ({
-  issue: { id, title, createdDateTime, labels, milestone, author },
-}) => {
+const IssueTableListItem = ({ issue }) => {
   return (
     <IssueTableListItemBlock>
-      <IssueTableListItemLeft>
-        <Checkbox />
-        <IssueTableListItemLeftContent>
-          <ListItemLeftContentTop>
-            <img src={OpenIssueStatusIcon} />
-            <IssueTitle>{title}</IssueTitle>
-            <IssueLabelBox>
-              {labels.length > 0 &&
-                labels.map((label) => <Label key={label.id} labelName={label}></Label>)}
-            </IssueLabelBox>
-          </ListItemLeftContentTop>
-          <ListItemLeftContentBottom>
-            <IssueInfo>#{id}</IssueInfo>
-            <IssueInfo>
-              이 이슈가 {createdDateTime}분 전, {author}님에 의해 작성되었습니다
-            </IssueInfo>
-            {milestone && (
-              <IssueInfo>
-                <img src={MilestoneIcon} />
-                {milestone}
-              </IssueInfo>
-            )}
-          </ListItemLeftContentBottom>
-        </IssueTableListItemLeftContent>
-      </IssueTableListItemLeft>
-      <IssueTableListItemRight>
-        <UserIcon />
-      </IssueTableListItemRight>
+      <ListItemLeft issue={issue} />
+      <ListItemRight issue={issue} />
     </IssueTableListItemBlock>
   );
 };

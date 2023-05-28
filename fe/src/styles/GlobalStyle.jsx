@@ -13,6 +13,13 @@ const GlobalStyle = createGlobalStyle`
     background-color : ${({ theme }) => theme.COLOR.GRAY100}
   }
 
+  #root {
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+  }
+
 
   * {
     margin: 0;

@@ -1,12 +1,18 @@
-import Header from './common/header/Header';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Header from './components/common/header/Header';
 import MainPage from './pages/MainPage';
+import AddIssuePage from './pages/AddIssuePage';
 
 const App = () => {
   return (
-    <div>
+    <React.Fragment>
       <Header />
-      <MainPage />
-    </div>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/addIssue" element={<AddIssuePage />} />
+      </Routes>
+    </React.Fragment>
   );
 };
 

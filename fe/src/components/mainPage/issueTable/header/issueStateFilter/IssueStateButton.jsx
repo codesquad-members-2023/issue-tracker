@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const IssueStatusButtonBlock = styled.button`
+const IssueStateButtonBlock = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -10,13 +10,13 @@ const IssueStatusButtonBlock = styled.button`
   color: ${({ theme, issueState }) => (issueState ? theme.COLOR.GRAY900 : theme.COLOR.GRAY700)};
 `;
 
-const IssueStatusButton = ({ imgSrc, imgAlt, buttonName, issuesCount, issueState, onClick }) => {
+const IssueStateButton = ({ imgSrc, imgAlt, buttonName, issuesCount, issueState, onClick }) => {
   return (
-    <IssueStatusButtonBlock issueState={issueState} onClick={onClick}>
+    <IssueStateButtonBlock issueState={issueState} onClick={onClick}>
       <img src={imgSrc} alt={imgAlt} />
       {buttonName} ({issuesCount})
-    </IssueStatusButtonBlock>
+    </IssueStateButtonBlock>
   );
 };
 
-export default IssueStatusButton;
+export default IssueStateButton;

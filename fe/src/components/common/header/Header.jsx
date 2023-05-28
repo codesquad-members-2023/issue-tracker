@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Logo from '../../assets/images/Logo.svg';
-import UserImageLarge from '../../assets/images/UserImageLarge.svg';
+import Logo from '../../../assets/images/Logo.svg';
+import UserImageLarge from '../../../assets/images/UserImageLarge.svg';
 
 const HeaderContainer = styled.div`
   display: flex;

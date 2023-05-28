@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import IssueTableHeaderLeft from './headerLeft/IssueTableHeaderLeft';
-import IssueTableHeaderRight from './headerRight/IssueTableHeaderRight';
+import IssueStateFilter from './issueStateFilter/IssueStateFilter';
+import IssueFilterOptions from './issueFilterOptions/IssueFilterOptions';
 
 const IssueTableHeaderContainer = styled.div`
   display: flex;
@@ -13,15 +13,11 @@ const IssueTableHeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.COLOR.GRAY100};
 `;
 
-const IssueTableHeader = ({ issueState, issuePageData, onChangeIssueState }) => {
+const IssueTableHeader = () => {
   return (
     <IssueTableHeaderContainer>
-      <IssueTableHeaderLeft
-        issueState={issueState}
-        issuePageData={issuePageData}
-        onChangeIssueState={onChangeIssueState}
-      />
-      <IssueTableHeaderRight />
+      <IssueStateFilter />
+      <IssueFilterOptions />
     </IssueTableHeaderContainer>
   );
 };

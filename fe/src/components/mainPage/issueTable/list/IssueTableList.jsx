@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import IssueTableListItem from './listItems/IssueTableListItem';
+import { MainPageInfoContext } from '../../../../pages/MainPage';
+
 const IssueTableListBox = styled.ul`
   display: flex;
   flex-direction: column;
@@ -12,11 +14,15 @@ const IssueTableListBox = styled.ul`
   }
 `;
 
-const IssueTableList = ({ issuePageData: { issues } }) => {
+const IssueTableList = () => {
+  const {
+    issuePageData: { issues },
+  } = useContext(MainPageInfoContext);
+
   return (
     <IssueTableListBox>
       {issues.map((issue) => (
-        <IssueTableListItem key={issue.id} issue={issue}></IssueTableListItem>
+        <IssueTableListItem key={issue.id} issue={issue} />
       ))}
     </IssueTableListBox>
   );

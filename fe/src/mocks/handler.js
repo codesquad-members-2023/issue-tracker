@@ -1,65 +1,116 @@
 import { rest } from 'msw';
 
 const openedIssuePageData = {
-  labelCount: 3,
-  closedIssueCount: 4,
-  milestoneCount: 1,
+  count: {
+    label: 4,
+    milestone: 2,
+    opened: 2,
+    closed: 2,
+  },
   issues: [
     {
       id: 1,
-      title: '집가고 싶다',
-      createdDateTime: '2023-05-10 10:10',
-      labels: ['BE', 'bug'],
+      title: '[FE] 이슈',
+      createdDateTime: '2023-05-10T10:10:00',
+      assignees: ['포코', '다온'],
+      labels: [
+        {
+          title: 'FE12',
+          bgColorCode: '#655CC7',
+        },
+        {
+          title: 'bug',
+          bgColorCode: '#14D6B6',
+        },
+      ],
       milestone: '테스크01',
-      author: '코어',
+      author: '포코',
+      authorUrl: '포코_Url',
     },
     {
       id: 3,
-      title: '살려주세요',
-      createdDateTime: '2023-05-10 14:35',
-      labels: [],
-      milestone: '',
-      author: 'ManJu',
+      title: '[iOS] 이슈',
+      createdDateTime: '2023-05-10T20:20:00',
+      assignees: ['해나', '하림'],
+      labels: [
+        {
+          title: 'iOS',
+          bgColorCode: '#A3D485',
+        },
+      ],
+      milestone: '테스크02',
+      author: '하림',
+      authorUrl: '하림_Url',
     },
   ],
 };
 
 const closedIssuePageData = {
-  labelCount: 3,
-  openedIssueCount: 2,
-  milestoneCount: 1,
+  count: {
+    label: 4,
+    milestone: 2,
+    opened: 2,
+    closed: 2,
+  },
   issues: [
     {
       id: 2,
-      title: '안녕하세요',
-      createdDateTime: '2023-05-04 10:10',
-      labels: ['FE', 'document'],
-      milestone: '테스크00',
-      author: '포코',
+      title: '[BE] 이슈',
+      createdDateTime: '2023-05-10T14:35:00',
+      assignees: ['듀이', '코어', '만쥬'],
+      labels: [
+        {
+          title: 'BE',
+          bgColorCode: '#EC8D8D',
+        },
+        {
+          title: 'bug',
+          bgColorCode: '#14D6B6',
+        },
+      ],
+      milestone: '테스크01',
+      author: '만쥬',
+      authorUrl: '만쥬_Url',
     },
     {
       id: 4,
-      title: '굿모닝',
-      createdDateTime: '2023-05-01 14:35',
-      labels: ['FE'],
+      title: '[BE] 테스트',
+      createdDateTime: '2023-05-10T22:22:00',
+      assignees: [],
+      labels: [],
       milestone: '',
-      author: '다온',
+      author: '만쥬',
+      authorUrl: '만쥬_Url',
     },
   ],
 };
 
-const data = [1, 2, 3];
+const assigneesData = {
+  assignees: [
+    { id: 1, name: '다온', imgUrl: 'https://avatars.githubusercontent.com/u/115215178?s=40&v=4' },
+    { id: 2, name: '포코', imgUrl: 'https://avatars.githubusercontent.com/u/101160636?s=40&v=4' },
+    { id: 3, name: '듀이', imgUrl: 'https://avatars.githubusercontent.com/u/115435482?s=40&v=4' },
+    { id: 4, name: '만쥬', imgUrl: 'https://avatars.githubusercontent.com/u/20828490?s=40&v=4' },
+    { id: 5, name: '코어', imgUrl: 'https://avatars.githubusercontent.com/u/85631282?s=40&v=4' },
+    { id: 6, name: '해나', imgUrl: 'https://avatars.githubusercontent.com/u/97685264?s=40&v=4' },
+    { id: 7, name: '하림', imgUrl: 'https://avatars.githubusercontent.com/u/90844696?s=40&v=4' },
+  ],
+};
 
 export const handlers = [
-  rest.get('/api/openedIssuePage', (req, res, ctx) => {
+  rest.get('/api/issues?status=open', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(openedIssuePageData));
   }),
 
-  rest.get('/api/closedIssuePage', (req, res, ctx) => {
+  rest.get('/api/issues?status=closed', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(closedIssuePageData));
   }),
 
   rest.get('/api/user', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(data));
+  }),
+
+  rest.get('/api/assignees', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(assigneesData));
   }),
 ];
