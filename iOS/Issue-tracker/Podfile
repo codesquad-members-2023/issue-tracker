@@ -6,7 +6,6 @@ target 'Issue-tracker' do
   use_frameworks!
 
   pod 'SwiftLint'
-  pod 'TagListView', '~> 1.0'
   # Pods for Issue-tracker
   
 end

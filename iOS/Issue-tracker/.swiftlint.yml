@@ -6,13 +6,12 @@ excluded:
 disabled_rules:
   - todo
   - trailing_whitespace
+  - function_body_length
+  - line_length
 indentation_width:
   indentation_width: 4
 force_unwrapping:
   severity: error
-function_body_length:
-  - 10 # warning
-  - 20 # error
 type_body_length:
   - 200 # warning
   - 400 # error

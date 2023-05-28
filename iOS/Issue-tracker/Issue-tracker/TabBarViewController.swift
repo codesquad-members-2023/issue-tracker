@@ -21,9 +21,9 @@ class TabBarViewController: UITabBarController {
         let milestoneViewController = UIViewController()
         let myAccountVieController = UIViewController()
         
-        issueViewController.title = TabBarItems.issue.rawValue
-        labelViewController.title = TabBarItems.label.rawValue
-        milestoneViewController.title = TabBarItems.milestone.rawValue
+        issueViewController.title = "이슈"
+        labelViewController.title = "레이블"
+        milestoneViewController.title = "마일스톤"
         myAccountVieController.title = TabBarItems.myAccount.rawValue
 
         // 탭바 타이틀 폰트 세팅

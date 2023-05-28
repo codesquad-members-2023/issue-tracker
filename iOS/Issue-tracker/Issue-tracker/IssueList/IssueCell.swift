@@ -7,10 +7,8 @@
 
 import UIKit
 
-import TagListView
-
 class IssueCell: UICollectionViewCell {
-    static let identifier = "cell"
+    static let identifier = "IssueCell"
     
     var titleLabel: UILabel = {
         let lbl = UILabel()
@@ -33,31 +31,25 @@ class IssueCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.font = UIFont.mediumM
         lbl.textColor = UIColor.neutralText
-        let attributedString = NSMutableAttributedString(string: "")
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(named: TabBarItems.milestone.rawValue)
-        attributedString.append(NSAttributedString(attachment: imageAttachment))
-        imageAttachment.bounds = CGRect(x: 0, y: 0, width: 17, height: 18)
-        attributedString.append(NSAttributedString(string: "마일스톤"))
-        lbl.attributedText = attributedString
         return lbl
     }()
     
-    var tagLabel: TagListView = {
-        let tags = TagListView()
-        tags.textFont = UIFont.mediumS ?? UIFont()
-        tags.textColor = UIColor.accentTextStrong ?? UIColor()
-        let long = 355
-        let short = 18
-        tags.bounds = CGRect(x: 0, y: 0, width: long, height: short)
-        tags.cornerRadius = CGFloat(long*short/long/2)
-        tags.layer.masksToBounds = true
-        tags.addTag("라벨1")
-        tags.paddingX = 16
-        tags.paddingY = 4
-        tags.tagBackgroundColor = .orange
-        tags.insertTag("라벨 새치기", at: 0)
-        return tags
+    var detailLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.mediumM
+        lbl.textColor = UIColor.neutralTextWeak
+        lbl.text = "〉"
+        return lbl
+    }()
+    
+    var tagLabelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 4
+        return stackView
     }()
     
     let stackView: UIStackView = {
@@ -65,28 +57,63 @@ class IssueCell: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fill
         stackView.spacing = 4
         return stackView
     }()
     
+    func makeLabel(labels: [Label]) {
+        for label in labels {
+            var tagLabel: UILabel = {
+                let tags = PaddingLabel(withInsets: 4, 4, 16, 16)
+                tags.font = UIFont.mediumS
+                tags.text = label.title
+            
+                //컬러 관련
+                if let color = UIColor(hex: label.bgColorCode ?? "FFFFFF") {
+                    tags.backgroundColor = color
+                } else {
+                    tags.backgroundColor = UIColor.black
+                }
+                
+                tags.textColor = UIColor.accentTextStrong
+                let long = 355
+                let short = 18
+                tags.layer.masksToBounds = true
+                tags.layer.cornerRadius = CGFloat(long*short/long/2)
+                
+                return tags
+            }()
+            tagLabelStackView.addArrangedSubview(tagLabel)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        [titleLabel, descriptionLabel, milestones, tagLabel].forEach {
-            addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        [titleLabel, descriptionLabel, milestones].forEach {
             stackView.addArrangedSubview($0)
         }
-        addSubview(stackView)
-        tagLabel.tagBackgroundColor = .blue
         
-        let consArr: [NSLayoutConstraint] = [
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ]
-        NSLayoutConstraint.activate(consArr)
+        [tagLabelStackView, stackView, detailLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
         
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
+            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            stackView.widthAnchor.constraint(equalToConstant: 335),
+            
+            tagLabelStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+            tagLabelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
+            tagLabelStackView.heightAnchor.constraint(equalToConstant: 24),
+            
+            detailLabel.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0),
+            detailLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            detailLabel.heightAnchor.constraint(equalToConstant: 30),
+            detailLabel.widthAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     required init?(coder: NSCoder) {

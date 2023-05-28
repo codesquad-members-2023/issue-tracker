@@ -12,6 +12,7 @@ import UIKit
 
 class CollectionHeaderView: UICollectionReusableView {
     weak var delegate: CustomViewDelegate?
+    static let identifier = "IssueHeader"
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -26,7 +27,7 @@ class CollectionHeaderView: UICollectionReusableView {
         filterButton.setTitle("필터", for: .normal)
         filterButton.setTitleColor(.accentTextPrimary, for: .normal)
         filterButton.titleLabel?.font = UIFont.regularM
-        filterButton.addTarget(CollectionHeaderView.self, action: #selector(buttonTapped), for: .touchUpInside)
+        filterButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return filterButton
     }()
     
@@ -52,33 +53,33 @@ class CollectionHeaderView: UICollectionReusableView {
         setFilterButtonConstraint()
         setChioceButtonConstraint()
         setTitleLabelConstraint()
+        self.backgroundColor = UIColor.neutralBackground
     }
     func setFilterButtonConstraint() {
-        let conArr: [NSLayoutConstraint] = [
-            filterButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            filterButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -325),
-            filterButton.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            filterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -62)
-        ]
-        NSLayoutConstraint.activate(conArr)
+        NSLayoutConstraint.activate([
+            filterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            filterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -325),
+            filterButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+            filterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -62)
+        ])
     }
+    
     func setChioceButtonConstraint() {
-        let conArr: [NSLayoutConstraint] = [
-            choiceButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 325),
-            choiceButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            choiceButton.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            choiceButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -62)
-        ]
-        NSLayoutConstraint.activate(conArr)
+        NSLayoutConstraint.activate([
+            choiceButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 325),
+            choiceButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            choiceButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+            choiceButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -62)
+        ])
     }
+    
     func setTitleLabelConstraint() {
-        let conArr: [NSLayoutConstraint] = [
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
             titleLabel.heightAnchor.constraint(equalToConstant: 48),
             titleLabel.widthAnchor.constraint(equalToConstant: 59)
-        ]
-        NSLayoutConstraint.activate(conArr)
+        ])
     }
     
     @objc private func buttonTapped() {

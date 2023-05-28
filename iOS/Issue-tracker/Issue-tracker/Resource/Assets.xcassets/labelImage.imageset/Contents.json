@@ -5,12 +5,11 @@
       "scale" : "1x"
     },
     {
-      "filename" : "이슈 2.svg",
+      "filename" : "labelImage.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "이슈 1.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -104,7 +104,7 @@ iOSInjectionProject/
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
-
+Network/PrivateURL.swift
 ### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
 
