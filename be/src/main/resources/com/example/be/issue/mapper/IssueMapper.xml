@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.be.issue.mapper.IssueMapper">
+    <select id="findIssuesWithoutLabelsBy" resultMap="issuesWithoutLabels"
+            parameterType="com.example.be.issue.dto.IssueSearchCondition">
+        select i.number, i.title, i.contents, i.state, i.created_date, i.last_updated_date,
+        m.name, m.scheduled_completion_date, m.description_for_label,
+        u.id, u.password, u.nickname, u.img_url from ISSUE i
+        left outer join MILESTONE m on i.milestone_name = m.name
+        left outer join USER u on i.user_id = u.id
+        <where>
+            <if test="state != null">
+                and i.state = #{state}
+            </if>
+
+            <if test="author != null">
+                and u.id = #{author}
+            </if>
+
+            <if test="milestoneName != null">
+                <choose>
+                    <when test="milestoneName == '$none'.toString()">
+                        and m.name is null
+                    </when>
+                    <otherwise>
+                        and m.name = #{milestoneName}
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="assignees != null">
+                <choose>
+                    <when test="assignees[0] == '$none'.toString()">
+                        and i.number not in (select a.issue_number from ASSIGNS a)
+                    </when>
+                    <otherwise>
+                        and i.number in (select a.issue_number
+                        from ASSIGNS a
+                        where a.user_id in
+                        <foreach item="assignee" collection="assignees" open="(" close=")" separator=",">
+                            #{assignee}
+                        </foreach>
+                        group by a.issue_number
+                        having count(*) = #{assigneesSize})
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="labelNames != null">
+                <choose>
+                    <when test="labelNames[0] == '$none'.toString()">
+                        and i.number not in (select ir.issue_number from ISSUE_LABEL_RELATION ir)
+                    </when>
+                    <otherwise>
+                        and i.number in (select ir.issue_number
+                        from ISSUE_LABEL_RELATION ir
+                        where ir.label_name in
+                        <foreach item="labelName" collection="labelNames" open="(" close=")" separator=",">
+                            #{labelName}
+                        </foreach>
+                        group by ir.issue_number
+                        having count(*) = #{labelNamesSize})
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        <if test="startIndex != null and cntPerPage != null">
+            limit #{startIndex}, #{cntPerPage}
+        </if>
+    </select>
+
+    <resultMap type="com.example.be.issue.Issue" id="issuesWithoutLabels">
+        <id column="number" property="number"/>
+        <result column="title" property="title"/>
+        <result column="contents" property="contents"/>
+        <result column="state" property="state"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="last_updated_date" property="lastUpdatedDate"/>
+        <association column="name" property="milestone" javaType="com.example.be.milestone.Milestone">
+            <id column="name" property="name"/>
+            <result column="scheduled_completion_date" property="scheduledCompletionDate"/>
+            <result column="description_for_label" property="descriptionForLabel"/>
+        </association>
+        <association column="id" property="user" javaType="com.example.be.user.User">
+            <id column="id" property="id"/>
+            <result column="password" property="password"/>
+            <result column="nickname" property="nickname"/>
+            <result column="img_url" property="imgUrl"/>
+        </association>
+    </resultMap>
+
+    <insert id="save" parameterType="com.example.be.issue.dto.IssueCreateFormDTO">
+        insert into ISSUE(title, contents, state, user_id<if test="milestoneName != null">, milestone_name</if>)
+        values (#{title}, #{contents}, true, #{userId}<if test="milestoneName != null">, #{milestoneName}</if>)
+
+        <selectKey resultType="int" keyProperty="issueNumber" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+    </insert>
+
+    <insert id="saveIssueLabelRelation" parameterType="com.example.be.issue.dto.IssueCreateFormDTO">
+        insert into ISSUE_LABEL_RELATION(issue_number, label_name)
+        values
+        <foreach item="labelName" collection="labelNames" separator=",">
+            (#{issueNumber}, #{labelName})
+        </foreach>
+    </insert>
+
+    <insert id="saveAssignee" parameterType="com.example.be.issue.dto.IssueCreateFormDTO">
+        insert into ASSIGNS(issue_number, user_id)
+        values
+        <foreach item="assignee" collection="assignees" separator=",">
+            (#{issueNumber}, #{assignee})
+        </foreach>
+    </insert>
+
+    <select id="validIssue" resultType="int" parameterType="com.example.be.issue.dto.IssueUpdateFormDTO">
+        SELECT count(*)
+        FROM ISSUE
+        WHERE number = #{issueNumber}
+    </select>
+
+    <select id="validMilestone" resultType="int" parameterType="com.example.be.issue.dto.IssueUpdateFormDTO">
+        SELECT count(*)
+        FROM MILESTONE
+        WHERE name = #{milestoneName}
+    </select>
+
+    <update id="updateIssue" parameterType="com.example.be.issue.dto.IssueUpdateFormDTO">
+        update ISSUE
+        <set>
+            <if test="state != null">state = #{state},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="contents != null">contents = #{contents},</if>
+            <if test="milestoneName != null">milestone_name = #{milestoneName},</if>
+            last_updated_date = now()
+        </set>
+        where number = #{issueNumber}
+    </update>
+
+    <insert id="insertAssigns" parameterType="com.example.be.issue.dto.IssueAssignsUpdateFormDTO">
+        insert into ASSIGNS(issue_number, user_id)
+        values
+        <foreach item="assignee" collection="assignees" separator=",">
+            (#{issueNumber}, #{assignee})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAssigns" parameterType="com.example.be.issue.dto.IssueAssignsUpdateFormDTO">
+        delete
+        from ASSIGNS
+        where issue_number = #{issueNumber}
+    </delete>
+
+    <select id="validLabels" resultType="int" parameterType="com.example.be.issue.dto.IssueLabelRelationUpdateFormDTO">
+        SELECT count(*) FROM LABEL
+        where name in
+        <foreach item="labelName" collection="labelNames" open="(" close=")" separator=",">
+            #{labelName}
+        </foreach>
+    </select>
+
+    <insert id="insertIssueLabelRelation" parameterType="com.example.be.issue.dto.IssueLabelRelationUpdateFormDTO">
+        insert into ISSUE_LABEL_RELATION(issue_number, label_name)
+        values
+        <foreach item="labelName" collection="labelNames" separator=",">
+            (#{issueNumber}, #{labelName})
+        </foreach>
+    </insert>
+
+    <delete id="deleteIssueLabelRelation" parameterType="com.example.be.issue.dto.IssueLabelRelationUpdateFormDTO">
+        delete
+        from ISSUE_LABEL_RELATION
+        where issue_number = #{issueNumber}
+    </delete>
+
+    <select id="findIssueSize" resultType="int"
+            parameterType="com.example.be.issue.dto.IssueSearchCondition">
+        select count(*)
+        from ISSUE i
+        left outer join MILESTONE m on i.milestone_name = m.name
+        left outer join USER u on i.user_id = u.id
+        <where>
+            <if test="state != null">
+                and i.state = #{state}
+            </if>
+            <if test="author != null">
+                and u.id = #{author}
+            </if>
+
+            <if test="milestoneName != null">
+                <choose>
+                    <when test="milestoneName == '$none'.toString()">
+                        and m.name is null
+                    </when>
+                    <otherwise>
+                        and m.name = #{milestoneName}
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="assignees != null">
+                <choose>
+                    <when test="assignees[0] == '$none'.toString()">
+                        and i.number not in (select a.issue_number from ASSIGNS a)
+                    </when>
+                    <otherwise>
+                        and i.number in (select a.issue_number
+                        from ASSIGNS a
+                        where a.user_id in
+                        <foreach item="assignee" collection="assignees" open="(" close=")" separator=",">
+                            #{assignee}
+                        </foreach>
+                        group by a.issue_number
+                        having count(*) = #{assigneesSize})
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="labelNames != null">
+                <choose>
+                    <when test="labelNames[0] == '$none'.toString()">
+                        and i.number not in (select ir.issue_number from ISSUE_LABEL_RELATION ir)
+                    </when>
+                    <otherwise>
+                        and i.number in (select ir.issue_number
+                        from ISSUE_LABEL_RELATION ir
+                        where ir.label_name in
+                        <foreach item="labelName" collection="labelNames" open="(" close=")" separator=",">
+                            #{labelName}
+                        </foreach>
+                        group by ir.issue_number
+                        having count(*) = #{labelNamesSize})
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+</mapper>

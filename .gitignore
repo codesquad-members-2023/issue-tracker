@@ -1,6 +1,9 @@
-BE/out/
+be/out/
+be/bin/
 .idea/
-BE/.gradle/
-BE/build/
-BE/src/main/resources/application.properties
-BE/src/test/resources/application.properties
+be/.gradle/
+be/build/
+be/src/main/resources/application.properties
+be/src/test/resources/application.properties
+.DS_Store
+
