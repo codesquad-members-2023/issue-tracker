@@ -1,15 +1,13 @@
 package com.issuetracker.dto.issue;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.data.relational.core.mapping.Column;
 
-@Data
-@AllArgsConstructor
+import lombok.Getter;
+
+@Getter
 public class AssigneeDto {
-    private Long id;
+    private long id;
     @Column("login_id")
     private String userName;
-    @Column("profile_url")
     private String profileUrl;
 }
