@@ -58,9 +58,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIp-9r-1pb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="924" y="-126"/>
+            <point key="canvasLocation" x="1849.6183206106869" y="-126.05633802816902"/>
         </scene>
-        <!--이슈-->
+        <!--Issue Tab View Controller-->
         <scene sceneID="uG2-ZW-Zvr">
             <objects>
                 <viewController id="hgp-X0-zP5" customClass="IssueTabViewController" customModule="issue_tracker" customModuleProvider="target" sceneMemberID="viewController">
@@ -69,42 +69,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bus-B5-wOJ">
-                                <rect key="frame" x="0.0" y="59" width="393" height="710"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
                                 <subviews>
-                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="043-4g-Nc4">
-                                        <rect key="frame" x="0.0" y="-9" width="393" height="44"/>
-                                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <items>
-                                            <navigationItem id="e36-H7-TrP">
-                                                <barButtonItem key="leftBarButtonItem" style="plain" id="hP7-yc-NZz">
-                                                    <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" id="Cuf-1D-390">
-                                                        <rect key="frame" x="16" y="4.6666666666666679" width="54" height="35"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="필터"/>
-                                                        <connections>
-                                                            <segue destination="SGj-EO-sgp" kind="presentation" id="dQy-Qs-LyE"/>
-                                                        </connections>
-                                                    </button>
-                                                    <color key="tintColor" name="AccentColor"/>
-                                                    <connections>
-                                                        <action selector="btn:" destination="hgp-X0-zP5" id="fdK-sZ-Lyn"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                                <barButtonItem key="rightBarButtonItem" style="plain" id="0VV-ab-vqX">
-                                                    <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="lZF-VX-dp6">
-                                                        <rect key="frame" x="323" y="4.6666666666666679" width="54" height="35"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="선택"/>
-                                                    </button>
-                                                    <color key="tintColor" name="AccentColor"/>
-                                                </barButtonItem>
-                                            </navigationItem>
-                                        </items>
-                                    </navigationBar>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tnt-wc-ugX" customClass="IssueCollectionView" customModule="issue_tracker" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="35" width="393" height="675"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="666"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sHQ-Wb-be0">
                                             <size key="itemSize" width="137" height="131"/>
@@ -126,13 +94,10 @@
                                     </collectionView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="043-4g-Nc4" firstAttribute="width" secondItem="bus-B5-wOJ" secondAttribute="width" id="BV3-Cr-GYf"/>
-                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="top" secondItem="043-4g-Nc4" secondAttribute="bottom" id="GjI-by-C5M"/>
-                                    <constraint firstItem="043-4g-Nc4" firstAttribute="top" secondItem="bus-B5-wOJ" secondAttribute="top" constant="-9" id="SWt-Bx-Mxt"/>
-                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="trailing" secondItem="043-4g-Nc4" secondAttribute="trailing" id="XLM-Kw-N12"/>
-                                    <constraint firstItem="043-4g-Nc4" firstAttribute="centerX" secondItem="bus-B5-wOJ" secondAttribute="centerX" id="bmS-Wt-CXm"/>
-                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="height" secondItem="bus-B5-wOJ" secondAttribute="height" multiplier="0.950704" id="sK5-6z-C4m"/>
-                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="leading" secondItem="043-4g-Nc4" secondAttribute="leading" id="shQ-Ai-4L0"/>
+                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="centerY" secondItem="bus-B5-wOJ" secondAttribute="centerY" id="3Q4-dy-yKv"/>
+                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="leading" secondItem="bus-B5-wOJ" secondAttribute="leading" id="EdZ-YL-zLd"/>
+                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="top" secondItem="bus-B5-wOJ" secondAttribute="top" id="Xbr-Gz-FKg"/>
+                                    <constraint firstItem="tnt-wc-ugX" firstAttribute="centerX" secondItem="bus-B5-wOJ" secondAttribute="centerX" id="y3j-fM-nYc"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -143,24 +108,51 @@
                             <constraint firstItem="bus-B5-wOJ" firstAttribute="top" secondItem="ef0-Tg-bER" secondAttribute="top" id="CiU-eR-vsO"/>
                             <constraint firstItem="ef0-Tg-bER" firstAttribute="bottom" secondItem="bus-B5-wOJ" secondAttribute="bottom" id="a1R-7O-kzt"/>
                             <constraint firstItem="bus-B5-wOJ" firstAttribute="centerX" secondItem="ef0-Tg-bER" secondAttribute="centerX" id="d5f-O1-KBk"/>
-                            <constraint firstItem="ef0-Tg-bER" firstAttribute="bottom" secondItem="tnt-wc-ugX" secondAttribute="bottom" id="ioZ-Il-hpf"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="이슈" image="property=exclamation" id="Tjq-5B-gcQ"/>
+                    <navigationItem key="navigationItem" id="RoA-pw-PkY">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="1zk-3q-DS8">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" id="SHC-dP-BFv">
+                                <rect key="frame" x="16" y="4.6666666666666679" width="54" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="필터"/>
+                                <connections>
+                                    <action selector="filterButtonTouched:" destination="hgp-X0-zP5" eventType="touchUpInside" id="fRc-8K-9Pn"/>
+                                </connections>
+                            </button>
+                            <color key="tintColor" name="AccentColor"/>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="ZUL-Ft-uWb">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="1ju-08-vxk">
+                                <rect key="frame" x="323" y="4.6666666666666679" width="54" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="선택"/>
+                                <connections>
+                                    <action selector="selectButtonTouched:" destination="hgp-X0-zP5" eventType="touchUpInside" id="PeW-Df-rBZ"/>
+                                </connections>
+                            </button>
+                            <color key="tintColor" name="AccentColor"/>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="backPlane" destination="bus-B5-wOJ" id="Aq5-Pq-9Bg"/>
+                        <outlet property="collectionView" destination="tnt-wc-ugX" id="HIt-UD-vPo"/>
+                        <outlet property="filterButton" destination="1zk-3q-DS8" id="JY3-Db-cuM"/>
+                        <outlet property="selectButton" destination="ZUL-Ft-uWb" id="ZQr-xv-efg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BZw-fe-jY9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="922.90076335877859" y="-733.09859154929586"/>
+            <point key="canvasLocation" x="1850" y="-733"/>
         </scene>
         <!--Issue Filter Table View Controller-->
         <scene sceneID="1Ce-N6-5OY">
             <objects>
                 <tableViewController id="Yfx-Yi-e9y" customClass="IssueFilterTableViewController" customModule="issue_tracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="ebC-yO-QKr">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -182,7 +174,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XwH-KB-smv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2643.5114503816794" y="-733.09859154929586"/>
+            <point key="canvasLocation" x="3883" y="-837"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="b8P-6g-gzi">
@@ -194,7 +186,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="hgp-X0-zP5" kind="relationship" relationship="viewControllers" id="43n-b4-60m"/>
+                        <segue destination="KwX-S8-4iJ" kind="relationship" relationship="viewControllers" id="43n-b4-60m"/>
                         <segue destination="F8v-26-MJN" kind="relationship" relationship="viewControllers" id="4JA-HO-xiw"/>
                         <segue destination="E4d-6A-TPY" kind="relationship" relationship="viewControllers" id="8vh-g6-cdg"/>
                         <segue destination="U3B-Id-ukx" kind="relationship" relationship="viewControllers" id="IDO-bb-UGM"/>
@@ -209,8 +201,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SGj-EO-sgp" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="5bI-WM-NC3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hGN-Vw-O3m">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -220,7 +213,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lwR-4N-9WD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1716.7938931297708" y="-733.09859154929586"/>
+            <point key="canvasLocation" x="3060" y="-837"/>
+        </scene>
+        <!--이슈-->
+        <scene sceneID="Zj0-GD-eeX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KwX-S8-4iJ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="이슈" image="property=exclamation" id="Tjq-5B-gcQ"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GZe-fD-04p">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hgp-X0-zP5" kind="relationship" relationship="rootViewController" id="Xao-Th-apV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Hr-Sw-isf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="922.90076335877859" y="-733.09859154929586"/>
         </scene>
     </scenes>
     <resources>

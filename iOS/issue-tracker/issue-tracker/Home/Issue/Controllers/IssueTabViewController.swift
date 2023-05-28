@@ -6,29 +6,151 @@
 //
 
 import UIKit
+import OSLog
 
-class IssueTabViewController: UIViewController {
+class IssueTabViewController: UIViewController, IssueCollectionViewDelegate {
+    private var isSelectionMode: Bool = false
+    private var addIssueButton: AddIssueButton?
+    private var toolBar: IssueSelectingToolbar?
+    @IBOutlet var filterButton: UIBarButtonItem!
+    @IBOutlet var selectButton: UIBarButtonItem!
+    @IBOutlet var collectionView: IssueCollectionView!
+    var cancelButton: UIBarButtonItem?
+    let nothingButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    var filterOptionList: FilterOptionsLike = FilterOptionListMock()
+    
     let fetcher = HTTPDataFetcher()
     
-    let collectionView = IssueCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let logger = Logger()
+    private let networkManager = NetworkManager()
+    private var issueFrames: [IssueFrame]?
+    private var currentIssueDataUrlString: String = "http://3.38.73.117:8080/api-ios/issues"
+    
     @IBOutlet var backPlane: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        backPlane.addSubview(collectionView)
-        
-        fetcher.fetchIssueData(completion: { result in
-            switch result {
-            case .success(let jsonString):
-                print(jsonString)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
+        collectionView.collectionViewDelegate = self
+        setCancelButton()
+        setToolbar()
+        setAddIssueButton()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let navigationController = segue.destination as? UINavigationController{
-            let filterTableViewController = navigationController.topViewController as? IssueFilterTableViewController
+
+    func didSelectCell(in collectionView: IssueCollectionView, at indexPath: IndexPath) {
+        if isSelectionMode == true {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? IssueCollectionViewCell else {
+                return
+            }
+            guard let toolBar = self.toolBar else {
+                return
+            }
+            
+            cell.isCheckmarked.toggle()
+            let isPlus = cell.isCheckmarked
+            toolBar.updateTitle(isPlus: isPlus)
+            cell.subIconView.change(isCheckmarked: isPlus)
+            cell.updateSubIconViewConstraints()
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        fetchData()
+    }
+    
+    private func setAddIssueButton() {
+        addIssueButton = AddIssueButton(radius: self.view.frame.height * 56 / 666)
+        guard let addIssueButton = addIssueButton else {
+            return
+        }
+        self.view.addSubview(addIssueButton)
+        setIssueAddButtonConstraints(button: addIssueButton)
+    }
+    
+    private func setIssueAddButtonConstraints(button: UIButton) {
+        
+        let length = self.view.frame.height * 56 / 666
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.heightAnchor.constraint(equalToConstant: length),
+            button.widthAnchor.constraint(equalToConstant: length),
+            button.bottomAnchor.constraint(equalTo: self.collectionView.bottomAnchor, constant: -length/2),
+            button.trailingAnchor.constraint(equalTo: self.collectionView.trailingAnchor, constant: -length/2)
+        ])
+    }
+    
+    private func calculateToolBarFrame() -> CGRect {
+        guard let tabBar = self.tabBarController?.tabBar else {
+            return CGRect()
+        }
+        let frame = CGRect(origin: tabBar.frame.origin, size: CGSize(width: tabBar.frame.width, height: tabBar.frame.height/2))
+        return frame
+    }
+    
+    private func setToolbar() {
+        self.toolBar = IssueSelectingToolbar(frame: calculateToolBarFrame())
+        guard let toolBar = self.toolBar else {
+            return
+        }
+        self.view.addSubview(toolBar)
+    }
+    
+    private func setCancelButton() {
+        cancelButton = UIBarButtonItem(title: "취소  ", style: .plain, target: self, action: #selector(cancelButtonTouched))
+    }
+    
+    @IBAction func filterButtonTouched(_ sender: UIButton) {
+        let filterTableViewController = IssueFilterTableViewController()
+        filterTableViewController.delegate = self
+        filterTableViewController.filterOptionList = filterOptionList
+        show(filterTableViewController, sender: sender)
+    }
+    
+    @IBAction func selectButtonTouched(_ sender: UIButton) {
+        self.toolBar?.isHidden = false
+        self.tabBarController?.tabBar.isHidden = true
+        self.navigationItem.leftBarButtonItem = nothingButton
+        self.navigationItem.rightBarButtonItem = cancelButton
+        self.addIssueButton?.isHidden = true
+        self.isSelectionMode.toggle()
+    }
+    
+    @objc private func cancelButtonTouched() {
+        self.toolBar?.isHidden = true
+        self.tabBarController?.tabBar.isHidden = false
+        self.navigationItem.leftBarButtonItem = filterButton
+        self.navigationItem.rightBarButtonItem = selectButton
+        self.addIssueButton?.isHidden = false
+        self.isSelectionMode.toggle()
+    }
+    
+    private func fetchData() {
+        guard let url = URL(string: currentIssueDataUrlString) else {
+            self.logger.log(
+                "Invalie URL string : \(self.currentIssueDataUrlString)")
+            return
+        }
+        networkManager.fetchIssueData(with: url) { result in
+            switch result {
+            case .success(let issueFrameHolder):
+                self.issueFrames = issueFrameHolder.issues
+                guard let issueFrames = self.issueFrames else { return }
+                self.collectionView.issueFrames = issueFrames
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                self.logger.error("error : \(error)")
+            }
+        }
+    }
+    
+    func setUrlString(with urlString: String) {
+        currentIssueDataUrlString = urlString
+    }
+}
+
+protocol IssueCollectionViewDelegate: AnyObject {
+    func didSelectCell(in collectionView: IssueCollectionView, at indexPath: IndexPath)
 }

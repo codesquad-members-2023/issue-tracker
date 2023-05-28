@@ -12,38 +12,16 @@ class SubIconView: UIImageView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.image = image?.withTintColor(.gray, renderingMode: .alwaysOriginal)
-        self.layoutSubviews()
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard let superview = superview else {
-            return
-        }
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalTo: superview.heightAnchor, multiplier: 16 / 148),
-            self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
-            self.centerXAnchor.constraint(equalTo: superview.trailingAnchor, constant: superview.frame.height / -6),
 
-            self.centerYAnchor.constraint(equalTo: superview.topAnchor, constant: superview.frame.height / 6)
-        ])
-    }
-    
-    override func updateConstraints() {
-        super.updateConstraints()
-        
-        guard let superview = superview else {
-            return
+    func change(isCheckmarked: Bool) {
+        if isCheckmarked == true {
+            self.image = UIImage(systemName: "checkmark.circle.fill")
+            self.image = image?.withTintColor(.tintColor, renderingMode: .alwaysOriginal)
         }
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.centerXAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.trailingAnchor, constant: superview.frame.height / -6)
-        ])
+        else if isCheckmarked == false {
+            self.image = UIImage(systemName: "chevron.forward")
+            self.image = image?.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        }
     }
-   
 }

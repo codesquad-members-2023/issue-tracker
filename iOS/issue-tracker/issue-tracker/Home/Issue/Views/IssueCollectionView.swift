@@ -9,6 +9,9 @@ import UIKit
 import SwipeCellKit
 
 class IssueCollectionView: UICollectionView {
+    var issueFrames = [IssueFrame]()
+    weak var collectionViewDelegate: IssueCollectionViewDelegate?
+    
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         self.delegate = self
@@ -28,11 +31,15 @@ class IssueCollectionView: UICollectionView {
 }
 
 extension IssueCollectionView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionViewDelegate?.didSelectCell(in: self, at: indexPath)
+    }
 }
 
 extension IssueCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return self.issueFrames.count
+        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -40,9 +47,10 @@ extension IssueCollectionView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IssueCollectionViewCell.identifier, for: indexPath) as? SwipeCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IssueCollectionViewCell.identifier, for: indexPath) as? IssueCollectionViewCell else {
             return UICollectionViewCell()
         }
+        cell.configure(with: self.issueFrames[indexPath.item])
         cell.delegate = self
         return cell
     }
@@ -99,7 +107,9 @@ extension IssueCollectionView: SwipeCollectionViewCellDelegate {
             return nil
         }
         
-        let delete = SwipeAction(style: .destructive, title: "삭제") { action, indexPath in }
+        let delete = SwipeAction(style: .destructive, title: "삭제") { action, indexPath in
+            self.issueFrames.remove(at: indexPath.item)
+        }
         
         delete.image = UIImage(systemName: "trash")
         
@@ -107,7 +117,7 @@ extension IssueCollectionView: SwipeCollectionViewCellDelegate {
         
         exit.image = UIImage(systemName: "archivebox")
         exit.backgroundColor = UIColor(red: 0.329, green: 0.227, blue: 0.745, alpha: 1)
-
+        
         return [delete, exit]
     }
     
@@ -118,4 +128,3 @@ extension IssueCollectionView: SwipeCollectionViewCellDelegate {
         return options
     }
 }
-
