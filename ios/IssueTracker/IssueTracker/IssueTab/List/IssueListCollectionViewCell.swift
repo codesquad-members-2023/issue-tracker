@@ -8,31 +8,33 @@
 import UIKit
 
 class IssueListCollectionViewCell: UICollectionViewCell {
+   static var cellId: String = "IssueListCollectionViewCell"
+   
    @IBOutlet var titleLabel: UILabel!
    @IBOutlet var checkBoxImageView: UIImageView!
    @IBOutlet var descriptionLabel: UILabel!
    @IBOutlet var milestoneLabel: UILabel!
    @IBOutlet var labelStackView: UIStackView!
+   @IBOutlet weak var labelStackContainer: UIView!
    
    override func awakeFromNib() {
       super.awakeFromNib()
       configureFont()
       configureImage()
-      labelStackView.sizeToFit()
    }
    
    override func prepareForReuse() {
       super.prepareForReuse()
+      labelStackContainer.isHidden = false
       emptyLabelStack()
    }
    
    func configureFont() {
-      self.titleLabel.apply(typography: TypoGraphy(weight: .bold, size: .large),
+      self.titleLabel.apply(typography: Typography(weight: .bold, size: .large),
                             textColor: .gray900)
-      self.descriptionLabel.apply(typography: TypoGraphy(weight: .regular, size: .medium),
-                                  textColor: .gray800,
-                                  willApplyHeight: false)
-      self.milestoneLabel.apply(typography: TypoGraphy(weight: .regular, size: .medium),
+      self.descriptionLabel.apply(typography: Typography(weight: .regular, size: .medium),
+                                  textColor: .gray800)
+      self.milestoneLabel.apply(typography: Typography(weight: .regular, size: .medium),
                                 textColor: .gray800)
    }
    
@@ -48,7 +50,22 @@ class IssueListCollectionViewCell: UICollectionViewCell {
    }
    
    func emptyLabelStack() {
-      labelStackView.arrangedSubviews.forEach { view in view.removeFromSuperview()
+      labelStackView.arrangedSubviews.forEach { view in view.removeFromSuperview() }
+   }
+   
+   func configure(issue: IssueList.Issue) {
+      titleLabel.text = issue.title
+      descriptionLabel.text = issue.content
+      milestoneLabel.text = issue.milestoneName
+      
+      if issue.labelList.isEmpty {
+         labelStackContainer.isHidden = true
+         return
       }
+      
+      for label in issue.labelList {
+         addLabel(name: label.labelName, color: label.backgroundColor)
+      }
+      labelStackView.sizeToFit()
    }
 }
