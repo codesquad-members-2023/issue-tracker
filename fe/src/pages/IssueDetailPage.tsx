@@ -10,8 +10,6 @@ import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
 
-// TODO(Jayden): TEMP 상수들 제거 및 교체
-
 const IssueDetailPage = () => {
   const { issueId } = useParams<{ issueId: string }>();
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueId}`;
@@ -35,8 +33,9 @@ const IssueDetailPage = () => {
   const handleClickIsIssueTitleEdit = () => {
     setIsIssueTitleEdit(!isIssueTitleEdit);
   };
+  const issueDetailWrapperRef = React.useRef<HTMLTextAreaElement>(null);
   return (
-    <>
+    <section ref={issueDetailWrapperRef}>
       <section className="flex justify-between">
         {issueDetailData && (
           <IssueMainInfo
@@ -83,7 +82,7 @@ const IssueDetailPage = () => {
           </div>
         </section>
       </section>
-    </>
+    </section>
   );
 };
 
