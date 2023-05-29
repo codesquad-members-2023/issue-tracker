@@ -18,6 +18,8 @@ interface Props {
   labelList: LabelRow[];
   elapseTime: ElapseTime;
   milestoneName?: string;
+  isChecked: boolean;
+  setCheckedIssues: (id: number) => void;
   onIssueTitleClick: (id: number) => void;
 }
 
@@ -30,6 +32,8 @@ const Issue: React.FC<Props> = ({
   elapseTime,
   milestoneName,
   labelList,
+  isChecked,
+  setCheckedIssues,
   onIssueTitleClick,
 }) => {
   const { days, hours, minutes } = elapseTime;
@@ -46,8 +50,8 @@ const Issue: React.FC<Props> = ({
       <div className="mr-8 mt-2">
         <input
           type="checkbox"
-          checked={false}
-          onChange={() => console.log('check')}
+          checked={isChecked}
+          onClick={() => setCheckedIssues(issueId)}
         />
       </div>
       <Link to={`issues/${issueId}`}>

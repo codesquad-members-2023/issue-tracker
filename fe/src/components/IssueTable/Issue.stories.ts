@@ -26,6 +26,7 @@ export const Primary: Story = {
     },
     milestoneName: 'milestone',
     labelList: [],
+    isChecked: false,
   },
 };
 
@@ -59,5 +60,6 @@ export const Secondary: Story = {
         fontColor: 'black',
       },
     ],
+    isChecked: false,
   },
 };

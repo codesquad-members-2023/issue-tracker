@@ -72,10 +72,20 @@ const IssueTable: React.FC<Props> = ({
   onStatusTabClick,
 }) => {
   const [openedFilterList, setOpenedFilterList] = useState('');
+  const [checkedIssues, setCheckedIssues] = useState<number[]>([]);
 
   const onItemClick = (type: keyof FilterOptions, id: number) => {
     updateFilterOption(type, id);
     setOpenedFilterList('');
+  };
+
+  const handleCheckbox = (id: number) => {
+    setCheckedIssues(prevCheckedIssues => {
+      const isChecked = prevCheckedIssues.includes(id);
+      return isChecked
+        ? prevCheckedIssues.filter(issueId => issueId !== id)
+        : [...prevCheckedIssues, id];
+    });
   };
 
   return (
@@ -240,6 +250,7 @@ const IssueTable: React.FC<Props> = ({
             milestoneName,
             labelList,
           } = issue;
+          const isClicked = checkedIssues.includes(issueId);
           return (
             <Issue
               key={issueId}
@@ -251,6 +262,8 @@ const IssueTable: React.FC<Props> = ({
               elapseTime={elapseTime}
               milestoneName={milestoneName}
               labelList={labelList}
+              isChecked={isClicked}
+              setCheckedIssues={handleCheckbox}
               onIssueTitleClick={() => console.log('')}
             />
           );
