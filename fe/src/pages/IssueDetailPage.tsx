@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
@@ -9,6 +9,7 @@ import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
+import ErrorPage from './ErrorPage';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 
@@ -20,8 +21,12 @@ const IssueDetailPage = () => {
   const fetchData = async (api: string) => {
     try {
       const res = await fetch(api);
-      const data = await res.json();
-      setIssueDetailData(data);
+      if (!res.ok) {
+        throw new Error(`에러가 발생했습니다. 에러내용: ${res}`);
+      } else {
+        const data = await res.json();
+        setIssueDetailData(data);
+      }
     } catch (error) {
       console.log(error);
     }

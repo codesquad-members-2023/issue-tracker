@@ -16,12 +16,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <MainPage />,
-        errorElement: <ErrorPage />,
       },
       {
         path: '/issues/:issueId',
         element: <IssueDetailPage />,
-        errorElement: <ErrorPage />,
       },
     ],
   },
