@@ -91,6 +91,7 @@ const IssueCommentInput = () => {
           iconName="plus"
           fontSize="text-sm"
           condition={commentContent.length > 0 ? 'Enabled' : 'Disabled'}
+          disabled={commentContent.length === 0}
         />
       </div>
     </div>
