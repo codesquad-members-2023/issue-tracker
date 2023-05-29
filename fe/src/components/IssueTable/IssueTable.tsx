@@ -4,9 +4,11 @@ import Issue from './Issue';
 import Button from '@common/Button';
 import FilterList from '@components/FilterList/FilterList';
 import { ElapseTime } from '@utils/getTimeElapsed';
+import { STATUS_DROPDOWN_LIST } from '@constants/Constants';
 
 export interface FilterOptions {
   page?: number;
+  status?: number;
   issue?: number;
   filter?: number;
   assignee?: number;
@@ -55,6 +57,7 @@ interface Props {
   countClosedIssues: number;
   status: boolean;
   filterOptions: FilterOptions;
+  updateIssueStatus: (id: number) => void;
   onStatusTabClick: (status: boolean) => void;
   updateFilterOption: (type: keyof FilterOptions, id: number) => void;
 }
@@ -68,24 +71,41 @@ const IssueTable: React.FC<Props> = ({
   countClosedIssues,
   status,
   filterOptions,
+  updateIssueStatus,
   updateFilterOption,
   onStatusTabClick,
 }) => {
   const [openedFilterList, setOpenedFilterList] = useState('');
   const [checkedIssues, setCheckedIssues] = useState<number[]>([]);
+  const allChecked =
+    checkedIssues.length > 0 && checkedIssues.length === issues.length;
 
   const onItemClick = (type: keyof FilterOptions, id: number) => {
-    updateFilterOption(type, id);
-    setOpenedFilterList('');
+    if (type === 'status') {
+      updateIssueStatus(id);
+    } else {
+      updateFilterOption(type, id);
+      setOpenedFilterList('');
+    }
   };
 
-  const handleCheckbox = (id: number) => {
+  const handleItemChecked = (id: number) => {
     setCheckedIssues(prevCheckedIssues => {
       const isChecked = prevCheckedIssues.includes(id);
+
       return isChecked
         ? prevCheckedIssues.filter(issueId => issueId !== id)
         : [...prevCheckedIssues, id];
     });
+  };
+
+  const handleAllItemChecked = () => {
+    if (allChecked) {
+      setCheckedIssues([]);
+    } else {
+      const issueIds = issues.map(({ issueId }) => issueId);
+      setCheckedIssues(issueIds);
+    }
   };
 
   return (
@@ -95,9 +115,10 @@ const IssueTable: React.FC<Props> = ({
           <div className="flex items-center">
             <div className="mr-8">
               <input
+                className="focus:outline-none"
                 type="checkbox"
-                checked={false}
-                onChange={() => console.log('check')}
+                checked={allChecked}
+                onChange={handleAllItemChecked}
               />
             </div>
             <div className="flex gap-x-3">
@@ -121,121 +142,151 @@ const IssueTable: React.FC<Props> = ({
               />
             </div>
           </div>
-          <div className="flex justify-end gap-6">
+          {!checkedIssues.length ? (
+            <div className="flex justify-end gap-6">
+              <div className="relative">
+                <Button
+                  title="담당자"
+                  onClick={() => setOpenedFilterList('assignee')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="assignee"
+                  items={users.map(user => {
+                    const { userId, userName, profileUrl } = user;
+                    return {
+                      id: userId,
+                      name: userName,
+                      width: 20,
+                      height: 20,
+                      isClicked:
+                        filterOptions['assignee'] === userId ? true : false,
+                      imgUrl: profileUrl,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'assignee' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="레이블"
+                  onClick={() => setOpenedFilterList('label')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="label"
+                  items={labels.map(label => {
+                    const { labelId, labelName, backgroundColor } = label;
+                    return {
+                      id: labelId,
+                      name: labelName,
+                      isClicked:
+                        filterOptions['label'] === labelId ? true : false,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: backgroundColor,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'label' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="마일스톤"
+                  onClick={() => setOpenedFilterList('milestone')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="milestone"
+                  items={milestones.map(milestone => {
+                    const { milestoneId, milestoneName } = milestone;
+                    return {
+                      id: milestoneId,
+                      name: milestoneName,
+                      isClicked:
+                        filterOptions['milestone'] === milestoneId
+                          ? true
+                          : false,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'milestone' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="작성자"
+                  onClick={() => setOpenedFilterList('writer')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="writer"
+                  items={users.map(user => {
+                    const { userId, userName, profileUrl } = user;
+                    return {
+                      id: userId,
+                      name: userName,
+                      width: 20,
+                      height: 20,
+                      isClicked:
+                        filterOptions['writer'] === userId ? true : false,
+                      imgUrl: profileUrl,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'writer' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+            </div>
+          ) : (
             <div className="relative">
               <Button
-                title="담당자"
-                onClick={() => setOpenedFilterList('assignee')}
+                title="상태 수정"
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
+                onClick={() => setOpenedFilterList('status')}
               />
               <FilterList
-                title="assignee"
-                items={users.map(user => {
-                  const { userId, userName, profileUrl } = user;
+                title="status"
+                items={STATUS_DROPDOWN_LIST.map(item => {
+                  const { id, name } = item;
                   return {
-                    id: userId,
-                    name: userName,
-                    width: 20,
-                    height: 20,
-                    isClicked:
-                      filterOptions['assignee'] === userId ? true : false,
-                    imgUrl: profileUrl,
+                    id,
+                    name,
+                    isMultipleItemSelectable: false,
                   };
                 })}
-                isOpen={openedFilterList === 'assignee' ? true : false}
+                isOpen={openedFilterList === 'status' ? true : false}
                 setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
-            <div className="relative">
-              <Button
-                title="레이블"
-                onClick={() => setOpenedFilterList('label')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="label"
-                items={labels.map(label => {
-                  const { labelId, labelName, backgroundColor } = label;
-                  return {
-                    id: labelId,
-                    name: labelName,
-                    isClicked:
-                      filterOptions['label'] === labelId ? true : false,
-                    width: 20,
-                    height: 20,
-                    backgroundColor: backgroundColor,
-                  };
-                })}
-                isOpen={openedFilterList === 'label' ? true : false}
-                setOpenedFilterList={setOpenedFilterList}
-                onItemClick={onItemClick}
-              />
-            </div>
-            <div className="relative">
-              <Button
-                title="마일스톤"
-                onClick={() => setOpenedFilterList('milestone')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="milestone"
-                items={milestones.map(milestone => {
-                  const { milestoneId, milestoneName } = milestone;
-                  return {
-                    id: milestoneId,
-                    name: milestoneName,
-                    isClicked:
-                      filterOptions['milestone'] === milestoneId ? true : false,
-                  };
-                })}
-                isOpen={openedFilterList === 'milestone' ? true : false}
-                setOpenedFilterList={setOpenedFilterList}
-                onItemClick={onItemClick}
-              />
-            </div>
-            <div className="relative">
-              <Button
-                title="작성자"
-                onClick={() => setOpenedFilterList('writer')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="writer"
-                items={users.map(user => {
-                  const { userId, userName, profileUrl } = user;
-                  return {
-                    id: userId,
-                    name: userName,
-                    width: 20,
-                    height: 20,
-                    isClicked:
-                      filterOptions['writer'] === userId ? true : false,
-                    imgUrl: profileUrl,
-                  };
-                })}
-                isOpen={openedFilterList === 'writer' ? true : false}
-                setOpenedFilterList={setOpenedFilterList}
-                onItemClick={onItemClick}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
       {issues.length ? (
@@ -263,7 +314,7 @@ const IssueTable: React.FC<Props> = ({
               milestoneName={milestoneName}
               labelList={labelList}
               isChecked={isClicked}
-              setCheckedIssues={handleCheckbox}
+              onIssueChecked={handleItemChecked}
               onIssueTitleClick={() => console.log('')}
             />
           );

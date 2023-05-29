@@ -7,7 +7,7 @@ import { ReactComponent as CheckOnCircle } from '@assets/checkOnCircle.svg';
 export interface FilterItemRaw {
   id: number;
   name: string;
-  isClicked: boolean;
+  isClicked?: boolean;
   imgUrl?: string;
   width?: number;
   height?: number;

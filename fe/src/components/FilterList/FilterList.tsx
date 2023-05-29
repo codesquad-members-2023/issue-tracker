@@ -6,6 +6,7 @@ import useOutsideClick from './useOutsideClick';
 
 export const filterOptions: Record<keyof FilterOptions, string | string[]> = {
   page: '페이지',
+  status: '상태',
   issue: ['열린이슈', '닫힌이슈'],
   filter: '이슈',
   assignee: '담당자',

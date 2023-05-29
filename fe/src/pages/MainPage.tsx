@@ -104,6 +104,10 @@ const MainPage = () => {
     return generateFilterString(isOpenIssues, filterOptions);
   }, [filterQueryString]);
 
+  const updateIssueStatus = () => {
+    // TODO(Lily): issue를 열고 닫는 함수 구현
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -155,6 +159,7 @@ const MainPage = () => {
           countClosedIssues={data.countClosedIssues}
           status={isOpenIssues}
           filterOptions={filterOptions}
+          updateIssueStatus={updateIssueStatus}
           onStatusTabClick={handleClickStatusTab}
           updateFilterOption={updateFilterOption}
         />
