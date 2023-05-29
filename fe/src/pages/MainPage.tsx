@@ -170,7 +170,7 @@ const MainPage = () => {
           />
         </div>
       </div>
-      {Object.keys(data).length && (
+      {Object.keys(data).length ? (
         <IssueTable
           issues={issueItems}
           users={data.userList}
@@ -184,7 +184,7 @@ const MainPage = () => {
           onStatusTabClick={handleClickStatusTab}
           updateFilterOption={updateFilterOption}
         />
-      )}
+      ) : null}
     </>
   );
 };
