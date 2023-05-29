@@ -60,7 +60,7 @@ const IssueCommentInput = () => {
         <div
           className={`flex justify-end ${
             commentFocused ? 'bg-white' : 'bg-gray-200'
-          }`}
+          } h-8`}
         >
           {showCharCount && `띄어쓰기 포함 ${commentContent.length}자`}
         </div>
