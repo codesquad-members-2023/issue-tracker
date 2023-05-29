@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '@common/Button';
+import { issueDetailDataContext } from '../../pages/IssueDetailPage';
+import { BASE_API } from '../../api';
 
 const IssueCommentInput = () => {
   const [commentContent, setCommentContent] = useState('');
@@ -37,6 +39,9 @@ const IssueCommentInput = () => {
     };
   }, [commentContent]);
 
+  const issueDetailData = useContext(issueDetailDataContext);
+  console.log(issueDetailData);
+  const ISSUE_DETAIL_API = `${BASE_API}issues/${issueDetailData?.issue.issueId}`;
   return (
     <div className="flex w-full flex-col justify-between gap-y-6">
       <section
@@ -86,7 +91,19 @@ const IssueCommentInput = () => {
       <div className="flex justify-end">
         <Button
           title="코멘트 작성"
-          onClick={() => console.log('코멘트 작성')}
+          onClick={() => {
+            fetch(ISSUE_DETAIL_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId: 3, // TODO(Jayden): 로그인한 유저의 id로 변경
+                content: commentContent,
+              }),
+            });
+            setCommentContent('');
+          }}
           size="Small"
           iconName="plus"
           fontSize="text-sm"
