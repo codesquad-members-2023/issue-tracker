@@ -19,6 +19,10 @@ const FilterBar: React.FC<Props> = ({
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const handleFilterOpen = (status: string) => {
+    setIsFilterOpen(Boolean(status));
+  };
+
   const onItemClick = (type: keyof FilterOptions, id: number) => {
     updateFilterOption(type, id);
   };
@@ -45,6 +49,7 @@ const FilterBar: React.FC<Props> = ({
           };
         })}
         isOpen={isFilterOpen}
+        setOpenedFilterList={handleFilterOpen}
         onItemClick={onItemClick}
       />
       <form

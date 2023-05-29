@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
 import { FilterOptions } from '@components/IssueTable/IssueTable';
+import useOutsideClick from './useOutsideClick';
 
 export const filterOptions: Record<keyof FilterOptions, string | string[]> = {
   page: '페이지',
@@ -17,10 +18,19 @@ interface Props {
   title: keyof FilterOptions;
   items: FilterItemRaw[];
   isOpen: boolean;
+  setOpenedFilterList: (filter: string) => void;
   onItemClick: (type: keyof FilterOptions, id: number) => void;
 }
 
-const FilterList: React.FC<Props> = ({ title, items, isOpen, onItemClick }) => {
+const FilterList: React.FC<Props> = ({
+  title,
+  items,
+  isOpen,
+  setOpenedFilterList,
+  onItemClick,
+}) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
   const onItemClickHandler = (id: number) => {
     onItemClick(title, id);
   };
@@ -34,8 +44,23 @@ const FilterList: React.FC<Props> = ({ title, items, isOpen, onItemClick }) => {
     throw new Error('Invalid title');
   };
 
+  const handleOutsideClick = (event?: MouseEvent) => {
+    if (event) {
+      // 클릭된 영역이 FilterList 내부의 요소이면 아무 동작하지 않음
+      if (ref.current && ref.current.contains(event.target as Node)) {
+        return;
+      }
+    }
+
+    // 클릭된 영역이 FilterList 외부의 요소이면 FilterList를 닫음
+    setOpenedFilterList('');
+  };
+
+  useOutsideClick(ref, handleOutsideClick);
+
   return isOpen ? (
     <div
+      ref={ref}
       className={`absolute ${
         title !== 'filter' && 'right-0'
       } top-12 z-10 flex w-60 flex-col items-center rounded-lg border`}

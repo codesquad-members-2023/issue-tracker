@@ -137,6 +137,7 @@ const IssueTable: React.FC<Props> = ({
                   };
                 })}
                 isOpen={openedFilterList === 'assignee' ? true : false}
+                setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
@@ -165,6 +166,7 @@ const IssueTable: React.FC<Props> = ({
                   };
                 })}
                 isOpen={openedFilterList === 'label' ? true : false}
+                setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
@@ -190,6 +192,7 @@ const IssueTable: React.FC<Props> = ({
                   };
                 })}
                 isOpen={openedFilterList === 'milestone' ? true : false}
+                setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
@@ -218,6 +221,7 @@ const IssueTable: React.FC<Props> = ({
                   };
                 })}
                 isOpen={openedFilterList === 'writer' ? true : false}
+                setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
