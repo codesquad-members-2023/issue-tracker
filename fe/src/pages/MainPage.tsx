@@ -7,7 +7,6 @@ import IssueTable, {
   FilterOptions,
   IssueRow,
 } from '@components/IssueTable/IssueTable';
-import FilterList from '@components/FilterList/FilterList';
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 
@@ -125,7 +124,11 @@ const MainPage = () => {
   return (
     <>
       <div className="relative mb-6 flex justify-between">
-        <FilterBar searchValue={filterString} onClick={() => console.log('')} />
+        <FilterBar
+          searchValue={filterString}
+          filterOptions={filterOptions}
+          updateFilterOption={updateFilterOption}
+        />
         <div className="flex gap-x-4">
           <NavLinks
             countAllMilestones={data.countAllMilestones}

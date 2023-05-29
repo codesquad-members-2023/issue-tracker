@@ -10,5 +10,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: { searchValue: 'is:issue is:open' },
+  args: { searchValue: 'is:issue is:open', filterOptions: {} },
 };

@@ -3,8 +3,9 @@ import React from 'react';
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
 import { FilterOptions } from '@components/IssueTable/IssueTable';
 
-const filterOptions: Record<keyof FilterOptions, string> = {
+export const filterOptions: Record<keyof FilterOptions, string | string[]> = {
   page: '페이지',
+  issue: ['열린이슈', '닫힌이슈'],
   filter: '이슈',
   assignee: '담당자',
   label: '레이블',
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const FilterList: React.FC<Props> = ({ title, items, isOpen, onItemClick }) => {
-  const _onItemClick = (id: number) => {
+  const onItemClickHandler = (id: number) => {
     onItemClick(title, id);
   };
 
@@ -33,30 +34,27 @@ const FilterList: React.FC<Props> = ({ title, items, isOpen, onItemClick }) => {
     throw new Error('Invalid title');
   };
 
-  return (
-    <>
-      {isOpen && (
-        // TODO(Lily): right-0은 이슈 필터 시에는 필요 없음
-        <div className="absolute right-0 top-12 z-10 flex w-60 flex-col items-center rounded-lg border">
-          <div className="w-full rounded-t-lg bg-gray-100 py-2 pl-4 text-left text-sm">
-            {getOption()} 필터
-          </div>
-          <div className="w-full rounded-b-lg bg-white">
-            {/* TODO(Lily): 담당자, 레이블, 마일스톤 없는 이슈 추가 */}
-            {items.map(item => {
-              return (
-                <FilterItem
-                  key={item.id}
-                  item={item}
-                  onItemClick={_onItemClick}
-                />
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return isOpen ? (
+    <div
+      className={`absolute ${
+        title !== 'filter' && 'right-0'
+      } top-12 z-10 flex w-60 flex-col items-center rounded-lg border`}
+    >
+      <div className="w-full rounded-t-lg bg-gray-100 py-2 pl-4 text-left text-sm">
+        {getOption()} 필터
+      </div>
+      <div className="w-full rounded-b-lg bg-white">
+        {/* TODO(Lily): 담당자, 레이블, 마일스톤 없는 이슈 추가 */}
+        {items.map(item => (
+          <FilterItem
+            key={item.id}
+            item={item}
+            onItemClick={onItemClickHandler}
+          />
+        ))}
+      </div>
+    </div>
+  ) : null;
 };
 
 export default FilterList;

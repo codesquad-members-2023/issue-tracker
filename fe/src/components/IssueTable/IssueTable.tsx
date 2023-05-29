@@ -7,6 +7,7 @@ import { ElapseTime } from '@utils/getTimeElapsed';
 
 export interface FilterOptions {
   page?: number;
+  issue?: number;
   filter?: number;
   assignee?: number;
   label?: number;
@@ -128,6 +129,8 @@ const IssueTable: React.FC<Props> = ({
                   return {
                     id: userId,
                     name: userName,
+                    width: 20,
+                    height: 20,
                     isClicked:
                       filterOptions['assignee'] === userId ? true : false,
                     imgUrl: profileUrl,
@@ -156,6 +159,8 @@ const IssueTable: React.FC<Props> = ({
                     name: labelName,
                     isClicked:
                       filterOptions['label'] === labelId ? true : false,
+                    width: 20,
+                    height: 20,
                     backgroundColor: backgroundColor,
                   };
                 })}
@@ -205,6 +210,8 @@ const IssueTable: React.FC<Props> = ({
                   return {
                     id: userId,
                     name: userName,
+                    width: 20,
+                    height: 20,
                     isClicked:
                       filterOptions['writer'] === userId ? true : false,
                     imgUrl: profileUrl,
