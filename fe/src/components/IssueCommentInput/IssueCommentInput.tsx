@@ -4,25 +4,6 @@ import Button from '@common/Button';
 const IssueCommentInput = () => {
   const [commentContent, setCommentContent] = useState('');
   const [showCharCount, setShowCharCount] = useState(true);
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    const handleTyping = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        setShowCharCount(false);
-      }, 2000);
-    };
-    handleTyping();
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [commentContent]);
-  const handleCommentContentChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setCommentContent(e.target.value);
-  };
   const commentTextAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const [commentFocused, setCommentFocused] = useState(false);
   function clickOnOutside(ref: any) {
@@ -40,6 +21,22 @@ const IssueCommentInput = () => {
   }
 
   clickOnOutside(commentTextAreaRef);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const handleTyping = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setShowCharCount(false);
+      }, 2000);
+    };
+    handleTyping();
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [commentContent]);
+
   return (
     <div className="flex w-full flex-col justify-between gap-y-6">
       <section
