@@ -57,7 +57,7 @@ interface Props {
   countClosedIssues: number;
   status: boolean;
   filterOptions: FilterOptions;
-  updateIssueStatus: (id: number) => void;
+  updateIssueStatus: (id: number, checkedIssues: number[]) => void;
   onStatusTabClick: (status: boolean) => void;
   updateFilterOption: (type: keyof FilterOptions, id: number) => void;
 }
@@ -82,7 +82,7 @@ const IssueTable: React.FC<Props> = ({
 
   const onItemClick = (type: keyof FilterOptions, id: number) => {
     if (type === 'status') {
-      updateIssueStatus(id);
+      updateIssueStatus(id, checkedIssues);
     } else {
       updateFilterOption(type, id);
       setOpenedFilterList('');

@@ -104,8 +104,29 @@ const MainPage = () => {
     return generateFilterString(isOpenIssues, filterOptions);
   }, [filterQueryString]);
 
-  const updateIssueStatus = () => {
-    // TODO(Lily): issue를 열고 닫는 함수 구현
+  const updatedIssues = (id: number, checkedIssues: number[]) => {
+    const fetchData = checkedIssues.map(checkedIssue => {
+      return {
+        id: checkedIssue,
+        opened: Boolean(id),
+      };
+    });
+
+    fetch(`${BASE_API}issues`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(fetchData),
+    })
+      .then(response => {
+        // 처리할 작업 추가 (응답 확인 등)
+        console.log(response);
+      })
+      .catch(error => {
+        // 에러 처리
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -159,7 +180,7 @@ const MainPage = () => {
           countClosedIssues={data.countClosedIssues}
           status={isOpenIssues}
           filterOptions={filterOptions}
-          updateIssueStatus={updateIssueStatus}
+          updateIssueStatus={updatedIssues}
           onStatusTabClick={handleClickStatusTab}
           updateFilterOption={updateFilterOption}
         />
