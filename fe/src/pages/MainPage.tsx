@@ -21,7 +21,6 @@ const MainPage = () => {
   };
 
   const mapIssues = (data: any) => {
-    console.log(data);
     const issueItems: IssueRow[] = data.issues
       .filter((issue: any) => issue.open === isOpenIssues)
       .map((issue: any) => {
@@ -73,7 +72,7 @@ const MainPage = () => {
     };
 
     fetchData();
-  }, [filterOptions]);
+  }, []);
 
   const filterQueryString = useMemo(() => {
     const statusOption = isOpenIssues ? 'open' : 'close';
@@ -129,6 +128,8 @@ const MainPage = () => {
         });
 
         // 처리할 작업 추가 (응답 확인 등)
+        fetchFilteredData();
+        // reset checkedIssues
         console.log(response);
       } catch (error) {
         // 에러 처리
@@ -137,21 +138,21 @@ const MainPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${BASE_API}${filterQueryString}`);
-        const data = await res.json();
+  const fetchFilteredData = async () => {
+    try {
+      const res = await fetch(`${BASE_API}${filterQueryString}`);
+      const data = await res.json();
 
-        if (res.status === 200) {
-          mapIssues(data);
-        }
-      } catch (error) {
-        console.log(error);
+      if (res.status === 200) {
+        mapIssues(data);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchFilteredData();
   }, [filterQueryString]);
 
   return (
