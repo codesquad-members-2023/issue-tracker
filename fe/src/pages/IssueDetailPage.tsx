@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
@@ -9,7 +9,6 @@ import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
-import ErrorPage from './ErrorPage';
 
 // TODO(Jayden): TEMP 상수들 제거 및 교체
 

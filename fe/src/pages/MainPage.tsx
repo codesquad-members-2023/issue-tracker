@@ -7,7 +7,6 @@ import IssueTable, {
   FilterOptions,
   IssueRow,
 } from '@components/IssueTable/IssueTable';
-import FilterList from '@components/FilterList/FilterList';
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 
