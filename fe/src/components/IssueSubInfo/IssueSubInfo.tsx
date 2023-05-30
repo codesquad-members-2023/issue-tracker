@@ -36,6 +36,8 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             setIsDropDownOpen({
               ...isDropDownOpen,
               assignee: !isDropDownOpen.assignee,
+              label: false,
+              milestone: false,
             })
           }
           hasDropDown={true}
@@ -75,6 +77,8 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             setIsDropDownOpen({
               ...isDropDownOpen,
               label: !isDropDownOpen.label,
+              assignee: false,
+              milestone: false,
             });
           }}
           hasDropDown={true}
@@ -118,6 +122,8 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             setIsDropDownOpen({
               ...isDropDownOpen,
               milestone: !isDropDownOpen.milestone,
+              assignee: false,
+              label: false,
             })
           }
           hasDropDown={true}
