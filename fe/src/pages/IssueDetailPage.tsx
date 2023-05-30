@@ -9,6 +9,7 @@ import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
+import fetchData from '@utils/fetchSetData';
 
 export const issueDetailDataContext = createContext<
   IssueDetailData | undefined
@@ -18,22 +19,9 @@ const IssueDetailPage = () => {
   const { issueId } = useParams<{ issueId: string }>();
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueId}`;
   const [issueDetailData, setIssueDetailData] = useState<IssueDetailData>(); // [data, setData
-  const fetchData = async (api: string) => {
-    try {
-      const res = await fetch(api);
-      if (!res.ok) {
-        throw new Error(`에러가 발생했습니다. 에러내용: ${res}`);
-      } else {
-        const data = await res.json();
-        setIssueDetailData(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
-    fetchData(ISSUE_DETAIL_API);
+    fetchData(ISSUE_DETAIL_API, setIssueDetailData);
   }, []);
 
   const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
@@ -65,7 +53,7 @@ const IssueDetailPage = () => {
                 issue={issueDetailData.issue}
               />
             )}
-            <IssueCommentInput />
+            <IssueCommentInput setIssueDetailData={setIssueDetailData} />
           </section>
           <section className="h-fit">
             {issueDetailData && (
