@@ -26,7 +26,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
     label: false,
     milestone: false,
   });
-
+  console.log('issueDetailData', issueDetailData);
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
@@ -58,10 +58,10 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   imgUrl: user.profileUrl,
                   width: 20,
                   height: 20,
+                  isClicked: issueDetailData?.issue.userName === user.userName,
                 }}
-                onItemClick={() => console.log('assignee')}
+                onItemClick={id => console.log(id)}
               />
-              // <div key={user.userId}>{user.userName}</div>
             ))}
           </div>
         )}
@@ -97,8 +97,11 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   id: label.labelId,
                   name: label.labelName,
                   backgroundColor: label.backgroundColor,
+                  isClicked: attachedLabels.some(
+                    attachedLabel => attachedLabel.labelId === label.labelId
+                  ),
                 }}
-                onItemClick={() => console.log('label')}
+                onItemClick={id => console.log(id)}
               />
             ))}
           </div>
@@ -134,13 +137,15 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           gap="gap-x-40"
         />
         {isDropDownOpen.milestone && (
-          <div className="absolute top-3/4 z-10 rounded-2xl border border-gray-300 bg-white">
+          <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
             {issueDetailData?.milestoneList.map(milestone => (
               <FilterItem
                 key={milestone.milestoneId}
                 item={{
                   id: milestone.milestoneId,
                   name: milestone.milestoneName,
+                  isClicked:
+                    attachedMilestone?.milestoneId === milestone.milestoneId,
                 }}
                 onItemClick={() => console.log('milestone')}
               />
