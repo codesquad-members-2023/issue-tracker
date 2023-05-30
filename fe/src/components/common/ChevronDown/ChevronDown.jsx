@@ -6,5 +6,5 @@ export const ChevronDown = ({ children }) => {
 };
 
 const ChevronDownImage = styled(ChevronDownIcon)`
-  stroke: ${({ theme }) => theme.color.neutralTextStrong};
+  stroke: ${({ theme }) => theme.color.neutralTextWeak};
 `;

@@ -1,21 +1,31 @@
 import { styled } from 'styled-components';
+import { useContext } from 'react';
 import FilterInput from './FilterInput/FilterInput';
 import DropDown from '../../DropDown/DropDown';
+import {
+  MainPageContext,
+  MainPageDispatchContext,
+} from '../../../context/MainPage/MainPageContext';
+import { setFilterOption } from '../../../context/MainPage/MainPageActions';
+import { CLOSED, ISSUE_STATE, OPENED } from '../../../constants';
 
-const FilterBar = ({ filterOptions, setFilterOptions }) => {
+const FilterBar = () => {
+  const { filterOptions } = useContext(MainPageContext);
+  const dispatch = useContext(MainPageDispatchContext);
+
   const dropDownConfig = {
     buttonText: '필터',
     headerText: '이슈 필터',
     bodyItems: [
       {
         text: '열린 이슈',
-        checked: filterOptions.state === 'opened',
-        onClick: () => setFilterOptions({ ...filterOptions, state: 'opened' }),
+        checked: filterOptions.issueState === OPENED,
+        handleItemClick: () => dispatch(setFilterOption(ISSUE_STATE, OPENED)),
       },
       {
         text: '닫힌 이슈',
-        checked: filterOptions.state === 'closed',
-        onClick: () => setFilterOptions({ ...filterOptions, state: 'closed' }),
+        checked: filterOptions.issueState === CLOSED,
+        handleItemClick: () => dispatch(setFilterOption(ISSUE_STATE, CLOSED)),
       },
     ],
     bodyCheck: true,

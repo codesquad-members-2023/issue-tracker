@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
-const DropDownContent = ({ children, posright, marginTop }) => {
+const DropDownContent = ({ children, pos, marginTop }) => {
   return (
-    <DropDownContentBox $posright={posright} margintop={marginTop}>
+    <DropDownContentBox pos={pos} margintop={marginTop}>
       {children}
     </DropDownContentBox>
   );
@@ -16,11 +16,22 @@ const DropDownContentBox = styled.div`
   gap: 1px;
   position: absolute;
 
+  z-index: 1;
   width: 240px;
   background: ${({ theme }) => theme.color.neutralBorder};
   border: 1px solid ${({ theme }) => theme.color.neutralBorder};
   box-shadow: 0px 0px 8px rgba(20, 20, 43, 0.04);
   border-radius: 16px;
-  ${({ $posright }) => ($posright ? 'right: 0;' : 'left: 0;')}
-  ${({ margintop }) => `margin-top:  ${margintop || '10px'}`}
+
+  ${({ margintop }) => `margin-top:  ${margintop || '10px'}`};
+  ${({ pos }) => {
+    if (pos === 'right') {
+      return 'right: 0';
+    }
+    if (pos === 'center') {
+      return 'left: 50%; transform: translateX(-50%);';
+    }
+
+    return 'left: 0';
+  }}
 `;

@@ -4,3 +4,4 @@ export * from './UserIcon/UserIcon';
 export * from './Label/Label';
 export * from './Button/Button';
 export * from './ChevronDown/ChevronDown';
+export * from './Spinner/Spinner';

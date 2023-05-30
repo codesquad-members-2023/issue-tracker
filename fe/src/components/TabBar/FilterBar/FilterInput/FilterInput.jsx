@@ -1,22 +1,48 @@
 import { styled } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ReactComponent as Search } from '../../../../assets/search.svg';
-import { ALL, CLOSED, OPENED } from '../../../../constants';
+import { generateQueryString } from '../../../../utils/utils';
+import { MainPageContext } from '../../../../context/MainPage/MainPageContext';
 
-// TODO: 모든 필터옵션에 대해 하도록 추후 수정
-const helper = ({ state }) => {
-  if (state === ALL) return '';
-  if (state === OPENED) return 'is:open';
-  if (state === CLOSED) return 'is:close';
-  return '';
+// TODO(덴): api 객체 형태에 맞게 상태 수정 작업 진행 했으나 리팩 필요해보임.
+const changeAssigneeIdToName = (allUsers, filterOptions) => {
+  const currentFilterOptions = { ...filterOptions };
+  allUsers.forEach((userInfo) => {
+    if (userInfo.id === filterOptions.assignee) {
+      currentFilterOptions.assignee = userInfo.nickname;
+    }
+  });
+  return currentFilterOptions;
 };
 
-const FilterInput = ({ filterOptions }) => {
-  const [inputValue, setInputValue] = useState(helper(filterOptions));
+const getModifiedQueryString = (queryString) => {
+  const queryStringParts = queryString.replaceAll('=', ':').split('&');
+  const firstPart = queryStringParts[0];
+
+  let modifiedFirstPart = firstPart;
+  if (firstPart.endsWith('true')) {
+    modifiedFirstPart = 'is:open';
+  } else if (firstPart.endsWith('false')) {
+    modifiedFirstPart = 'is:closed';
+  }
+
+  queryStringParts[0] = modifiedFirstPart;
+  return queryStringParts.join(' ');
+};
+
+const FilterInput = () => {
+  const { allUsers, filterOptions } = useContext(MainPageContext);
+  const [inputValue, setInputValue] = useState('');
 
   // ?: useEffect를 제대로 사용한건지?
   useEffect(() => {
-    setInputValue(helper(filterOptions));
+    const modifiedFilterOptions = changeAssigneeIdToName(
+      allUsers,
+      filterOptions,
+    );
+    const queryString = generateQueryString(modifiedFilterOptions);
+    const modifiedQueryString = getModifiedQueryString(queryString);
+    setInputValue(modifiedQueryString);
   }, [filterOptions]);
 
   return (

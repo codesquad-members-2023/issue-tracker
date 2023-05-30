@@ -1,60 +1,55 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
 import { ReactComponent as alertCircle } from '../../../../assets/alertCircle.svg';
 import { ReactComponent as archive } from '../../../../assets/archive.svg';
 import { Button } from '../../../common';
-import { CLOSED, OPENED } from '../../../../constants';
+import { CLOSED, ISSUE_STATE, OPENED } from '../../../../constants';
+import {
+  MainPageContext,
+  MainPageDispatchContext,
+} from '../../../../context/MainPage/MainPageContext';
+import { setFilterOption } from '../../../../context/MainPage/MainPageActions';
 
-const IssueStatusButtons = ({
-  openedIssuesCount,
-  closedIssuesCount,
-  issueState,
-  setFilterOptions,
-}) => {
-  const isOpened = issueState === OPENED;
+const IssueStatusButtons = () => {
+  const {
+    counts: { openedIssuesCount, closedIssuesCount },
+    filterOptions,
+  } = useContext(MainPageContext);
+  const dispatch = useContext(MainPageDispatchContext);
 
-  const handleOpenedIssueButton = () => {
-    const newState = isOpened ? CLOSED : OPENED;
-    setFilterOptions((prevState) => {
-      return {
-        ...prevState,
-        state: newState,
-      };
-    });
-  };
-
-  const handleClosedIssueButton = () => {
-    const newState = isOpened ? CLOSED : OPENED;
-    setFilterOptions((prevState) => ({
-      ...prevState,
-      state: newState,
-    }));
-  };
+  const isOpened = filterOptions.issueState !== CLOSED;
 
   return (
     <IssueStatusButtonsBox>
       <Button
-        buttonStatus={isOpened}
-        handleButton={handleOpenedIssueButton}
-        buttonText="열린이슈"
-        count={openedIssuesCount}
+        type="ghostButton"
+        size="M"
         gap="10px"
-        fontWeight={isOpened ? 'bold' : 'regular'}
-        fontSize="M"
         color={isOpened ? 'neutralTextStrong' : 'neutralText'}
+        hoverColor={isOpened ? 'neutralText' : 'neutralTextStrong'}
+        onclick={() => {
+          dispatch(setFilterOption(ISSUE_STATE, OPENED));
+        }}
       >
         <AlertCircleIcon $isopen={isOpened} />
+        열린이슈 (
+        {openedIssuesCount}
+        )
       </Button>
       <Button
-        buttonText="닫힌이슈"
-        handleButton={handleClosedIssueButton}
-        count={closedIssuesCount}
-        buttonStatus={!isOpened}
+        type="ghostButton"
+        size="M"
         gap="10px"
-        fontWeight={!isOpened ? 'bold' : 'regular'}
-        fontSize="M"
         color={!isOpened ? 'neutralTextStrong' : 'neutralText'}
+        hoverColor={isOpened ? 'neutralTextStrong' : 'neutralText'}
+        onclick={() => {
+          dispatch(setFilterOption(ISSUE_STATE, CLOSED));
+        }}
       >
         <ArchiveIcon $isopen={isOpened} />
+        닫힌이슈 (
+        {closedIssuesCount}
+        )
       </Button>
     </IssueStatusButtonsBox>
   );

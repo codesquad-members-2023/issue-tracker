@@ -1,37 +1,36 @@
-import styled from 'styled-components';
+// TODO: Lint 속성 점검 필요
+/* eslint-disable no-use-before-define */
+import styled, { css } from 'styled-components';
 
 export const Button = ({
-  children,
-  buttonStatus,
-  handleButton,
-  buttonText,
-  count,
+  type,
+  size,
   gap,
-  width,
-  fontWeight,
-  fontSize,
   color,
   backgroundColor,
-  border,
-  borderRadius,
+  hoverColor,
+  onclick,
+  children,
 }) => {
+  const buttonTypes = {
+    containerButton,
+    outlineButton,
+    ghostButton,
+  };
+
+  const ButtonBox = buttonTypes[type];
+
   return (
     <ButtonBox
-      type="button"
-      onClick={handleButton}
-      $buttonstatus={buttonStatus}
+      type={type}
       gap={gap}
-      width={width}
-      fontSize={fontSize}
-      fontWeight={fontWeight}
+      size={size}
       color={color}
       backgroundcolor={backgroundColor}
-      border={border}
-      borderradius={borderRadius}
+      hovercolor={hoverColor}
+      onClick={onclick}
     >
       {children}
-      {buttonText}
-      {count >= 0 && `(${count})`}
     </ButtonBox>
   );
 };
@@ -42,14 +41,72 @@ const ButtonBox = styled.button`
   align-items: center;
   ${({ gap }) => `gap: ${gap || '10px'}`};
 
-  ${({ width }) => `${width && `width: ${width}`}`};
-  ${({ theme, fontWeight }) => `font-weight: ${theme.fontWeight[fontWeight] || theme.fontWeight.regular}`};
-  ${({ theme, fontSize }) => `font-size: ${theme.fontSize[fontSize]?.size || theme.fontSize.M.size}`};
+  ${({ type, size }) => {
+    if (size === 'XL') {
+      return css`
+        ${type !== 'ghostButton' && 'width: 320px;'}
+        height: 56px;
+        font-size: 18px;
+      `;
+    }
+    if (size === 'L') {
+      return css`
+        ${type !== 'ghostButton' && 'width: 240px;'}
+        height: 56px;
+        font-size: 18px;
+      `;
+    }
+    if (size === 'M') {
+      return css`
+        ${type !== 'ghostButton' && 'width: 160px;' && 'height: 40px;'}
+        font-size: 16px;
+      `;
+    }
+    if (size === 'S') {
+      return css`
+        ${type !== 'ghostButton' && 'width: 120px;' && 'height: 40px;'}
+        font-size: 12px;
+      `;
+    }
+
+    return '';
+  }}
+
+  border-radius: 11px;
+  font-weight: 700;
   ${({ theme, color }) => `color: ${theme.color[color] || theme.color.neutralText}`};
+  cursor: pointer;
+
+  &:hover {
+    ${({ theme, hovercolor }) => `${hovercolor && `color: ${theme.color[hovercolor]}`}`};
+    > svg {
+      stroke: ${({ theme, hovercolor }) => theme.color[hovercolor] || theme.color.accentText};
+    }
+  }
+`;
+
+const containerButton = styled(ButtonBox)`
+  padding: 0px 16px;
+  border: none;
+  border-radius: 11px;
   ${({ theme, backgroundcolor }) => `${
     backgroundcolor && `background-color: ${theme.color[backgroundcolor]}`
   }`};
-  ${({ border }) => `${border && `border: ${border}`}`};
-  ${({ borderradius }) => `${borderradius && `border-radius: ${borderradius}`}`};
-  cursor: pointer;
+`;
+
+const outlineButton = styled(ButtonBox)`
+  padding: 0px 16px;
+  background-color: transparent;
+  border-radius: 11px;
+  border: 1px solid ${({ theme }) => theme.color.accentBorderWeak};
+`;
+
+const ghostButton = styled(ButtonBox)`
+  ${({ theme, backgroundcolor }) => `${
+    backgroundcolor && `background-color: ${theme.color[backgroundcolor]}`
+  }`};
+
+  &:active {
+    background-color: ${({ theme }) => theme.color.neutralBackgroundBold};
+  }
 `;
