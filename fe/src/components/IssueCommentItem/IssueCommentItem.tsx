@@ -21,7 +21,10 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
           <Profile url={comment.profileUrl} />
           <span className="text-md text-gray-900">{comment.userName}</span>
           <span className="text-md text-gray-600">
-            {days}일 {hours}시간 {minutes}분 {seconds}초 전
+            {days ? `${days}일 ` : ''}
+            {hours ? `${hours}시간 ` : ''}
+            {minutes ? `${minutes}분 ` : ''}
+            {seconds}초 전
           </span>
         </section>
         <section className="flex items-center gap-x-4">
