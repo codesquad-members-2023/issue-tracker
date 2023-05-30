@@ -20,8 +20,12 @@ const IssueDetailPage = () => {
   const fetchData = async (api: string) => {
     try {
       const res = await fetch(api);
-      const data = await res.json();
-      setIssueDetailData(data);
+      if (!res.ok) {
+        throw new Error(`에러가 발생했습니다. 에러내용: ${res}`);
+      } else {
+        const data = await res.json();
+        setIssueDetailData(data);
+      }
     } catch (error) {
       console.log(error);
     }
