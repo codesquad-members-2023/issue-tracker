@@ -10,7 +10,6 @@ import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import { BASE_API } from '../../api';
 import fetchData from '@utils/fetchSetData';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
-import { useNavigate } from 'react-router-dom';
 
 interface IssueCommentInputProps {
   setIssueDetailData: Dispatch<IssueDetailData>;
@@ -55,7 +54,6 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
 
   const issueDetailData = useContext(issueDetailDataContext);
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueDetailData?.issue.issueId}`;
-  const navigate = useNavigate();
 
   const postComment = async () => {
     {
