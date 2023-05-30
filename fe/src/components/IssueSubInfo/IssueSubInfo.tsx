@@ -68,10 +68,15 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           <span className="text-gray-900">{issue.userName}</span>
         </div>
       </section>
-      <section className="flex flex-col justify-between border-b border-b-gray-300 p-8">
+      <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
         <Button
           title="레이블"
-          onClick={() => console.log('이슈 상세 레이블')}
+          onClick={() => {
+            setIsDropDownOpen({
+              ...isDropDownOpen,
+              label: !isDropDownOpen.label,
+            });
+          }}
           hasDropDown={true}
           isFlexible={true}
           type="Ghost"
@@ -79,6 +84,22 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           condition="Press"
           gap="gap-x-40"
         />
+        {isDropDownOpen.label && (
+          <div className="absolute top-3/4 z-10 rounded-2xl border border-gray-300 bg-white">
+            {issueDetailData?.labelList.map(label => (
+              <FilterItem
+                key={label.labelId}
+                item={{
+                  id: label.labelId,
+                  name: label.labelName,
+                  backgroundColor: label.backgroundColor,
+                }}
+                onItemClick={() => console.log('label')}
+              />
+            ))}
+          </div>
+        )}
+
         <div className="flex w-fit flex-wrap gap-y-1">
           {attachedLabels.map(label => (
             <Label
