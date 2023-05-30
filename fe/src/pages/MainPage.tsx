@@ -21,6 +21,7 @@ const MainPage = () => {
   };
 
   const mapIssues = (data: any) => {
+    console.log(data);
     const issueItems: IssueRow[] = data.issues
       .filter((issue: any) => issue.open === isOpenIssues)
       .map((issue: any) => {
@@ -35,32 +36,12 @@ const MainPage = () => {
         };
       });
 
-    console.log(issueItems);
-
     setIssueItems(issueItems);
   };
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`${BASE_API}`);
-      // const res = await fetch('/issues');
-      const data = await res.json();
-      if (res.status === 200) {
-        setData(data);
-        mapIssues(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [isOpenIssues]);
-
   // TODO(Lily): 아래 코드들은 정리 예정
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const BASE_QUERY_STRING = 'issues/?';
   const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
 
@@ -75,6 +56,24 @@ const MainPage = () => {
 
     setFilterOptions(updatedFilterOptions);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${BASE_API}`);
+        // const res = await fetch('/issues');
+        const data = await res.json();
+        if (res.status === 200) {
+          setData(data);
+          mapIssues(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [filterOptions]);
 
   const filterQueryString = useMemo(() => {
     const statusOption = isOpenIssues ? 'open' : 'close';
