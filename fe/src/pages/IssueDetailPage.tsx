@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
@@ -28,7 +28,7 @@ const IssueDetailPage = () => {
   const handleClickIsIssueTitleEdit = () => {
     setIsIssueTitleEdit(!isIssueTitleEdit);
   };
-
+  const navigate = useNavigate();
   return (
     <issueDetailDataContext.Provider value={issueDetailData}>
       <section>
@@ -66,8 +66,13 @@ const IssueDetailPage = () => {
             <div className="flex justify-end pr-8">
               <Button
                 title="이슈 삭제"
-                onClick={() => {
-                  console.log('이슈 삭제');
+                onClick={async () => {
+                  if (!confirm('이슈를 삭제하시겠습니까?')) return;
+                  await fetch(ISSUE_DETAIL_API, {
+                    method: 'DELETE',
+                  });
+                  // NOTE(Jayden): navigate로 메인페이지로 이동하는데 왜 렌더링이 되는지 확인
+                  navigate('/');
                 }}
                 type="Ghost"
                 isFlexible={true}
