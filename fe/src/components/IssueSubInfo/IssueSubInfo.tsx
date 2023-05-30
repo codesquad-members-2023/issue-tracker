@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 import Button from '@common/Button';
 import Profile from '@common/Profile';
@@ -9,6 +9,8 @@ import {
 } from '@customTypes/IssueDetailPage';
 import Label from '@common/Label';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
+import { issueDetailDataContext } from '../../pages/IssueDetailPage';
+import FilterItem from '@common/FilterItem/FilterItem';
 
 interface IssueSubInfoProps {
   issue: Issue;
@@ -18,12 +20,24 @@ interface IssueSubInfoProps {
 
 const IssueSubInfo = (props: IssueSubInfoProps) => {
   const { issue, attachedLabels, attachedMilestone } = props;
+  const issueDetailData = useContext(issueDetailDataContext);
+  const [isDropDownOpen, setIsDropDownOpen] = useState({
+    assignee: false,
+    label: false,
+    milestone: false,
+  });
+
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
-      <section className="flex flex-col justify-between border-b border-b-gray-300 p-8">
+      <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
         <Button
           title="담당자"
-          onClick={() => console.log('이슈 상세 담당자')}
+          onClick={() =>
+            setIsDropDownOpen({
+              ...isDropDownOpen,
+              assignee: !isDropDownOpen.assignee,
+            })
+          }
           hasDropDown={true}
           isFlexible={true}
           type="Ghost"
@@ -31,6 +45,24 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           condition="Press"
           gap="gap-x-40"
         />
+        {isDropDownOpen.assignee && (
+          <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
+            {issueDetailData?.userList.map(user => (
+              <FilterItem
+                key={user.userId}
+                item={{
+                  id: user.userId,
+                  name: user.userName,
+                  imgUrl: user.profileUrl,
+                  width: 20,
+                  height: 20,
+                }}
+                onItemClick={() => console.log('assignee')}
+              />
+              // <div key={user.userId}>{user.userName}</div>
+            ))}
+          </div>
+        )}
         <div className="flex gap-x-2">
           <Profile url={issue.profileUrl} width={20} height={20} />
           <span className="text-gray-900">{issue.userName}</span>

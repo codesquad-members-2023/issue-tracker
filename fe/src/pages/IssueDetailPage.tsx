@@ -23,7 +23,6 @@ const IssueDetailPage = () => {
   useEffect(() => {
     fetchData(ISSUE_DETAIL_API, setIssueDetailData);
   }, []);
-
   const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
   const handleClickIsIssueTitleEdit = () => {
     setIsIssueTitleEdit(!isIssueTitleEdit);
