@@ -35,6 +35,8 @@ const MainPage = () => {
         };
       });
 
+    console.log(issueItems);
+
     setIssueItems(issueItems);
   };
 
@@ -58,8 +60,8 @@ const MainPage = () => {
 
   // TODO(Lily): 아래 코드들은 정리 예정
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
-  const [page, setPage] = useState(1);
-  const BASE_QUERY_STRING = 'issues/?offset=10';
+  const [page, setPage] = useState(2);
+  const BASE_QUERY_STRING = 'issues/?';
   const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
 
   const updateFilterOption = (type: keyof FilterOptions, id: number) => {
@@ -75,7 +77,7 @@ const MainPage = () => {
   };
 
   const filterQueryString = useMemo(() => {
-    const statusOption = isOpenIssues ? 'open' : 'closed';
+    const statusOption = isOpenIssues ? 'open' : 'close';
     const queryStrings = {
       status: statusOption,
       ...filterOptions,
@@ -91,7 +93,7 @@ const MainPage = () => {
     isOpenIssues: boolean,
     filterOptions: FilterOptions
   ): string => {
-    const isOpen = isOpenIssues ? ' is:open' : ' is:closed';
+    const isOpen = isOpenIssues ? ' is:open' : ' is:close';
 
     const formattedOptions = Object.entries(filterOptions)
       .map(([key, value]) => `${key}:${value}`)
@@ -104,29 +106,36 @@ const MainPage = () => {
     return generateFilterString(isOpenIssues, filterOptions);
   }, [filterQueryString]);
 
-  const updatedIssues = (id: number, checkedIssues: number[]) => {
-    const fetchData = checkedIssues.map(checkedIssue => {
-      return {
-        id: checkedIssue,
-        opened: Boolean(id),
-      };
-    });
+  const updatedIssues = async (id: number, checkedIssues: number[]) => {
+    if (!isOpenIssues === Boolean(id)) {
+      try {
+        const fetchData = checkedIssues.map(checkedIssue => ({
+          issueId: checkedIssue,
+          isOpen: Boolean(id),
+        }));
 
-    fetch(`${BASE_API}issues`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(fetchData),
-    })
-      .then(response => {
+        console.log(
+          JSON.stringify({
+            issues: fetchData,
+          })
+        );
+        const response = await fetch(`${BASE_API}issues`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            issues: fetchData,
+          }),
+        });
+
         // 처리할 작업 추가 (응답 확인 등)
         console.log(response);
-      })
-      .catch(error => {
+      } catch (error) {
         // 에러 처리
         console.log(error);
-      });
+      }
+    }
   };
 
   useEffect(() => {

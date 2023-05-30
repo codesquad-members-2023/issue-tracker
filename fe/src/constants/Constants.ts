@@ -28,11 +28,11 @@ export const FILTER_DROPDOWN_LIST = [
 
 export const STATUS_DROPDOWN_LIST = [
   {
-    id: 0,
+    id: 1,
     name: '선택한 이슈 열기',
   },
   {
-    id: 1,
+    id: 0,
     name: '선택한 이슈 닫기',
   },
 ];

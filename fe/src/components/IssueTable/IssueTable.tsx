@@ -85,8 +85,8 @@ const IssueTable: React.FC<Props> = ({
       updateIssueStatus(id, checkedIssues);
     } else {
       updateFilterOption(type, id);
-      setOpenedFilterList('');
     }
+    setOpenedFilterList('');
   };
 
   const handleItemChecked = (id: number) => {
@@ -121,26 +121,32 @@ const IssueTable: React.FC<Props> = ({
                 onChange={handleAllItemChecked}
               />
             </div>
-            <div className="flex gap-x-3">
-              <Button
-                title={`열린 이슈(${countOpenedIssues || 0})`}
-                type="Ghost"
-                color="Gray"
-                size="Small"
-                iconName="alertcircle"
-                condition={status ? 'Enabled' : 'Press'}
-                onClick={() => onStatusTabClick(true)}
-              />
-              <Button
-                title={`닫힌 이슈(${countClosedIssues || 0})`}
-                type="Ghost"
-                color="Gray"
-                size="Small"
-                iconName="archive"
-                condition={!status ? 'Enabled' : 'Press'}
-                onClick={() => onStatusTabClick(false)}
-              />
-            </div>
+            {!checkedIssues.length ? (
+              <div className="flex gap-x-3">
+                <Button
+                  title={`열린 이슈(${countOpenedIssues || 0})`}
+                  type="Ghost"
+                  color="Gray"
+                  size="Small"
+                  iconName="alertcircle"
+                  condition={status ? 'Enabled' : 'Press'}
+                  onClick={() => onStatusTabClick(true)}
+                />
+                <Button
+                  title={`닫힌 이슈(${countClosedIssues || 0})`}
+                  type="Ghost"
+                  color="Gray"
+                  size="Small"
+                  iconName="archive"
+                  condition={!status ? 'Enabled' : 'Press'}
+                  onClick={() => onStatusTabClick(false)}
+                />
+              </div>
+            ) : (
+              <div className="font-bold text-gray-600">
+                {checkedIssues.length}개 이슈 선택
+              </div>
+            )}
           </div>
           {!checkedIssues.length ? (
             <div className="flex justify-end gap-6">
