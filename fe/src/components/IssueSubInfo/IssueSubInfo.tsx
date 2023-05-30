@@ -111,10 +111,15 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           ))}
         </div>
       </section>
-      <section className="flex flex-col justify-between p-8">
+      <section className="relative flex flex-col justify-between p-8">
         <Button
           title="마일스톤"
-          onClick={() => console.log('이슈 상세 마일스톤')}
+          onClick={() =>
+            setIsDropDownOpen({
+              ...isDropDownOpen,
+              milestone: !isDropDownOpen.milestone,
+            })
+          }
           hasDropDown={true}
           isFlexible={true}
           type="Ghost"
@@ -122,6 +127,20 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           condition="Press"
           gap="gap-x-40"
         />
+        {isDropDownOpen.milestone && (
+          <div className="absolute top-3/4 z-10 rounded-2xl border border-gray-300 bg-white">
+            {issueDetailData?.milestoneList.map(milestone => (
+              <FilterItem
+                key={milestone.milestoneId}
+                item={{
+                  id: milestone.milestoneId,
+                  name: milestone.milestoneName,
+                }}
+                onItemClick={() => console.log('milestone')}
+              />
+            ))}
+          </div>
+        )}
         {
           <div className="flex w-full flex-wrap gap-y-2">
             <MilestoneProgressBar progress={attachedMilestone?.progress} />
