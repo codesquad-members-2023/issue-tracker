@@ -18,6 +18,8 @@ interface Props {
   labelList: LabelRow[];
   elapseTime: ElapseTime;
   milestoneName?: string;
+  isChecked: boolean;
+  onIssueChecked: (id: number) => void;
   onIssueTitleClick: (id: number) => void;
 }
 
@@ -30,6 +32,8 @@ const Issue: React.FC<Props> = ({
   elapseTime,
   milestoneName,
   labelList,
+  isChecked,
+  onIssueChecked,
   onIssueTitleClick,
 }) => {
   const { days, hours, minutes } = elapseTime;
@@ -43,11 +47,11 @@ const Issue: React.FC<Props> = ({
 
   return (
     <div className="flex border-t px-8 py-4">
-      <div className="mr-8 mt-2">
+      <div className="mr-8 mt-1">
         <input
           type="checkbox"
-          checked={false}
-          onChange={() => console.log('check')}
+          checked={isChecked}
+          onChange={() => onIssueChecked(issueId)}
         />
       </div>
       <Link to={`issues/${issueId}`}>
@@ -60,7 +64,7 @@ const Issue: React.FC<Props> = ({
           {/* TODO(Lily): 라우터 설치 및 설정 이후에 Link 태그로 바꾸기 */}
           <button
             className="mx-2 text-left text-lg font-bold text-neutral-strong"
-            onClick={() => onIssueTitleClick(issueId)}
+            onChange={() => onIssueTitleClick(issueId)}
           >
             {title}
           </button>

@@ -25,3 +25,14 @@ export const FILTER_DROPDOWN_LIST = [
     onFilterItemClick: () => console.log(''),
   },
 ];
+
+export const STATUS_DROPDOWN_LIST = [
+  {
+    id: 1,
+    name: '선택한 이슈 열기',
+  },
+  {
+    id: 0,
+    name: '선택한 이슈 닫기',
+  },
+];

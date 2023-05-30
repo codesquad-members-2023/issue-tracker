@@ -36,14 +36,6 @@ export const theme = {
       '2xl': ['32px', '48px'],
     },
   },
-  // TODO(Lily): set default attributes (font color)
-  // plugins: [
-  //   plugin(({ addBase, theme }) => {
-  //     addBase({
-  //       html: { color: theme('colors.slate.800') },
-  //     });
-  //   }),
-  // ],
 };
 export const safelist = [{ pattern: /(bg|text|border)-(blue|gray|red|navy)/ }];
 export const plugins = [];

@@ -7,7 +7,6 @@ import IssueTable, {
   FilterOptions,
   IssueRow,
 } from '@components/IssueTable/IssueTable';
-import FilterList from '@components/FilterList/FilterList';
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 
@@ -22,6 +21,7 @@ const MainPage = () => {
   };
 
   const mapIssues = (data: any) => {
+    console.log(data);
     const issueItems: IssueRow[] = data.issues
       .filter((issue: any) => issue.open === isOpenIssues)
       .map((issue: any) => {
@@ -39,28 +39,10 @@ const MainPage = () => {
     setIssueItems(issueItems);
   };
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`${BASE_API}`);
-      // const res = await fetch('/issues');
-      const data = await res.json();
-      if (res.status === 200) {
-        setData(data);
-        mapIssues(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [isOpenIssues]);
-
   // TODO(Lily): 아래 코드들은 정리 예정
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
   const [page, setPage] = useState(1);
-  const BASE_QUERY_STRING = 'issues/?offset=10';
+  const BASE_QUERY_STRING = 'issues/?';
   const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
 
   const updateFilterOption = (type: keyof FilterOptions, id: number) => {
@@ -75,8 +57,26 @@ const MainPage = () => {
     setFilterOptions(updatedFilterOptions);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${BASE_API}`);
+        // const res = await fetch('/issues');
+        const data = await res.json();
+        if (res.status === 200) {
+          setData(data);
+          mapIssues(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [filterOptions]);
+
   const filterQueryString = useMemo(() => {
-    const statusOption = isOpenIssues ? 'open' : 'closed';
+    const statusOption = isOpenIssues ? 'open' : 'close';
     const queryStrings = {
       status: statusOption,
       ...filterOptions,
@@ -92,7 +92,7 @@ const MainPage = () => {
     isOpenIssues: boolean,
     filterOptions: FilterOptions
   ): string => {
-    const isOpen = isOpenIssues ? ' is:open' : ' is:closed';
+    const isOpen = isOpenIssues ? ' is:open' : ' is:close';
 
     const formattedOptions = Object.entries(filterOptions)
       .map(([key, value]) => `${key}:${value}`)
@@ -104,6 +104,38 @@ const MainPage = () => {
   const filterString = useMemo(() => {
     return generateFilterString(isOpenIssues, filterOptions);
   }, [filterQueryString]);
+
+  const updatedIssues = async (id: number, checkedIssues: number[]) => {
+    if (!isOpenIssues === Boolean(id)) {
+      try {
+        const fetchData = checkedIssues.map(checkedIssue => ({
+          issueId: checkedIssue,
+          isOpen: Boolean(id),
+        }));
+
+        console.log(
+          JSON.stringify({
+            issues: fetchData,
+          })
+        );
+        const response = await fetch(`${BASE_API}issues`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            issues: fetchData,
+          }),
+        });
+
+        // 처리할 작업 추가 (응답 확인 등)
+        console.log(response);
+      } catch (error) {
+        // 에러 처리
+        console.log(error);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,7 +157,11 @@ const MainPage = () => {
   return (
     <>
       <div className="relative mb-6 flex justify-between">
-        <FilterBar searchValue={filterString} onClick={() => console.log('')} />
+        <FilterBar
+          searchValue={filterString}
+          filterOptions={filterOptions}
+          updateFilterOption={updateFilterOption}
+        />
         <div className="flex gap-x-4">
           <NavLinks
             countAllMilestones={data.countAllMilestones}
@@ -142,7 +178,7 @@ const MainPage = () => {
           />
         </div>
       </div>
-      {Object.keys(data).length && (
+      {Object.keys(data).length ? (
         <IssueTable
           issues={issueItems}
           users={data.userList}
@@ -152,10 +188,11 @@ const MainPage = () => {
           countClosedIssues={data.countClosedIssues}
           status={isOpenIssues}
           filterOptions={filterOptions}
+          updateIssueStatus={updatedIssues}
           onStatusTabClick={handleClickStatusTab}
           updateFilterOption={updateFilterOption}
         />
-      )}
+      ) : null}
     </>
   );
 };
