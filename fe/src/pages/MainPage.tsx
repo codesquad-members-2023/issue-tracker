@@ -7,7 +7,6 @@ import IssueTable, {
   FilterOptions,
   IssueRow,
 } from '@components/IssueTable/IssueTable';
-import FilterList from '@components/FilterList/FilterList';
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 
@@ -108,9 +107,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${BASE_API}${filterQueryString}`, {
-          mode: 'cors',
-        });
+        const res = await fetch(`${BASE_API}${filterQueryString}`);
         const data = await res.json();
 
         if (res.status === 200) {

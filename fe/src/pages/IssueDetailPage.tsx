@@ -7,7 +7,7 @@ import IssueCommentList from '@components/IssueCommentList/IssueCommentList';
 import IssueCommentInput from '@components/IssueCommentInput/IssueCommentInput';
 import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
-import { CommentList, IssueDetailData } from '@customTypes/IssueDetailPage';
+import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
 
 export const issueDetailDataContext = createContext<
