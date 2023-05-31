@@ -3,10 +3,11 @@ import LabelItem from '@components/LabelTable/LabelItem';
 
 interface LabelTableProps {
   labelsData: any;
+  handleSetLabelData: () => void;
 }
 
 const LabelTable = (props: LabelTableProps) => {
-  const { labelsData } = props;
+  const { labelsData, handleSetLabelData } = props;
   return (
     <section className="rounded-2xl border border-gray-300">
       <div className="rounded-t-2xl bg-gray-100 px-6 py-2 text-gray-600">
@@ -16,10 +17,12 @@ const LabelTable = (props: LabelTableProps) => {
         {labelsData.labelList.map((label: any) => (
           <LabelItem
             key={label.id}
+            labelId={label.id}
             name={label.name}
             fontColor={label.fontColor}
             backgroundColor={label.backgroundColor}
             description={label.description}
+            handleSetLabelData={handleSetLabelData}
           />
         ))}
       </ul>

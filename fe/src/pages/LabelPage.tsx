@@ -26,8 +26,11 @@ const LabelPage = () => {
   const handleIsFontColorDropdownClick = () => {
     setIsFontColorDropdown(!isFontColorDropdown);
   };
-  useEffect(() => {
+  const handleSetLabelData = () => {
     fetchSetData(`${BASE_API}labels`, setLabelsData);
+  };
+  useEffect(() => {
+    handleSetLabelData();
   }, []);
   return (
     <>
@@ -194,7 +197,10 @@ const LabelPage = () => {
             </section>
           )}
           <section>
-            <LabelTable labelsData={labelsData} />
+            <LabelTable
+              labelsData={labelsData}
+              handleSetLabelData={handleSetLabelData}
+            />
           </section>
         </section>
       ) : null}

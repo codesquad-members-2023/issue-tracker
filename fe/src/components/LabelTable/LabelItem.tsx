@@ -1,16 +1,26 @@
 import Label from '@common/Label';
 import React from 'react';
 import Button from '@common/Button';
+import { BASE_API } from '../../api';
 
 interface LabelItemProps {
+  labelId: number;
   name: string;
   fontColor: string;
   backgroundColor: string;
   description: string;
+  handleSetLabelData: () => void;
 }
 
 const LabelItem = (props: LabelItemProps) => {
-  const { name, fontColor, backgroundColor, description } = props;
+  const {
+    labelId,
+    name,
+    fontColor,
+    backgroundColor,
+    description,
+    handleSetLabelData,
+  } = props;
   return (
     <div className="flex h-24 items-center justify-between border-t border-t-gray-300 px-8 py-10">
       <Label
@@ -35,8 +45,16 @@ const LabelItem = (props: LabelItemProps) => {
         />
         <Button
           title="삭제"
-          onClick={() => {
-            console.log('레이블 삭제');
+          onClick={async () => {
+            if (confirm('정말 삭제하시겠습니까?')) {
+              await fetch(`${BASE_API}labels/${labelId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              handleSetLabelData();
+            }
           }}
           isFlexible={true}
           size="Small"
