@@ -4,6 +4,61 @@ import Button from '@common/Button';
 import NavLinks from '@components/NavLinks/NavLinks';
 import fetchSetData from '@utils/fetchSetData';
 import { BASE_API } from '../api';
+import MilestoneTable from '@components/MilestoneTable/MilestoneTable';
+
+const TEMP_MILESTONE_DATA = {
+  milestoneList: [
+    {
+      milestoneId: 1,
+      name: '[BE] 이슈 관리 기능',
+      description: '평냉엔 소주',
+      completedAt: '2023-05-21 13:14:13',
+      countAllOpenedIssues: 2,
+      countAllClosedIssues: 1,
+      progress: 33,
+    },
+    {
+      milestoneId: 2,
+      name: '[FE] 1-2주차',
+      description: '1-2주차\n',
+      completedAt: '2023-05-19 11:20:57',
+      countAllOpenedIssues: 1,
+      countAllClosedIssues: 0,
+      progress: 0,
+    },
+    {
+      milestoneId: 3,
+      name: '[iOS] 이슈 리스팅',
+      description: '맛있겠다\n',
+      completedAt: '2023-05-19 11:21:28',
+      countAllOpenedIssues: 9,
+      countAllClosedIssues: 17,
+      progress: 65,
+    },
+    {
+      milestoneId: 5,
+      name: '[BE] 마일스톤 수정',
+      description: '마일스톤 수정 기능',
+      completedAt: '2023-05-23 13:00:00',
+      countAllOpenedIssues: 1,
+      countAllClosedIssues: 0,
+      progress: 0,
+    },
+    {
+      milestoneId: 6,
+      name: '[common] 마일스톤 추가',
+      description: '마일스톤 추가하는 테스트',
+      completedAt: '2023-05-23 18:52:11',
+      countAllOpenedIssues: 1,
+      countAllClosedIssues: 0,
+      progress: 0,
+    },
+  ],
+  countOpenedMilestones: 5,
+  countClosedMilestones: 0,
+  countAllMilestones: 5,
+  countAllLabels: 17,
+};
 
 const MilestonePage = () => {
   const [milestonesData, setMilestonesData] = useState({} as any);
@@ -19,11 +74,12 @@ const MilestonePage = () => {
 
   useEffect(() => {
     fetchSetData(`${BASE_API}milestones`, setMilestonesData);
+    // setMilestonesData(TEMP_MILESTONE_DATA);
   }, []);
   console.log(milestonesData);
   return (
     <>
-      {Object.keys(milestonesData).length === 0 ? (
+      {Object.keys(milestonesData).length ? (
         <section className="flex flex-col gap-y-6 ">
           <section className="flex justify-between">
             <NavLinks
@@ -130,7 +186,9 @@ const MilestonePage = () => {
               </div>
             </section>
           )}
-          <section></section>
+          <section>
+            <MilestoneTable milestonesData={milestonesData} />
+          </section>
         </section>
       ) : null}
     </>
