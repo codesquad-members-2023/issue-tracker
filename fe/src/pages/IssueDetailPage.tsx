@@ -9,7 +9,7 @@ import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
-import fetchData from '@utils/fetchSetData';
+import fetchSetData from '@utils/fetchSetData';
 
 export const issueDetailDataContext = createContext<
   IssueDetailData | undefined
@@ -21,7 +21,7 @@ const IssueDetailPage = () => {
   const [issueDetailData, setIssueDetailData] = useState<IssueDetailData>(); // [data, setData
 
   useEffect(() => {
-    fetchData(ISSUE_DETAIL_API, setIssueDetailData);
+    fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
   }, []);
   const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
   const handleClickIsIssueTitleEdit = () => {

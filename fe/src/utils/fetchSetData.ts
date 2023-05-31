@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react';
 
-const fetchData = async (api: string, setState: SetStateAction<any>) => {
+const fetchSetData = async (api: string, setState: SetStateAction<any>) => {
   try {
     const res = await fetch(api);
     if (!res.ok) {
@@ -14,4 +14,4 @@ const fetchData = async (api: string, setState: SetStateAction<any>) => {
   }
 };
 
-export default fetchData;
+export default fetchSetData;

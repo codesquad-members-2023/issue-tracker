@@ -13,7 +13,7 @@ import { getTimeElapsed } from '@utils/getTimeElapsed';
 import Button from '@common/Button';
 import { BASE_API } from '../../api';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
-import fetchData from '@utils/fetchSetData';
+import fetchSetData from '@utils/fetchSetData';
 
 interface IssueCommentItemProps {
   comment: Comment;
@@ -190,7 +190,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
                 );
 
                 if (temp.ok) {
-                  fetchData(
+                  fetchSetData(
                     `${BASE_API}issues/${issueDetailData?.issue.issueId}`,
                     setIssueDetailData
                   );

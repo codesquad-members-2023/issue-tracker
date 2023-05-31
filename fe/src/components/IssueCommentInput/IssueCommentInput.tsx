@@ -8,7 +8,7 @@ import React, {
 import Button from '@common/Button';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import { BASE_API } from '../../api';
-import fetchData from '@utils/fetchSetData';
+import fetchSetData from '@utils/fetchSetData';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 
 interface IssueCommentInputProps {
@@ -68,7 +68,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
         }),
       });
       if (temp.ok) {
-        fetchData(temp.url, setIssueDetailData);
+        fetchSetData(temp.url, setIssueDetailData);
       }
       setCommentContent('');
     }
