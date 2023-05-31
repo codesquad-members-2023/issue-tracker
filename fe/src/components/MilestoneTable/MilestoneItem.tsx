@@ -5,7 +5,6 @@ import { ReactComponent as Calendar } from '@assets/calendar.svg';
 import Button from '@common/Button';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 import { BASE_API } from '../../api';
-import fetchSetData from '@utils/fetchSetData';
 
 interface MilestoneInfo {
   milestoneId: number;
