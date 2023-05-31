@@ -63,20 +63,22 @@ const TEMP_MILESTONE_DATA = {
 const MilestonePage = () => {
   const [milestonesData, setMilestonesData] = useState({} as any);
   const [isNewMilestone, setIsNewMilestone] = React.useState(false);
-  const [newMilestone, setNewMilestone] = useState({
+  const INITIAL_MILESTONE = {
     milestoneName: '',
     description: '',
     completedAt: '',
-  } as any);
+  };
+  const [newMilestone, setNewMilestone] = useState(INITIAL_MILESTONE as any);
   const handleIsNewMilestoneClick = () => {
     setIsNewMilestone(!isNewMilestone);
   };
-
-  useEffect(() => {
+  const handleSetMilestoneData = () => {
     fetchSetData(`${BASE_API}milestones`, setMilestonesData);
+  };
+  useEffect(() => {
+    handleSetMilestoneData();
     // setMilestonesData(TEMP_MILESTONE_DATA);
   }, []);
-  console.log(milestonesData);
   return (
     <>
       {Object.keys(milestonesData).length ? (
@@ -164,20 +166,23 @@ const MilestonePage = () => {
                   title="완료"
                   onClick={async () => {
                     handleIsNewMilestoneClick();
-                    // await fetch(`${BASE_API}milestones`, {
-                    //   method: 'POST',
-                    //   headers: {
-                    //     'Content-Type': 'application/json',
-                    //   },
-                    //   body: JSON.stringify({
-                    //     labelName: newLabel.labelName,
-                    //     description: newLabel.description,
-                    //     backgroundColor: newLabel.backgroundColor,
-                    //     fontColor: newLabel.fontColor,
-                    //   }),
-                    // });
-                    // await fetchSetData(`${BASE_API}labels`, setLabelsData);
-                    // setNewLabel(INITIAL_LABEL);
+                    // NOTE(Jayden): 현재 POST 요청 400 에러 발생
+                    await fetch(`${BASE_API}milestones`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        name: newMilestone.milestoneName,
+                        description: newMilestone.description,
+                        completedAt: `${newMilestone.completedAt}T23:59:59`,
+                      }),
+                    });
+                    await fetchSetData(
+                      `${BASE_API}milestones`,
+                      setMilestonesData
+                    );
+                    setNewMilestone(INITIAL_MILESTONE);
                   }}
                   size="Small"
                   iconName="plus"
@@ -187,7 +192,10 @@ const MilestonePage = () => {
             </section>
           )}
           <section>
-            <MilestoneTable milestonesData={milestonesData} />
+            <MilestoneTable
+              milestonesData={milestonesData}
+              handleSetMilestoneData={handleSetMilestoneData}
+            />
           </section>
         </section>
       ) : null}

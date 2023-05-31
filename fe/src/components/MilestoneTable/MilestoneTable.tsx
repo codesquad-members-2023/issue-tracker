@@ -4,10 +4,11 @@ import MilestoneItem from '@components/MilestoneTable/MilestoneItem';
 
 interface MilestoneTableProps {
   milestonesData: any;
+  handleSetMilestoneData: () => void;
 }
 
 const MilestoneTable = (props: MilestoneTableProps) => {
-  const { milestonesData } = props;
+  const { milestonesData, handleSetMilestoneData } = props;
   return (
     <section className="rounded-2xl border border-gray-300">
       <div className="flex gap-x-6 rounded-t-2xl bg-gray-100 px-6 py-2 text-gray-600">
@@ -37,6 +38,7 @@ const MilestoneTable = (props: MilestoneTableProps) => {
           <MilestoneItem
             key={milestone.milestoneId}
             milestoneInfo={milestone}
+            handleSetMilestoneData={handleSetMilestoneData}
           />
         ))}
       </ul>
