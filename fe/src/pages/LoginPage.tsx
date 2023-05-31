@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+
+import Logo from '@common/Logo';
+import Button from '@common/Button';
+
+const LoginPage = () => {
+  const [userLoginId, setUserLoginId] = useState('');
+  const [userLoginPassword, setUserLoginPassword] = useState('');
+  return (
+    <div className="flex flex-col items-center justify-center gap-y-16 bg-gray-100 px-80 py-40">
+      <Logo size="Large" />
+      <div className="flex flex-col items-center justify-center gap-y-4 ">
+        <Button
+          title="GitHub 계정으로 로그인"
+          onClick={() => console.log('깃헙 계정으로 로그인')}
+          color="Gray"
+          size="Large"
+        />
+        <p>or</p>
+        <div className="flex h-14 w-80 items-center justify-start gap-x-6 rounded-2xl bg-gray-200 px-6 py-2 text-sm">
+          <div className="whitespace-nowrap text-gray-600">아이디</div>
+          <input
+            type="text"
+            className="w-full bg-gray-200 outline-none"
+            value={userLoginId}
+            onChange={e => setUserLoginId(e.target.value)}
+          />
+        </div>
+        <div className="flex h-14 w-80 items-center justify-start gap-x-6 rounded-2xl bg-gray-200 px-6 py-2 text-sm">
+          <div className="whitespace-nowrap text-gray-600">비밀번호</div>
+          <input
+            type="password"
+            className="w-full bg-gray-200 outline-none"
+            value={userLoginPassword}
+            onChange={e => {
+              setUserLoginPassword(e.target.value);
+            }}
+          />
+        </div>
+        <Button
+          title="아이디로 로그인"
+          onClick={() => console.log('아이디로 로그인')}
+          color="Blue"
+          size="Large"
+          condition={userLoginId && userLoginPassword ? 'Enabled' : 'Disabled'}
+        />
+        <Button
+          title="회원가입"
+          onClick={() => console.log('회원가입')}
+          color="Gray"
+          size="Small"
+          iconName="plus"
+          type="Ghost"
+          condition="Press"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
