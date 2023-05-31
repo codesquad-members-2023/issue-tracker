@@ -37,7 +37,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
   return (
     <div className="flex justify-between border-t border-t-gray-300 px-8 py-4">
       <section className="flex w-4/5 flex-col justify-center">
-        <section className="flex items-center justify-start gap-x-2">
+        <section className="mb-2 flex items-center justify-start gap-x-2">
           <Milestone fill="#007AFF" />
           <p className="font-bold">{name}</p>
           <div className="flex items-center gap-x-2 text-md text-gray-600">
@@ -88,7 +88,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
         <section>
           <MilestoneProgressBar progress={progress} />
         </section>
-        <section className="flex justify-between text-sm text-gray-600">
+        <section className="mt-1 flex justify-between text-sm text-gray-600">
           <p className="text-right">{progress}%</p>
           <div>{`열린 이슈 ${countAllOpenedIssues} / 닫힌 이슈 ${countAllClosedIssues}`}</div>
         </section>
