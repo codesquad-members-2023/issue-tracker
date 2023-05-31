@@ -50,6 +50,7 @@ const IssueDetailPage = () => {
               <IssueCommentList
                 comments={issueDetailData.commentList}
                 issue={issueDetailData.issue}
+                setIssueDetailData={setIssueDetailData}
               />
             )}
             <IssueCommentInput setIssueDetailData={setIssueDetailData} />

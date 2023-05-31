@@ -1,20 +1,28 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import Profile from '@common/Profile';
 import Tag from '@common/Tag';
-import { Comment } from '@customTypes/IssueDetailPage';
+import { Comment, IssueDetailData } from '@customTypes/IssueDetailPage';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 import Button from '@common/Button';
 import { BASE_API } from '../../api';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
+import fetchData from '@utils/fetchSetData';
 
 interface IssueCommentItemProps {
   comment: Comment;
   isWriterComment: boolean;
+  setIssueDetailData: Dispatch<IssueDetailData>;
 }
 
 const IssueCommentItem = (props: IssueCommentItemProps) => {
-  const { comment, isWriterComment } = props;
+  const { comment, isWriterComment, setIssueDetailData } = props;
   const { days, hours, minutes, seconds } = getTimeElapsed(comment.createdAt);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [commentContent, setCommentContent] = useState(comment.content);
@@ -165,9 +173,9 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
             />
             <Button
               title="편집 완료"
-              onClick={() => {
-                // NOTE(Jayden): 현재 PATCH가 성공하긴 하는데 실제 DB에 반영이 안되고 있음(백엔드와 협의)
-                const temp = fetch(
+              onClick={async () => {
+                // TODO(Jayden): api 수정 후, 첫번째 코멘트 patch 로직 작성
+                const temp = await fetch(
                   `${BASE_API}issues/${issueDetailData?.issue.issueId}/comments/${comment.commentId}`,
                   {
                     method: 'PATCH',
@@ -180,7 +188,14 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
                     }),
                   }
                 );
-                console.log(temp);
+
+                if (temp.ok) {
+                  fetchData(
+                    `${BASE_API}issues/${issueDetailData?.issue.issueId}`,
+                    setIssueDetailData
+                  );
+                }
+                setIsEdit(!isEdit);
               }}
               size="Small"
               iconName="edit"
