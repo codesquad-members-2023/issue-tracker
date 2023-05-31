@@ -2,6 +2,8 @@ import React from 'react';
 
 import { UserRow, LabelRow, MilestoneRow } from '../IssueTable/IssueTable';
 import Profile from '../../common/Profile/index';
+import NewIssueInput from './NewIssueInput';
+import NewIssueOptions from './NewIssueOptions';
 
 interface Props {
   user: UserRow;
@@ -17,10 +19,16 @@ const NewIssueMain: React.FC<Props> = ({
   milestoneList,
 }) => {
   return (
-    <div className="my-6 border-y border-gray-300 py-6">
-      <Profile url={user.profileUrl} />
-      {/* <NewIssueInput />
-      <NewIssueSidebar userList={userList} labelList={labelList} milestoneList={milestoneList} /> */}
+    <div className="flex border-y border-gray-300 py-6">
+      <div className="pt-3">
+        <Profile url={user.profileUrl} />
+      </div>
+      <NewIssueInput />
+      <NewIssueOptions
+        userList={userList}
+        labelList={labelList}
+        milestoneList={milestoneList}
+      />
     </div>
   );
 };
