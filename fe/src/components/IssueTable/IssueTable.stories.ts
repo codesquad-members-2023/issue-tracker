@@ -107,6 +107,7 @@ export const Primary: Story = {
     countClosedIssues: 20,
     status: true,
     filterOptions: { filter: 2 },
+    checkedIssues: [1, 2, 3],
   },
 };
 
@@ -138,5 +139,6 @@ export const Secondary: Story = {
     countClosedIssues: 0,
     status: true,
     filterOptions: { milestone: 0 },
+    checkedIssues: [],
   },
 };
