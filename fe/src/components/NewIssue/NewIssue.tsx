@@ -6,6 +6,7 @@ import {
   UserRow,
 } from '@components/IssueTable/IssueTable';
 import NewIssueMain from './NewIssueMain';
+import NewIssueNav from './NewIssueNav';
 
 interface Props {
   user: UserRow;
@@ -29,7 +30,7 @@ const NewIssue: React.FC<Props> = ({
         labelList={labelList}
         milestoneList={milestoneList}
       />
-      {/* <NewIssueNav /> */}
+      <NewIssueNav onClick={() => onclick} />
     </div>
   );
 };
