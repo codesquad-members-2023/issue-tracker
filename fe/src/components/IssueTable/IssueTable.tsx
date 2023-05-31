@@ -46,6 +46,7 @@ export interface MilestoneRow {
   milestoneId: number;
   milestoneName: string;
   description?: string;
+  progress?: number;
 }
 
 interface Props {

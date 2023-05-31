@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   LabelRow,
@@ -8,6 +8,14 @@ import {
 import { ReactComponent as CheveronDown } from '@assets/chevronDown.svg';
 import Profile from '@common/Profile';
 import FilterItem from '@common/FilterItem/FilterItem';
+import Label from '@common/Label';
+import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
+
+interface Options {
+  assignee: number;
+  label: number;
+  milestone: number;
+}
 
 interface Props {
   userList: UserRow[];
@@ -24,17 +32,24 @@ const NewIssueOptions: React.FC<Props> = ({
   const [isLabelOpen, setLabelOpen] = useState(false);
   const [isMilestoneOpen, setMilestoneOpen] = useState(false);
 
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState<Options>({
     assignee: 0,
     label: 0,
     milestone: 0,
   });
 
-  const onItemClick = (option: string, id: number) => {
-    setOptions({
-      ...options,
-      [option]: id,
-    });
+  const onItemClick = (option: keyof Options, id: number) => {
+    if (option in options && options[option] === id) {
+      setOptions({
+        ...options,
+        [option]: 0,
+      });
+    } else {
+      setOptions({
+        ...options,
+        [option]: id,
+      });
+    }
   };
 
   const onOptionClick = (option: string) => {
@@ -50,6 +65,24 @@ const NewIssueOptions: React.FC<Props> = ({
       }
     }
   };
+
+  const selectedOptionsInfo = useMemo(() => {
+    const selectedAssignee = userList.find(
+      user => user.userId === options.assignee
+    );
+    const selectedLabel = labelList.find(
+      label => label.labelId === options.label
+    );
+    const selectedMilestone = milestoneList.find(
+      milestone => milestone.milestoneId === options.milestone
+    );
+
+    return {
+      selectedAssignee,
+      selectedLabel,
+      selectedMilestone,
+    };
+  }, [options, userList, labelList, milestoneList]);
 
   return (
     <div className="flex h-fit w-72 min-w-[288px] flex-col rounded-[14px] border border-gray-200 bg-gray-50">
@@ -82,8 +115,14 @@ const NewIssueOptions: React.FC<Props> = ({
         </div>
         {options.assignee > 0 && (
           <div className="mx-8 mt-[18px] flex gap-x-2">
-            <Profile url="" width={20} height={20} />
-            <div className="text-sm font-medium text-gray-900">sam</div>
+            <Profile
+              url={selectedOptionsInfo.selectedAssignee?.profileUrl || ''}
+              width={20}
+              height={20}
+            />
+            <div className="text-sm font-medium text-gray-900">
+              {selectedOptionsInfo.selectedAssignee?.userName}
+            </div>
           </div>
         )}
       </button>
@@ -116,8 +155,13 @@ const NewIssueOptions: React.FC<Props> = ({
         </div>
         {options.label > 0 && (
           <div className="mx-8 mt-[18px] flex gap-x-2">
-            <Profile url="" width={20} height={20} />
-            <div className="text-sm font-medium text-gray-900">sam</div>
+            <Label
+              labelName={selectedOptionsInfo.selectedLabel?.labelName}
+              backgroundColor={
+                selectedOptionsInfo.selectedLabel?.backgroundColor
+              }
+              fontColor={selectedOptionsInfo.selectedLabel?.fontColor}
+            />
           </div>
         )}
       </button>
@@ -147,8 +191,12 @@ const NewIssueOptions: React.FC<Props> = ({
         </div>
         {options.milestone > 0 && (
           <div className="mx-8 mt-[18px] flex gap-x-2">
-            <Profile url="" width={20} height={20} />
-            <div className="text-sm font-medium text-gray-900">sam</div>
+            {/* <MilestoneProgressBar
+              progress={selectedOptionsInfo.selectedMilestone?.progress}
+            /> */}
+            <div className="text-sm font-medium text-gray-900">
+              {selectedOptionsInfo.selectedMilestone?.milestoneName}
+            </div>
           </div>
         )}
       </button>
