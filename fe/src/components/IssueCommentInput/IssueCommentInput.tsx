@@ -1,9 +1,22 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Button from '@common/Button';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import { BASE_API } from '../../api';
+import fetchData from '@utils/fetchSetData';
+import { IssueDetailData } from '@customTypes/IssueDetailPage';
 
-const IssueCommentInput = () => {
+interface IssueCommentInputProps {
+  setIssueDetailData: Dispatch<IssueDetailData>;
+}
+
+const IssueCommentInput = (props: IssueCommentInputProps) => {
+  const { setIssueDetailData } = props;
   const [commentContent, setCommentContent] = useState('');
   const [showCharCount, setShowCharCount] = useState(true);
   const commentTextAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,12 +53,11 @@ const IssueCommentInput = () => {
   }, [commentContent]);
 
   const issueDetailData = useContext(issueDetailDataContext);
-  console.log(issueDetailData);
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueDetailData?.issue.issueId}`;
 
   const postComment = async () => {
     {
-      await fetch(ISSUE_DETAIL_API, {
+      const temp = await fetch(ISSUE_DETAIL_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,6 +67,9 @@ const IssueCommentInput = () => {
           content: commentContent,
         }),
       });
+      if (temp.ok) {
+        fetchData(temp.url, setIssueDetailData);
+      }
       setCommentContent('');
     }
   };

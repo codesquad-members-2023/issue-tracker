@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import Profile from '@common/Profile';
 import Tag from '@common/Tag';
 import { Comment } from '@customTypes/IssueDetailPage';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 import Button from '@common/Button';
+import { BASE_API } from '../../api';
+import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 
 interface IssueCommentItemProps {
   comment: Comment;
@@ -14,6 +16,42 @@ interface IssueCommentItemProps {
 const IssueCommentItem = (props: IssueCommentItemProps) => {
   const { comment, isWriterComment } = props;
   const { days, hours, minutes, seconds } = getTimeElapsed(comment.createdAt);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [commentContent, setCommentContent] = useState(comment.content);
+  const [showCharCount, setShowCharCount] = useState(true);
+  const commentTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [commentFocused, setCommentFocused] = useState(false);
+  const issueDetailData = useContext(issueDetailDataContext);
+  function clickOnOutside(ref: any) {
+    useEffect(() => {
+      function handleClickOutside(e: Event): void {
+        if (ref.current && !ref.current.contains(e.target)) {
+          setCommentFocused(false);
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  clickOnOutside(commentTextAreaRef);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const handleTyping = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setShowCharCount(false);
+      }, 2000);
+    };
+    handleTyping();
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [commentContent]);
   return (
     <li key={comment.commentId}>
       <section className="flex items-center justify-between rounded-t-2xl border border-gray-300 bg-gray-100 px-6 py-4">
@@ -34,7 +72,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
               <Button
                 title="편집"
                 onClick={() => {
-                  console.log('편집');
+                  setIsEdit(!isEdit);
                 }}
                 isFlexible={true}
                 size="Small"
@@ -61,9 +99,98 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
           />
         </section>
       </section>
-      <section className="rounded-b-2xl border-x border-b border-gray-300 bg-white px-6 py-4">
-        {comment.content}
-      </section>
+      {!isEdit && (
+        <section className="rounded-b-2xl border-x border-b border-gray-300 bg-white px-6 py-4">
+          {comment.content}
+        </section>
+      )}
+      {isEdit && (
+        <section className="flex flex-col gap-y-6">
+          <section
+            className={`flex h-60 w-full flex-col justify-center rounded-b-2xl border ${
+              commentFocused ? 'border-gray-900' : 'border-gray-300'
+            }`}
+          >
+            <textarea
+              placeholder="코멘트를 입력하세요."
+              value={commentContent}
+              onChange={e => {
+                setCommentContent(e.target.value);
+                setShowCharCount(true);
+              }}
+              onFocus={() => setCommentFocused(true)}
+              className={`h-4/5 w-full  border-none ${
+                commentFocused ? 'bg-white' : 'bg-gray-200'
+              } p-4 placeholder-gray-600 outline-0`}
+              ref={commentTextAreaRef}
+            />
+            <div
+              className={`flex justify-end ${
+                commentFocused ? 'bg-white' : 'bg-gray-200'
+              } h-8`}
+            >
+              {showCharCount && `띄어쓰기 포함 ${commentContent.length}자`}
+            </div>
+            <section
+              className={`h-1/5 w-full rounded-b-2xl border-t border-dashed border-gray-300 ${
+                commentFocused ? 'bg-white' : 'bg-gray-200'
+              }`}
+            >
+              <Button
+                title="파일 첨부하기"
+                onClick={() => {
+                  console.log('파일 첨부하기');
+                }}
+                size="Small"
+                color="Gray"
+                type="Ghost"
+                condition="Press"
+                iconName="paperclip"
+                fontSize="text-sm"
+              />
+            </section>
+          </section>
+          <div className="flex justify-end gap-x-2">
+            <Button
+              title="편집 취소"
+              onClick={() => {
+                setIsEdit(!isEdit);
+              }}
+              size="Small"
+              iconName="xsquare"
+              fontSize="text-sm"
+              condition={commentContent.length > 0 ? 'Enabled' : 'Disabled'}
+              disabled={commentContent.length === 0}
+              type="Outline"
+            />
+            <Button
+              title="편집 완료"
+              onClick={() => {
+                // NOTE(Jayden): 현재 PATCH가 성공하긴 하는데 실제 DB에 반영이 안되고 있음(백엔드와 협의)
+                const temp = fetch(
+                  `${BASE_API}issues/${issueDetailData?.issue.issueId}/comments/${comment.commentId}`,
+                  {
+                    method: 'PATCH',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      userId: comment.userId,
+                      content: commentContent,
+                    }),
+                  }
+                );
+                console.log(temp);
+              }}
+              size="Small"
+              iconName="edit"
+              fontSize="text-sm"
+              condition={commentContent.length > 0 ? 'Enabled' : 'Disabled'}
+              disabled={commentContent.length === 0}
+            />
+          </div>
+        </section>
+      )}
     </li>
   );
 };

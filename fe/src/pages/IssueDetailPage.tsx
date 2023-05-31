@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import IssueMainInfo from '@components/IssueMainInfo/IssueMainInfo';
 import IssueController from '@components/IssueController/IssueController';
@@ -9,6 +9,7 @@ import IssueSubInfo from '@components/IssueSubInfo/IssueSubInfo';
 import Button from '@common/Button';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { BASE_API } from '../api';
+import fetchData from '@utils/fetchSetData';
 
 export const issueDetailDataContext = createContext<
   IssueDetailData | undefined
@@ -18,29 +19,15 @@ const IssueDetailPage = () => {
   const { issueId } = useParams<{ issueId: string }>();
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueId}`;
   const [issueDetailData, setIssueDetailData] = useState<IssueDetailData>(); // [data, setData
-  const fetchData = async (api: string) => {
-    try {
-      const res = await fetch(api);
-      if (!res.ok) {
-        throw new Error(`에러가 발생했습니다. 에러내용: ${res}`);
-      } else {
-        const data = await res.json();
-        setIssueDetailData(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
-    fetchData(ISSUE_DETAIL_API);
+    fetchData(ISSUE_DETAIL_API, setIssueDetailData);
   }, []);
-
   const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
   const handleClickIsIssueTitleEdit = () => {
     setIsIssueTitleEdit(!isIssueTitleEdit);
   };
-
+  const navigate = useNavigate();
   return (
     <issueDetailDataContext.Provider value={issueDetailData}>
       <section>
@@ -65,7 +52,7 @@ const IssueDetailPage = () => {
                 issue={issueDetailData.issue}
               />
             )}
-            <IssueCommentInput />
+            <IssueCommentInput setIssueDetailData={setIssueDetailData} />
           </section>
           <section className="h-fit">
             {issueDetailData && (
@@ -78,8 +65,13 @@ const IssueDetailPage = () => {
             <div className="flex justify-end pr-8">
               <Button
                 title="이슈 삭제"
-                onClick={() => {
-                  console.log('이슈 삭제');
+                onClick={async () => {
+                  if (!confirm('이슈를 삭제하시겠습니까?')) return;
+                  await fetch(ISSUE_DETAIL_API, {
+                    method: 'DELETE',
+                  });
+                  // NOTE(Jayden): navigate로 메인페이지로 이동하는데 왜 렌더링이 되는지 확인하기
+                  navigate('/');
                 }}
                 type="Ghost"
                 isFlexible={true}
