@@ -9,7 +9,7 @@ const TEMP_PROFILE_URL =
 
 const RootPage = () => {
   return (
-    <div className="mx-10 my-[27px]">
+    <div className="bg-gray-100 px-10 py-[27px]">
       <Header url={TEMP_PROFILE_URL} />
       <Outlet />
     </div>
