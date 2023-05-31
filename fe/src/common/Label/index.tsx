@@ -1,9 +1,9 @@
 import React from 'react';
 
 interface Props {
-  labelName: string;
-  backgroundColor: string;
-  fontColor: string;
+  labelName?: string;
+  backgroundColor?: string;
+  fontColor?: string;
 }
 
 const Label: React.FC<Props> = ({ labelName, backgroundColor, fontColor }) => {

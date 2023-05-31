@@ -17,10 +17,11 @@ export interface FilterItemRaw {
 
 interface Props {
   item: FilterItemRaw;
+  isFirst?: boolean;
   onItemClick: (id: number) => void;
 }
 
-const FilterItem: React.FC<Props> = ({ item, onItemClick }) => {
+const FilterItem: React.FC<Props> = ({ item, isFirst, onItemClick }) => {
   const {
     id,
     name,
@@ -38,9 +39,9 @@ const FilterItem: React.FC<Props> = ({ item, onItemClick }) => {
 
   return (
     <button
-      className={`flex w-full items-center gap-x-2 border-t px-4 py-2 text-gray-700 ${
-        isClicked && 'font-bold'
-      }`}
+      className={`flex w-full items-center gap-x-2 ${
+        isFirst || 'border-t'
+      } px-4 py-2 text-gray-700 ${isClicked && 'font-bold'}`}
       onClick={handleClick}
     >
       {imgUrl && <Profile url={imgUrl} width={width} height={height} />}
