@@ -48,7 +48,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         />
         {isDropDownOpen.assignee && (
           <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
-            {issueDetailData?.userList.map(user => (
+            {issueDetailData?.userList.map((user, i) => (
               <FilterItem
                 key={user.userId}
                 item={{
@@ -59,6 +59,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   height: 20,
                   isClicked: issueDetailData?.issue.userName === user.userName,
                 }}
+                isFirst={i === 0}
                 onItemClick={id => console.log(id)}
               />
             ))}
@@ -89,7 +90,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         />
         {isDropDownOpen.label && (
           <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
-            {issueDetailData?.labelList.map(label => (
+            {issueDetailData?.labelList.map((label, i) => (
               <FilterItem
                 key={label.labelId}
                 item={{
@@ -100,6 +101,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                     attachedLabel => attachedLabel.labelId === label.labelId
                   ),
                 }}
+                isFirst={i === 0}
                 onItemClick={id => console.log(id)}
               />
             ))}
@@ -137,7 +139,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         />
         {isDropDownOpen.milestone && (
           <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
-            {issueDetailData?.milestoneList.map(milestone => (
+            {issueDetailData?.milestoneList.map((milestone, i) => (
               <FilterItem
                 key={milestone.milestoneId}
                 item={{
@@ -146,6 +148,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   isClicked:
                     attachedMilestone?.milestoneId === milestone.milestoneId,
                 }}
+                isFirst={i === 0}
                 onItemClick={() => console.log('milestone')}
               />
             ))}

@@ -39,7 +39,7 @@ export interface IssueRow {
 export interface UserRow {
   userId: number;
   userName: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export interface MilestoneRow {
