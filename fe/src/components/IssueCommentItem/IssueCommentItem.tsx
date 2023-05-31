@@ -129,7 +129,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
               onFocus={() => setCommentFocused(true)}
               className={`h-4/5 w-full  border-none ${
                 commentFocused ? 'bg-white' : 'bg-gray-200'
-              } p-4 placeholder-gray-600 outline-0`}
+              } p-4 placeholder-gray-600 outline-0 focus:outline-none`}
               ref={commentTextAreaRef}
             />
             <div
