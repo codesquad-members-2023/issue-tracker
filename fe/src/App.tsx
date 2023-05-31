@@ -7,6 +7,7 @@ import IssueDetailPage from './pages/IssueDetailPage';
 import LabelPage from './pages/LabelPage';
 import MilestonePage from './pages/MilestonePage';
 import ErrorPage from './pages/ErrorPage';
+import LoginPage from './pages/LoginPage';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: '/milestones', element: <MilestonePage /> },
     ],
   },
+  { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
 ]);
 
 function App() {
