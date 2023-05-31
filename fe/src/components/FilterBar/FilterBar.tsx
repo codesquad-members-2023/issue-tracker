@@ -28,7 +28,7 @@ const FilterBar: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex w-auto justify-start rounded-2xl border border-gray-200">
+    <div className="flex w-auto justify-start rounded-2xl border border-gray-300">
       <Button
         title="필터"
         size="Small"
@@ -54,13 +54,13 @@ const FilterBar: React.FC<Props> = ({
       />
       <form
         action=""
-        className="flex w-[472px] items-center justify-start gap-x-3 rounded-r-2xl bg-gray-100 pl-6"
+        className="flex w-[472px] items-center justify-start gap-x-3 rounded-r-2xl border-l border-gray-300 bg-gray-200 pl-6"
       >
         <Search stroke="#6E7191" className="w-4 self-center" />
         <input
           type="text"
           value={searchValue}
-          className="w-96 bg-gray-100 text-gray-600 focus:outline-none"
+          className="w-96 bg-gray-200 text-gray-600 focus:outline-none"
           onChange={() => console.log('')}
         />
       </form>
