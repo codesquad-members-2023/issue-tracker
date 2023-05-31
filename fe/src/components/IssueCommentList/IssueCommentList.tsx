@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { Dispatch } from 'react';
 
-import { CommentList, Issue } from '@customTypes/IssueDetailPage';
+import {
+  CommentList,
+  Issue,
+  IssueDetailData,
+} from '@customTypes/IssueDetailPage';
 import IssueCommentItem from '@components/IssueCommentItem/IssueCommentItem';
 
 interface CommentListProps {
   comments: CommentList;
   issue: Issue;
+  setIssueDetailData: Dispatch<IssueDetailData>;
 }
 
 const IssueCommentList = (props: CommentListProps) => {
-  const { comments, issue } = props;
+  const { comments, issue, setIssueDetailData } = props;
 
   // FIXME(Jayden): 추후 작성자 content(첫번째 comment)에 관한 로직 수정하기
   const writerComment = {
@@ -29,6 +34,7 @@ const IssueCommentList = (props: CommentListProps) => {
           key={comment.commentId}
           comment={comment}
           isWriterComment={comment.userName === issue.userName}
+          setIssueDetailData={setIssueDetailData}
         />
       ))}
     </ul>
