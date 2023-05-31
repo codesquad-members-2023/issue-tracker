@@ -115,7 +115,7 @@ const MilestonePage = () => {
                     <input
                       type="text"
                       placeholder={'입력하세요'}
-                      className="w-full bg-gray-200"
+                      className="w-full bg-gray-200 focus:outline-none"
                       value={newMilestone.milestoneName}
                       onChange={e =>
                         setNewMilestone({
@@ -130,7 +130,7 @@ const MilestonePage = () => {
                     <input
                       type="text"
                       placeholder={'YYYY-MM-DD'}
-                      className="w-full bg-gray-200"
+                      className="w-full bg-gray-200 focus:outline-none"
                       value={newMilestone.completedAt}
                       onChange={e =>
                         setNewMilestone({
@@ -147,7 +147,7 @@ const MilestonePage = () => {
                     <input
                       type="text"
                       placeholder={'입력하세요'}
-                      className="w-full bg-gray-200"
+                      className="w-full bg-gray-200 focus:outline-none"
                       value={newMilestone.description}
                       onChange={e =>
                         setNewMilestone({
