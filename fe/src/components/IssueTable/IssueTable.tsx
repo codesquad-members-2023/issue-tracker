@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import Issue from './Issue';
 import Button from '@common/Button';
@@ -57,9 +57,11 @@ interface Props {
   countClosedIssues: number;
   status: boolean;
   filterOptions: FilterOptions;
+  checkedIssues: number[];
   updateIssueStatus: (id: number, checkedIssues: number[]) => void;
   onStatusTabClick: (status: boolean) => void;
   updateFilterOption: (type: keyof FilterOptions, id: number) => void;
+  setCheckedIssues: Dispatch<SetStateAction<number[]>>;
 }
 
 const IssueTable: React.FC<Props> = ({
@@ -71,12 +73,13 @@ const IssueTable: React.FC<Props> = ({
   countClosedIssues,
   status,
   filterOptions,
+  checkedIssues,
   updateIssueStatus,
   updateFilterOption,
   onStatusTabClick,
+  setCheckedIssues,
 }) => {
   const [openedFilterList, setOpenedFilterList] = useState('');
-  const [checkedIssues, setCheckedIssues] = useState<number[]>([]);
   const allChecked =
     checkedIssues.length > 0 && checkedIssues.length === issues.length;
 
