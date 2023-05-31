@@ -7,6 +7,7 @@ import IssueDetailPage from './pages/IssueDetailPage';
 import LabelPage from './pages/LabelPage';
 import MilestonePage from './pages/MilestonePage';
 import ErrorPage from './pages/ErrorPage';
+import NewIssue from './pages/NewIssue';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
         path: '/issues/:issueId',
         element: <IssueDetailPage />,
       },
+      { path: '/new-issue', element: <NewIssue /> },
       { path: '/labels', element: <LabelPage /> },
       { path: '/milestones', element: <MilestonePage /> },
     ],

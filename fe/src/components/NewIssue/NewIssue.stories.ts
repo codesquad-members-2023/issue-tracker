@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import NewIssue from './NewIssue';
+import NewIssue from '../../pages/NewIssue';
 
 const meta = {
   title: 'NewIssue/NewIssue',
