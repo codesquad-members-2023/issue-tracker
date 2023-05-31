@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     user: { userId: 1, userName: 'Lily', profileUrl: '' },
-    UserList: [],
+    userList: [],
     labelList: [],
     milestoneList: [],
   },

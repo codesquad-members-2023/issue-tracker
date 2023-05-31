@@ -35,7 +35,35 @@ export const Primary: Story = {
         profileUrl: '111',
       },
     ],
-    labelList: [],
-    milestoneList: [],
+    labelList: [
+      {
+        labelId: 1,
+        labelName: 'bug',
+        backgroundColor: 'tomato',
+        fontColor: '#FFFFFF',
+      },
+      {
+        labelId: 2,
+        labelName: 'FE',
+        backgroundColor: 'pink',
+        fontColor: '#FFFFFF',
+      },
+      {
+        labelId: 3,
+        labelName: 'document',
+        backgroundColor: '#FF2011',
+        fontColor: '#FFFFFF',
+      },
+    ],
+    milestoneList: [
+      {
+        milestoneId: 1,
+        milestoneName: 'FE',
+      },
+      {
+        milestoneId: 2,
+        milestoneName: 'BE',
+      },
+    ],
   },
 };

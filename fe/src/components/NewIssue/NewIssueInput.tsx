@@ -32,7 +32,7 @@ const NewIssueInput: React.FC = () => {
   };
 
   return (
-    <form className="mx-6 flex w-full flex-col">
+    <form className="mx-6 flex w-full max-w-[912px] flex-col">
       <label
         className={`mb-2 h-14 overflow-hidden rounded-[14px] bg-gray-200 px-6 ${
           isChangedTitle || 'py-3.5'

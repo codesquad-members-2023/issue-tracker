@@ -24,68 +24,133 @@ const NewIssueOptions: React.FC<Props> = ({
   const [isLabelOpen, setLabelOpen] = useState(false);
   const [isMilestoneOpen, setMilestoneOpen] = useState(false);
 
-  const [assignee, setAssignee] = useState(0);
-  const [label, setLabel] = useState(0);
-  const [milestone, setMilestone] = useState(0);
+  const [options, setOptions] = useState({
+    assignee: 0,
+    label: 0,
+    milestone: 0,
+  });
 
-  const onItemClick = (id: number) => {
-    setAssignee(id);
+  const onItemClick = (option: string, id: number) => {
+    setOptions({
+      ...options,
+      [option]: id,
+    });
+  };
+
+  const onOptionClick = (option: string) => {
+    switch (option) {
+      case 'assignee':
+        return setAssigneeOpen(!isAssigneeOpen);
+      case 'label':
+        return setLabelOpen(!isLabelOpen);
+      case 'milestone':
+        return setMilestoneOpen(!isMilestoneOpen);
+      default: {
+        throw new Error('Invalid option');
+      }
+    }
   };
 
   return (
-    <div
-      className="flex w-72 flex-col rounded-[14px] border border-gray-200 bg-gray-50"
-      onClick={() => setAssigneeOpen(!isAssigneeOpen)}
-    >
-      <button className="h-1/3 border-b border-gray-300 py-8">
+    <div className="flex h-fit w-72 min-w-[288px] flex-col rounded-[14px] border border-gray-200 bg-gray-50">
+      <button
+        className="border-b border-gray-300 py-8"
+        onClick={() => onOptionClick('assignee')}
+      >
         <div className="relative mx-8 flex items-center">
           <div className="grow text-left font-bold text-gray-600">담당자</div>
           <CheveronDown stroke="#6E7191" />
-          {isAssigneeOpen && (
-            <div className="absolute top-9 w-full rounded-2xl border border-gray-300 bg-gray-50">
+          {isAssigneeOpen && userList.length > 0 && (
+            <div className="absolute top-9 z-10 w-full rounded-2xl border border-gray-300 bg-gray-50">
               {userList.map((user, i) => (
                 <FilterItem
                   key={user.userId}
                   item={{
                     id: user.userId,
                     name: user.userName,
+                    isClicked: user.userId === options.assignee,
                     imgUrl: user.profileUrl,
                     width: 20,
                     height: 20,
                   }}
                   isFirst={i === 0}
-                  onItemClick={onItemClick}
+                  onItemClick={id => onItemClick('assignee', id)}
                 />
               ))}
             </div>
           )}
         </div>
-        {assignee ? (
+        {options.assignee > 0 && (
           <div className="mx-8 mt-[18px] flex gap-x-2">
             <Profile url="" width={20} height={20} />
             <div className="text-sm font-medium text-gray-900">sam</div>
           </div>
-        ) : null}
+        )}
       </button>
       <button
-        className="h-1/3 border-b border-gray-300 py-8"
-        onClick={() => setLabelOpen(!isLabelOpen)}
+        className="border-b border-gray-300 py-8"
+        onClick={() => onOptionClick('label')}
       >
-        <div className="mx-8 flex items-center">
+        <div className="relative mx-8 flex items-center">
           <div className="grow text-left font-bold text-gray-600">레이블</div>
           <CheveronDown stroke="#6E7191" />
+          {isLabelOpen && labelList.length > 0 && (
+            <div className="absolute top-9 z-10 w-full rounded-2xl border border-gray-300 bg-gray-50">
+              {labelList.map((label, i) => (
+                <FilterItem
+                  key={label.labelId}
+                  item={{
+                    id: label.labelId,
+                    name: label.labelName,
+                    isClicked: label.labelId === options.label,
+                    backgroundColor: label.backgroundColor,
+                    width: 20,
+                    height: 20,
+                  }}
+                  isFirst={i === 0}
+                  onItemClick={id => onItemClick('label', id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
-        {label && <div className="mx-8 mt-[18px] flex gap-x-2"></div>}
+        {options.label > 0 && (
+          <div className="mx-8 mt-[18px] flex gap-x-2">
+            <Profile url="" width={20} height={20} />
+            <div className="text-sm font-medium text-gray-900">sam</div>
+          </div>
+        )}
       </button>
-      <button
-        className="h-1/3 py-8"
-        onClick={() => setMilestoneOpen(!isMilestoneOpen)}
-      >
-        <div className="mx-8 flex items-center">
+      <button className="py-8" onClick={() => onOptionClick('milestone')}>
+        <div className="relative mx-8 flex items-center">
           <div className="grow text-left font-bold text-gray-600">마일스톤</div>
           <CheveronDown stroke="#6E7191" />
+          {isMilestoneOpen && milestoneList.length > 0 && (
+            <div className="absolute top-9 z-10 w-full rounded-2xl border border-gray-300 bg-gray-50">
+              {milestoneList.map((milestone, i) => (
+                <FilterItem
+                  key={milestone.milestoneId}
+                  item={{
+                    id: milestone.milestoneId,
+                    name: milestone.milestoneName,
+                    isClicked: milestone.milestoneId === options.milestone,
+                    width: 20,
+                    height: 20,
+                    isMultipleItemSelectable: false,
+                  }}
+                  isFirst={i === 0}
+                  onItemClick={id => onItemClick('milestone', id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
-        {milestone && <div className="mx-8 mt-[18px] flex gap-x-2"></div>}
+        {options.milestone > 0 && (
+          <div className="mx-8 mt-[18px] flex gap-x-2">
+            <Profile url="" width={20} height={20} />
+            <div className="text-sm font-medium text-gray-900">sam</div>
+          </div>
+        )}
       </button>
     </div>
   );
