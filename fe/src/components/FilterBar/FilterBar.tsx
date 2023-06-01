@@ -28,7 +28,8 @@ const FilterBar: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex w-auto justify-start rounded-2xl border border-gray-300">
+    <div className="flex w-auto justify-start rounded-2xl border border-gray-200 bg-gray-50">
+
       <Button
         title="필터"
         size="Small"

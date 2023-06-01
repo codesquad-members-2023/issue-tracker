@@ -39,13 +39,14 @@ export interface IssueRow {
 export interface UserRow {
   userId: number;
   userName: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export interface MilestoneRow {
   milestoneId: number;
   milestoneName: string;
   description?: string;
+  progress?: number;
 }
 
 interface Props {
@@ -113,6 +114,7 @@ const IssueTable: React.FC<Props> = ({
 
   return (
     <div className="w-160 box-border rounded-2xl border border-gray-300">
+
       <div className="box-border rounded-t-2xl bg-gray-100 px-8 py-4">
         <div className="flex justify-between">
           <div className="flex items-center">
