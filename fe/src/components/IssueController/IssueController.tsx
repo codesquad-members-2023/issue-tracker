@@ -11,7 +11,6 @@ interface IssueControllerProps {
 const IssueController = (props: IssueControllerProps) => {
   // TODO(Jayden): 각 버튼마다 fetch 함수 연결 혹은 link 연결
   const { isIssueTitleEdit, handleClickIsIssueTitleEdit } = props;
-  const issueDetailData = useContext(issueDetailDataContext);
   return (
     <div className="flex gap-x-2">
       {isIssueTitleEdit ? (
