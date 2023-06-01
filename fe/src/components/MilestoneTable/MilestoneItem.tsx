@@ -47,9 +47,11 @@ const MilestoneItem = (props: MilestoneItemProps) => {
     description,
     completedAt,
   } as any);
+
   const handleIsEditMilestoneClick = () => {
     setIsEditMilestone(!isEditMilestone);
   };
+
   return (
     <>
       <div className="flex justify-between border-t border-t-gray-300 px-8 py-4">
@@ -57,7 +59,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
           <section className="flex items-center justify-start gap-x-2">
             <Milestone fill="#007AFF" />
             <p className="font-bold">{name}</p>
-            <div className="flex items-center gap-x-2 text-md text-gray-600">
+            <div className="flex items-center gap-x-2 text-sm text-gray-600">
               <Calendar stroke="#6E7191" />
               <p>{getSplitedDate(completedAt)}</p>
             </div>
@@ -67,7 +69,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
           </section>
         </section>
         <section className="w-1/5">
-          <section className="flex items-center justify-end gap-x-6">
+          <section className="mb-1 flex items-center justify-end gap-x-6">
             <Button
               title="닫기"
               onClick={() => console.log('닫기')}
@@ -75,6 +77,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
               size="Small"
               color="Gray"
               type="Ghost"
+              gap="gap-x-1"
               condition="Press"
               iconName="archive"
               fontSize={'text-sm'}
@@ -86,6 +89,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
               size="Small"
               color="Gray"
               type="Ghost"
+              gap="gap-x-1"
               condition="Press"
               iconName="edit"
               fontSize={'text-sm'}
@@ -105,6 +109,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
               isFlexible={true}
               size="Small"
               color="Red"
+              gap="gap-x-1"
               type="Ghost"
               condition="Press"
               iconName="trash"
@@ -114,9 +119,17 @@ const MilestoneItem = (props: MilestoneItemProps) => {
           <section>
             <MilestoneProgressBar progress={progress} />
           </section>
-          <section className="flex justify-between text-sm text-gray-600">
-            <p className="text-right">{progress}%</p>
-            <div>{`열린 이슈 ${countAllOpenedIssues} / 닫힌 이슈 ${countAllClosedIssues}`}</div>
+          <section className="mt-1 flex justify-between text-sm text-gray-600">
+            <p className="text-right font-medium">{progress}%</p>
+            {/* <div>{`열린 이슈 ${countAllOpenedIssues} 닫힌 이슈 ${countAllClosedIssues}`}</div> */}
+            <div>
+              <span className="mr-2 font-medium">
+                열린 이슈 {countAllOpenedIssues}
+              </span>
+              <span className="font-medium">
+                닫힌 이슈 {countAllClosedIssues}
+              </span>
+            </div>
           </section>
         </section>
       </div>
