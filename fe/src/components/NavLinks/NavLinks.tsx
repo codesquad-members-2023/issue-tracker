@@ -17,7 +17,7 @@ const NavLinks: React.FC<Props> = ({ countAllLabels, countAllMilestones }) => {
       >
         <Button
           title={`레이블(${countAllLabels || 0})`}
-          onClick={() => console.log('레이블')}
+          onClick={() => null}
           size="Small"
           color="Gray"
           type="Ghost"
@@ -28,7 +28,7 @@ const NavLinks: React.FC<Props> = ({ countAllLabels, countAllMilestones }) => {
       <Link to="/milestones" className="flex w-1/2 justify-center">
         <Button
           title={`마일스톤(${countAllMilestones || 0})`}
-          onClick={() => console.log('마일스톤')}
+          onClick={() => null}
           size="Small"
           color="Gray"
           type="Ghost"

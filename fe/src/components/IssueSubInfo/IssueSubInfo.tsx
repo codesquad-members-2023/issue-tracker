@@ -93,7 +93,6 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
       milestone: false,
     });
   });
-  console.log(assigneeIdsClicked);
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">

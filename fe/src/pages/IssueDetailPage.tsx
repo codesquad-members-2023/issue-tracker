@@ -42,67 +42,70 @@ const IssueDetailPage = () => {
   const navigate = useNavigate();
   return (
     <issueDetailDataContext.Provider value={issueDetailData}>
-      <section>
-        <section className="flex justify-between">
-          {issueDetailData && (
-            <IssueMainInfo
-              issueDetailData={issueDetailData}
-              isIssueDetailTitleEdit={isIssueTitleEdit}
+      {issueDetailData && (
+        <section>
+          <section className="flex justify-between">
+            {issueDetailData && (
+              <IssueMainInfo
+                issueDetailData={issueDetailData}
+                isIssueDetailTitleEdit={isIssueTitleEdit}
+                currentIssueTitle={currentIssueTitle as string}
+                handleChangeCurrentIssueTitle={handleChangeCurrentIssueTitle}
+              />
+            )}
+            <IssueController
+              isIssueTitleEdit={isIssueTitleEdit}
+              handleClickIsIssueTitleEdit={handleClickIsIssueTitleEdit}
               currentIssueTitle={currentIssueTitle as string}
-              handleChangeCurrentIssueTitle={handleChangeCurrentIssueTitle}
+              setCurrentIssueTitle={setCurrentIssueTitle}
+              issueId={issueId as string}
+              issueDetailData={issueDetailData as IssueDetailData}
+              setIssueDetailData={setIssueDetailData}
             />
-          )}
-          <IssueController
-            isIssueTitleEdit={isIssueTitleEdit}
-            handleClickIsIssueTitleEdit={handleClickIsIssueTitleEdit}
-            currentIssueTitle={currentIssueTitle as string}
-            setCurrentIssueTitle={setCurrentIssueTitle}
-            issueId={issueId as string}
-            initialIssueTitle={issueDetailData?.issue.title as string}
-          />
-        </section>
-        <div className="mt-6 h-6 border-t border-t-gray-300" />
-        <section className="flex h-fit justify-start gap-x-8">
-          <section className="flex h-fit w-4/5 flex-col justify-between gap-y-6">
-            {issueDetailData && (
-              <IssueCommentList
-                comments={issueDetailData.commentList}
-                issue={issueDetailData.issue}
-                setIssueDetailData={setIssueDetailData}
-              />
-            )}
-            <IssueCommentInput setIssueDetailData={setIssueDetailData} />
           </section>
-          <section className="h-fit">
-            {issueDetailData && (
-              <IssueSubInfo
-                issue={issueDetailData.issue}
-                attachedLabelList={issueDetailData.attachedLabelList}
-                attachedMilestone={issueDetailData.attachedMilestone}
-                attachedAssigneeList={issueDetailData.attachedAssigneeList}
-                setIssueDetailData={setIssueDetailData}
-              />
-            )}
-            <div className="flex justify-end pr-8">
-              <Button
-                title="이슈 삭제"
-                onClick={async () => {
-                  if (!confirm('이슈를 삭제하시겠습니까?')) return;
-                  await fetch(ISSUE_DETAIL_API, {
-                    method: 'DELETE',
-                  });
-                  navigate('/');
-                }}
-                type="Ghost"
-                isFlexible={true}
-                iconName="trash"
-                fontSize="text-sm"
-                color="Red"
-              />
-            </div>
+          <div className="mt-6 h-6 border-t border-t-gray-300" />
+          <section className="flex h-fit justify-start gap-x-8">
+            <section className="flex h-fit w-4/5 flex-col justify-between gap-y-6">
+              {issueDetailData && (
+                <IssueCommentList
+                  comments={issueDetailData.commentList}
+                  issue={issueDetailData.issue}
+                  setIssueDetailData={setIssueDetailData}
+                />
+              )}
+              <IssueCommentInput setIssueDetailData={setIssueDetailData} />
+            </section>
+            <section className="h-fit">
+              {issueDetailData && (
+                <IssueSubInfo
+                  issue={issueDetailData.issue}
+                  attachedLabelList={issueDetailData.attachedLabelList}
+                  attachedMilestone={issueDetailData.attachedMilestone}
+                  attachedAssigneeList={issueDetailData.attachedAssigneeList}
+                  setIssueDetailData={setIssueDetailData}
+                />
+              )}
+              <div className="flex justify-end pr-8">
+                <Button
+                  title="이슈 삭제"
+                  onClick={async () => {
+                    if (!confirm('이슈를 삭제하시겠습니까?')) return;
+                    await fetch(ISSUE_DETAIL_API, {
+                      method: 'DELETE',
+                    });
+                    navigate('/');
+                  }}
+                  type="Ghost"
+                  isFlexible={true}
+                  iconName="trash"
+                  fontSize="text-sm"
+                  color="Red"
+                />
+              </div>
+            </section>
           </section>
         </section>
-      </section>
+      )}
     </issueDetailDataContext.Provider>
   );
 };
