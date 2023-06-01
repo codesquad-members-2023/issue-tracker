@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import Button from '@common/Button';
 import Profile from '@common/Profile';
@@ -15,6 +15,7 @@ import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import FilterItem from '@common/FilterItem/FilterItem';
 import { BASE_API } from '../../api';
 import fetchSetData from '@utils/fetchSetData';
+import useOutsideClick from '@hooks/useOutsideClick';
 
 interface IssueSubInfoProps {
   issue: Issue;
@@ -35,6 +36,8 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
     setIssueDetailData,
   } = props;
   const issueDetailData = useContext(issueDetailDataContext);
+  const ISSUE_DETAIL_API = `${BASE_API}issues/${issue.issueId}`;
+
   const [isDropDownOpen, setIsDropDownOpen] = useState({
     assignee: false,
     label: false,
@@ -49,7 +52,48 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
   const [milestoneIdClicked, setMilestoneIdClicked] = useState<number>(
     attachedMilestone.milestoneId
   );
-  console.log(issueDetailData);
+  const assigneeDropDownRef = useRef<HTMLDivElement>(null);
+  const labelDropDownRef = useRef<HTMLDivElement>(null);
+  const milestoneDropDownRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(assigneeDropDownRef, async () => {
+    setIsDropDownOpen({
+      ...isDropDownOpen,
+      assignee: false,
+    });
+    await fetch(`${ISSUE_DETAIL_API}/assignees`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userList: assigneeIdsClicked.map(id => ({ userId: id })),
+      }),
+    });
+    await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+  });
+  useOutsideClick(labelDropDownRef, async () => {
+    setIsDropDownOpen({
+      ...isDropDownOpen,
+      label: false,
+    });
+    await fetch(`${ISSUE_DETAIL_API}/labels`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        labelList: labelIdsClicked.map(id => ({ labelId: id })),
+      }),
+    });
+    await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+  });
+  useOutsideClick(milestoneDropDownRef, () => {
+    setIsDropDownOpen({
+      ...isDropDownOpen,
+      milestone: false,
+    });
+  });
+  console.log(assigneeIdsClicked);
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
@@ -71,7 +115,10 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           gap="gap-x-40"
         />
         {isDropDownOpen.assignee && (
-          <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
+          <div
+            className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white"
+            ref={assigneeDropDownRef}
+          >
             {issueDetailData?.userList.map((user, i) => (
               <FilterItem
                 key={user.userId}
@@ -84,7 +131,14 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   isClicked: assigneeIdsClicked.includes(user.userId),
                 }}
                 isFirst={i === 0}
-                onItemClick={id => console.log(id)}
+                onItemClick={id => {
+                  setAssigneeIdsClicked(prev => {
+                    if (prev.includes(id)) {
+                      return prev.filter(prevId => prevId !== id);
+                    }
+                    return [...prev, id];
+                  });
+                }}
               />
             ))}
           </div>
@@ -115,7 +169,10 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           gap="gap-x-40"
         />
         {isDropDownOpen.label && (
-          <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
+          <div
+            className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white"
+            ref={labelDropDownRef}
+          >
             {issueDetailData?.labelList.map((label, i) => (
               <FilterItem
                 key={label.labelId}
@@ -126,7 +183,14 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   isClicked: labelIdsClicked.includes(label.labelId),
                 }}
                 isFirst={i === 0}
-                onItemClick={id => console.log(id)}
+                onItemClick={id => {
+                  setLabelIdsClicked(prev => {
+                    if (prev.includes(id)) {
+                      return prev.filter(prevId => prevId !== id);
+                    }
+                    return [...prev, id];
+                  });
+                }}
               />
             ))}
           </div>
@@ -163,51 +227,39 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         />
         {isDropDownOpen.milestone && (
           <>
-            <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
+            <div
+              className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white"
+              ref={milestoneDropDownRef}
+            >
               {issueDetailData?.milestoneList.map((milestone, i) => (
-                <div
+                <FilterItem
                   key={milestone.milestoneId}
-                  onBlur={() => {
+                  item={{
+                    id: milestone.milestoneId,
+                    name: milestone.milestoneName,
+                    isClicked: milestoneIdClicked === milestone.milestoneId,
+                  }}
+                  isFirst={i === 0}
+                  onItemClick={id => {
+                    fetch(`${BASE_API}issues/${issue.issueId}/milestones`, {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        milestoneId: id,
+                      }),
+                    });
+                    setMilestoneIdClicked(id);
                     setIsDropDownOpen({
                       ...isDropDownOpen,
                       milestone: false,
                       assignee: false,
                       label: false,
                     });
+                    fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
                   }}
-                >
-                  <FilterItem
-                    key={milestone.milestoneId}
-                    item={{
-                      id: milestone.milestoneId,
-                      name: milestone.milestoneName,
-                      isClicked: milestoneIdClicked === milestone.milestoneId,
-                    }}
-                    isFirst={i === 0}
-                    onItemClick={id => {
-                      fetch(`${BASE_API}issues/${issue.issueId}/milestones`, {
-                        method: 'PATCH',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                          milestoneId: id,
-                        }),
-                      });
-                      setMilestoneIdClicked(id);
-                      setIsDropDownOpen({
-                        ...isDropDownOpen,
-                        milestone: false,
-                        assignee: false,
-                        label: false,
-                      });
-                      fetchSetData(
-                        `${BASE_API}issues/${issue.issueId}`,
-                        setIssueDetailData
-                      );
-                    }}
-                  />
-                </div>
+                />
               ))}
             </div>
           </>

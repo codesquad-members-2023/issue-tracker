@@ -23,6 +23,7 @@
       "@constants/*": ["src/constants/*"],
       "@utils/*": ["src/utils/*"],
       "@customTypes/*": ["src/customTypes/*"],
+      "@hooks/*": ["src/hooks/*"],
     }
   },
   "include": ["src", "craco.config.js"],

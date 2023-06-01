@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 import FilterItem, { FilterItemRaw } from '@common/FilterItem/FilterItem';
 import { FilterOptions } from '@components/IssueTable/IssueTable';
-import useOutsideClick from './useOutsideClick';
+import useOutsideClick from '@hooks/useOutsideClick';
 
 export const filterOptions: Record<keyof FilterOptions, string | string[]> = {
   page: '페이지',

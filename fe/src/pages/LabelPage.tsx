@@ -11,10 +11,10 @@ import getRandomHexColor from '@utils/getRandomHexColor';
 
 const LabelPage = () => {
   const INITIAL_LABEL = {
-    labelName: '레이블',
+    labelName: '',
     backgroundColor: '#000000',
     fontColor: '#ffffff',
-    description: '입력하세요',
+    description: '',
   };
   const [labelsData, setLabelsData] = useState({} as any);
   const [newLabel, setNewLabel] = useState(INITIAL_LABEL);
@@ -44,7 +44,10 @@ const LabelPage = () => {
             {isNewLabel ? (
               <Button
                 title="닫기"
-                onClick={handleIsNewLabelClick}
+                onClick={() => {
+                  handleIsNewLabelClick();
+                  setNewLabel(INITIAL_LABEL);
+                }}
                 size="Small"
                 iconName="xsquare"
                 fontSize="text-sm"
@@ -76,7 +79,7 @@ const LabelPage = () => {
                     <div className="whitespace-nowrap">레이블 이름</div>
                     <input
                       type="text"
-                      placeholder={newLabel.labelName}
+                      placeholder="입력하세요"
                       className="w-full bg-gray-200 focus:outline-none"
                       value={newLabel.labelName}
                       onChange={e =>
@@ -91,7 +94,7 @@ const LabelPage = () => {
                     <div className="whitespace-nowrap">설명(선택)</div>
                     <input
                       type="text"
-                      placeholder={newLabel.description}
+                      placeholder="입력하세요"
                       className="w-full bg-gray-200 focus:outline-none"
                       value={newLabel.description}
                       onChange={e =>
