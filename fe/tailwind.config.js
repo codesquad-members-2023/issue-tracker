@@ -5,7 +5,7 @@ export const theme = {
   extend: {
     colors: {
       // NOTE(Jayden): 기본 color
-      'gray': {
+      gray: {
         50: '#FEFEFE',
         100: '#F7F7FC',
         200: '#EFF0F6',
@@ -18,14 +18,9 @@ export const theme = {
         900: '#14142B',
       },
       // NOTE(Jayden): DEFAULT로 색상 지정 시, 해당 색상을 사용할 때는 bg-blue, text-blue 등으로 사용(기존 tailwindcss 제공 색상 유지 가능)
-      'blue': { DEFAULT: '#007AFF' },
-      'navy': { DEFAULT: '#0025E6' },
-      'red': { DEFAULT: '#FF3B30' },
-      // TODO: 아래 컬러들을 위의 테마 컬러로 변경하기
-      'neutral': '#4E4B66',
-      'neutral-weak': '#6E7191',
-      'neutral-strong': '#14142B',
-      'light-mode': '#F7F7FC',
+      blue: { DEFAULT: '#007AFF' },
+      navy: { DEFAULT: '#0025E6' },
+      red: { DEFAULT: '#FF3B30' },
     },
     // NOTE(Jayden): 기본 font-size
     fontSize: {

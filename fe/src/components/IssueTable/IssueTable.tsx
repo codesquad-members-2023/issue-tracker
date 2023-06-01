@@ -114,7 +114,6 @@ const IssueTable: React.FC<Props> = ({
 
   return (
     <div className="w-160 box-border rounded-2xl border border-gray-300">
-
       <div className="box-border rounded-t-2xl bg-gray-100 px-8 py-4">
         <div className="flex justify-between">
           <div className="flex items-center">
@@ -331,7 +330,7 @@ const IssueTable: React.FC<Props> = ({
           );
         })
       ) : (
-        <div className="my-5 text-center text-neutral-weak">
+        <div className="my-5 text-center text-gray-600">
           검색과 일치하는 결과가 없습니다.
         </div>
       )}

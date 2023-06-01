@@ -63,7 +63,7 @@ const Issue: React.FC<Props> = ({
           )}
           <Link
             to={`issues/${issueId}`}
-            className="mx-2 text-left text-lg font-bold text-neutral-strong"
+            className="mx-2 text-left text-lg font-bold text-gray-900"
             onChange={() => onIssueTitleClick(issueId)}
           >
             {title}
