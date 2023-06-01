@@ -1,23 +1,39 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import Button from '@common/Button';
-import { issueDetailDataContext } from '../../pages/IssueDetailPage';
+import { BASE_API } from '../../api';
 
 interface IssueControllerProps {
   isIssueTitleEdit: boolean;
   handleClickIsIssueTitleEdit: () => void;
+  currentIssueTitle: string;
+  setCurrentIssueTitle: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+  issueId: string;
+  initialIssueTitle: string;
 }
 
 const IssueController = (props: IssueControllerProps) => {
   // TODO(Jayden): 각 버튼마다 fetch 함수 연결 혹은 link 연결
-  const { isIssueTitleEdit, handleClickIsIssueTitleEdit } = props;
+  const {
+    isIssueTitleEdit,
+    handleClickIsIssueTitleEdit,
+    issueId,
+    currentIssueTitle,
+    setCurrentIssueTitle,
+    initialIssueTitle,
+  } = props;
   return (
     <div className="flex gap-x-2">
       {isIssueTitleEdit ? (
         <>
           <Button
             title="편집 취소"
-            onClick={handleClickIsIssueTitleEdit}
+            onClick={() => {
+              handleClickIsIssueTitleEdit();
+              setCurrentIssueTitle(initialIssueTitle);
+            }}
             size="Small"
             type="Outline"
             iconName="edit"
@@ -28,7 +44,15 @@ const IssueController = (props: IssueControllerProps) => {
             onClick={() => {
               handleClickIsIssueTitleEdit();
               // TODO(Jayden): fetch(PATCH) 요청 처리
-              console.log('fetch(PATCH)');
+              fetch(`${BASE_API}issues/${issueId}/title`, {
+                method: 'PATCH',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  title: currentIssueTitle,
+                }),
+              });
             }}
             size="Small"
             type="Contained"

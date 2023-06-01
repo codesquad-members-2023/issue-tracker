@@ -146,7 +146,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
                   type="text"
                   placeholder={'YYYY-MM-DD'}
                   className="w-full bg-gray-200"
-                  value={newMilestone.completedAt}
+                  value={newMilestone.completedAt.split(' ')[0]}
                   onChange={e =>
                     setNewMilestone({
                       ...newMilestone,
@@ -190,7 +190,6 @@ const MilestoneItem = (props: MilestoneItemProps) => {
               title="완료"
               onClick={async () => {
                 handleIsEditMilestoneClick();
-                // NOTE(Jayden): 현재 PATCH 요청 400 에러 발생
                 await fetch(`${BASE_API}milestones/${milestoneId}`, {
                   method: 'PATCH',
                   headers: {
@@ -199,7 +198,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
                   body: JSON.stringify({
                     name: newMilestone.milestoneName,
                     description: newMilestone.description,
-                    completedAt: `${newMilestone.completedAt}T23:59:59`,
+                    completedAt: `${newMilestone.completedAt} 23:59:59`,
                   }),
                 });
                 handleSetMilestoneData();

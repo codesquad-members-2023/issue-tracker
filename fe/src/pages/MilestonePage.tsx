@@ -111,7 +111,6 @@ const MilestonePage = () => {
                   title="완료"
                   onClick={async () => {
                     handleIsNewMilestoneClick();
-                    // NOTE(Jayden): 현재 POST 요청 400 에러 발생
                     await fetch(`${BASE_API}milestones`, {
                       method: 'POST',
                       headers: {
@@ -120,7 +119,7 @@ const MilestonePage = () => {
                       body: JSON.stringify({
                         name: newMilestone.milestoneName,
                         description: newMilestone.description,
-                        completedAt: `${newMilestone.completedAt}T23:59:59`,
+                        completedAt: `${newMilestone.completedAt} 23:59:59`,
                       }),
                     });
                     await fetchSetData(

@@ -20,9 +20,21 @@ const IssueDetailPage = () => {
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueId}`;
   const [issueDetailData, setIssueDetailData] = useState<IssueDetailData>(); // [data, setData
 
+  const [currentIssueTitle, setCurrentIssueTitle] = useState(
+    issueDetailData?.issue.title
+  );
+  const handleChangeCurrentIssueTitle = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCurrentIssueTitle(e.target.value);
+  };
   useEffect(() => {
     fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+    setCurrentIssueTitle(issueDetailData?.issue.title);
   }, []);
+  useEffect(() => {
+    setCurrentIssueTitle(issueDetailData?.issue.title);
+  }, [issueDetailData]);
   const [isIssueTitleEdit, setIsIssueTitleEdit] = useState(false);
   const handleClickIsIssueTitleEdit = () => {
     setIsIssueTitleEdit(!isIssueTitleEdit);
@@ -36,11 +48,17 @@ const IssueDetailPage = () => {
             <IssueMainInfo
               issueDetailData={issueDetailData}
               isIssueDetailTitleEdit={isIssueTitleEdit}
+              currentIssueTitle={currentIssueTitle as string}
+              handleChangeCurrentIssueTitle={handleChangeCurrentIssueTitle}
             />
           )}
           <IssueController
             isIssueTitleEdit={isIssueTitleEdit}
             handleClickIsIssueTitleEdit={handleClickIsIssueTitleEdit}
+            currentIssueTitle={currentIssueTitle as string}
+            setCurrentIssueTitle={setCurrentIssueTitle}
+            issueId={issueId as string}
+            initialIssueTitle={issueDetailData?.issue.title as string}
           />
         </section>
         <div className="mt-6 h-6 border-t border-t-gray-300" />

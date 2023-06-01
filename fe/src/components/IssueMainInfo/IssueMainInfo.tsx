@@ -7,20 +7,22 @@ import { getTimeElapsed } from '@utils/getTimeElapsed';
 interface IssueMainInfoProps {
   issueDetailData: IssueDetailData;
   isIssueDetailTitleEdit: boolean;
+  currentIssueTitle: string;
+  handleChangeCurrentIssueTitle: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }
 
 const IssueMainInfo = (props: IssueMainInfoProps) => {
-  const { issueDetailData, isIssueDetailTitleEdit } = props;
+  const {
+    issueDetailData,
+    isIssueDetailTitleEdit,
+    currentIssueTitle,
+    handleChangeCurrentIssueTitle,
+  } = props;
   const { issue, commentList } = issueDetailData;
   const time = issue.open ? issue.createdAt : issue.closedAt;
   const { days, hours, minutes } = getTimeElapsed(time);
-
-  const [currentIssueTitle, setCurrentIssueTitle] = useState(issue.title);
-  const handleChangeCurrentIssueTitle = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setCurrentIssueTitle(e.target.value);
-  };
   return (
     <div className="flex flex-col gap-y-5">
       {isIssueDetailTitleEdit ? (
@@ -37,7 +39,7 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
         </div>
       ) : (
         <h1 className="flex h-10 items-center text-2xl text-gray-900">
-          {issue.title}
+          {currentIssueTitle}
           <span className="ml-2 text-gray-600">#{issue.issueId}</span>
         </h1>
       )}
