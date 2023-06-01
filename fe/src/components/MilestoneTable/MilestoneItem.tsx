@@ -5,6 +5,7 @@ import { ReactComponent as Calendar } from '@assets/calendar.svg';
 import Button from '@common/Button';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 import { BASE_API } from '../../api';
+import { b } from 'msw/lib/glossary-de6278a9';
 
 interface MilestoneInfo {
   milestoneId: number;
@@ -14,6 +15,7 @@ interface MilestoneInfo {
   countAllOpenedIssues: number;
   countAllClosedIssues: number;
   progress: number;
+  isOpen: boolean;
 }
 
 interface MilestoneItemProps {
@@ -35,6 +37,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
     countAllOpenedIssues,
     countAllClosedIssues,
     milestoneId,
+    isOpen,
   } = milestoneInfo;
   const INITIAL_MILESTONE = {
     milestoneName: name,
@@ -46,6 +49,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
     milestoneName: name,
     description,
     completedAt,
+    isOpen,
   } as any);
 
   const handleIsEditMilestoneClick = () => {
@@ -72,7 +76,22 @@ const MilestoneItem = (props: MilestoneItemProps) => {
           <section className="mb-1 flex items-center justify-end gap-x-6">
             <Button
               title="닫기"
-              onClick={() => console.log('닫기')}
+              onClick={async () => {
+                if (!confirm('정말로 닫으시겠습니까?')) return;
+                await fetch(`${BASE_API}milestones/${milestoneId}`, {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name: newMilestone.milestoneName,
+                    description: newMilestone.description,
+                    completedAt: `${newMilestone.completedAt}`,
+                    isOpen: !newMilestone.isOpen,
+                  }),
+                });
+                handleSetMilestoneData();
+              }}
               isFlexible={true}
               size="Small"
               color="Gray"
@@ -211,7 +230,8 @@ const MilestoneItem = (props: MilestoneItemProps) => {
                   body: JSON.stringify({
                     name: newMilestone.milestoneName,
                     description: newMilestone.description,
-                    completedAt: `${newMilestone.completedAt} 23:59:59`,
+                    completedAt: `${newMilestone.completedAt}`,
+                    isOpen: newMilestone.isOpen,
                   }),
                 });
                 handleSetMilestoneData();
