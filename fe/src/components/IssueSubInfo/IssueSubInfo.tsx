@@ -7,22 +7,33 @@ import {
   AttachedLabelList,
   AttachedMilestone,
   AttachedAssigneeList,
+  IssueDetailData,
 } from '@customTypes/IssueDetailPage';
 import Label from '@common/Label';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import FilterItem from '@common/FilterItem/FilterItem';
+import { BASE_API } from '../../api';
+import fetchSetData from '@utils/fetchSetData';
 
 interface IssueSubInfoProps {
   issue: Issue;
   attachedLabelList: AttachedLabelList;
   attachedMilestone: AttachedMilestone;
   attachedAssigneeList: AttachedAssigneeList;
+  setIssueDetailData: React.Dispatch<
+    React.SetStateAction<IssueDetailData | undefined>
+  >;
 }
 
 const IssueSubInfo = (props: IssueSubInfoProps) => {
-  const { issue, attachedLabelList, attachedMilestone, attachedAssigneeList } =
-    props;
+  const {
+    issue,
+    attachedLabelList,
+    attachedMilestone,
+    attachedAssigneeList,
+    setIssueDetailData,
+  } = props;
   const issueDetailData = useContext(issueDetailDataContext);
   const [isDropDownOpen, setIsDropDownOpen] = useState({
     assignee: false,
@@ -38,6 +49,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
   const [milestoneIdClicked, setMilestoneIdClicked] = useState<number>(
     attachedMilestone.milestoneId
   );
+  console.log(issueDetailData);
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
@@ -153,24 +165,62 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           <>
             <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
               {issueDetailData?.milestoneList.map((milestone, i) => (
-                <FilterItem
+                <div
                   key={milestone.milestoneId}
-                  item={{
-                    id: milestone.milestoneId,
-                    name: milestone.milestoneName,
-                    isClicked: milestoneIdClicked === milestone.milestoneId,
+                  onBlur={() => {
+                    setIsDropDownOpen({
+                      ...isDropDownOpen,
+                      milestone: false,
+                      assignee: false,
+                      label: false,
+                    });
                   }}
-                  isFirst={i === 0}
-                  onItemClick={() => console.log('milestone')}
-                />
+                >
+                  <FilterItem
+                    key={milestone.milestoneId}
+                    item={{
+                      id: milestone.milestoneId,
+                      name: milestone.milestoneName,
+                      isClicked: milestoneIdClicked === milestone.milestoneId,
+                    }}
+                    isFirst={i === 0}
+                    onItemClick={id => {
+                      fetch(`${BASE_API}issues/${issue.issueId}/milestones`, {
+                        method: 'PATCH',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          milestoneId: id,
+                        }),
+                      });
+                      setMilestoneIdClicked(id);
+                      setIsDropDownOpen({
+                        ...isDropDownOpen,
+                        milestone: false,
+                        assignee: false,
+                        label: false,
+                      });
+                      fetchSetData(
+                        `${BASE_API}issues/${issue.issueId}`,
+                        setIssueDetailData
+                      );
+                    }}
+                  />
+                </div>
               ))}
-            </div>
-            <div className="flex w-full flex-wrap gap-y-2">
-              <MilestoneProgressBar progress={attachedMilestone?.progress} />
-              <div>{attachedMilestone?.milestoneName}</div>
             </div>
           </>
         )}
+        <div className="flex w-full flex-wrap gap-y-2">
+          {/* TODO(Jayden): attachedMilstone에도 deleted 유무가 들어오게 요청하기 */}
+          <MilestoneProgressBar
+            progress={issueDetailData?.attachedMilestone.progress as number}
+          />
+          <div className="text-sm">
+            {issueDetailData?.attachedMilestone.milestoneName}
+          </div>
+        </div>
       </section>
     </div>
   );
