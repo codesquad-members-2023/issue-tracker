@@ -21,6 +21,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
   const [showCharCount, setShowCharCount] = useState(true);
   const commentTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const [commentFocused, setCommentFocused] = useState(false);
+
   function clickOnOutside(ref: any) {
     useEffect(() => {
       function handleClickOutside(e: Event): void {
@@ -73,6 +74,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
       setCommentContent('');
     }
   };
+
   return (
     <div className="flex w-full flex-col justify-between gap-y-6">
       <section
@@ -93,13 +95,15 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
           } p-4 placeholder-gray-600 outline-0 focus:outline-none`}
           ref={commentTextAreaRef}
         />
-        <div
-          className={`flex justify-end ${
-            commentFocused ? 'bg-white' : 'bg-gray-200'
-          } h-8`}
-        >
-          {showCharCount && `띄어쓰기 포함 ${commentContent.length}자`}
-        </div>
+        {showCharCount && (
+          <div
+            className={`flex justify-end text-sm text-gray-600 ${
+              commentFocused ? 'bg-white' : 'bg-gray-200'
+            } h-8`}
+          >
+            띄어쓰기 포함 {commentContent.length}자
+          </div>
+        )}
         <section
           className={`h-1/5 w-full rounded-b-2xl border-t border-dashed border-gray-300 ${
             commentFocused ? 'bg-white' : 'bg-gray-200'

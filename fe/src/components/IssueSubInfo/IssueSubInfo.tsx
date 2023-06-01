@@ -138,28 +138,28 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           gap="gap-x-40"
         />
         {isDropDownOpen.milestone && (
-          <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
-            {issueDetailData?.milestoneList.map((milestone, i) => (
-              <FilterItem
-                key={milestone.milestoneId}
-                item={{
-                  id: milestone.milestoneId,
-                  name: milestone.milestoneName,
-                  isClicked:
-                    attachedMilestone?.milestoneId === milestone.milestoneId,
-                }}
-                isFirst={i === 0}
-                onItemClick={() => console.log('milestone')}
-              />
-            ))}
-          </div>
+          <>
+            <div className="absolute top-1/2 z-10 rounded-2xl border border-gray-300 bg-white">
+              {issueDetailData?.milestoneList.map((milestone, i) => (
+                <FilterItem
+                  key={milestone.milestoneId}
+                  item={{
+                    id: milestone.milestoneId,
+                    name: milestone.milestoneName,
+                    isClicked:
+                      attachedMilestone?.milestoneId === milestone.milestoneId,
+                  }}
+                  isFirst={i === 0}
+                  onItemClick={() => console.log('milestone')}
+                />
+              ))}
+            </div>
+            <div className="flex w-full flex-wrap gap-y-2">
+              <MilestoneProgressBar progress={attachedMilestone?.progress} />
+              <div>{attachedMilestone?.milestoneName}</div>
+            </div>
+          </>
         )}
-        {
-          <div className="flex w-full flex-wrap gap-y-2">
-            <MilestoneProgressBar progress={attachedMilestone?.progress} />
-            <div>{attachedMilestone?.milestoneName}</div>
-          </div>
-        }
       </section>
     </div>
   );

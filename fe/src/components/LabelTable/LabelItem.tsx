@@ -54,6 +54,7 @@ const LabelItem = (props: LabelItemProps) => {
             isFlexible={true}
             size="Small"
             color="Gray"
+            gap="gap-x-1"
             type="Ghost"
             condition="Press"
             iconName="edit"
@@ -75,6 +76,7 @@ const LabelItem = (props: LabelItemProps) => {
             isFlexible={true}
             size="Small"
             color="Red"
+            gap="gap-x-1"
             type="Ghost"
             condition="Press"
             iconName="trash"
