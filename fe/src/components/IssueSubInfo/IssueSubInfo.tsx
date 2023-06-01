@@ -15,20 +15,29 @@ import FilterItem from '@common/FilterItem/FilterItem';
 
 interface IssueSubInfoProps {
   issue: Issue;
-  attachedLabels: AttachedLabelList;
+  attachedLabelList: AttachedLabelList;
   attachedMilestone: AttachedMilestone;
-  attachedAssignees: AttachedAssigneeList;
+  attachedAssigneeList: AttachedAssigneeList;
 }
 
 const IssueSubInfo = (props: IssueSubInfoProps) => {
-  const { issue, attachedLabels, attachedMilestone, attachedAssignees } = props;
+  const { issue, attachedLabelList, attachedMilestone, attachedAssigneeList } =
+    props;
   const issueDetailData = useContext(issueDetailDataContext);
   const [isDropDownOpen, setIsDropDownOpen] = useState({
     assignee: false,
     label: false,
     milestone: false,
   });
-  console.log(issueDetailData);
+  const [assigneeIdsClicked, setAssigneeIdsClicked] = useState<number[]>(
+    attachedAssigneeList.map(assignee => assignee.id)
+  );
+  const [labelIdsClicked, setLabelIdsClicked] = useState<number[]>(
+    attachedLabelList.map(label => label.labelId)
+  );
+  const [milestoneIdClicked, setMilestoneIdClicked] = useState<number>(
+    attachedMilestone.milestoneId
+  );
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
@@ -60,9 +69,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   imgUrl: user.profileUrl,
                   width: 20,
                   height: 20,
-                  isClicked: attachedAssignees.some(
-                    assignee => assignee.loginId === user.userName
-                  ),
+                  isClicked: assigneeIdsClicked.includes(user.userId),
                 }}
                 isFirst={i === 0}
                 onItemClick={id => console.log(id)}
@@ -70,7 +77,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             ))}
           </div>
         )}
-        {attachedAssignees.map((assignee, i) => (
+        {attachedAssigneeList.map((assignee, i) => (
           <div className="flex gap-x-2" key={assignee.id}>
             <Profile url={assignee.profileUrl} width={20} height={20} />
             <span className="text-gray-900">{assignee.loginId}</span>
@@ -104,9 +111,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   id: label.labelId,
                   name: label.labelName,
                   backgroundColor: label.backgroundColor,
-                  isClicked: attachedLabels.some(
-                    attachedLabel => attachedLabel.labelId === label.labelId
-                  ),
+                  isClicked: labelIdsClicked.includes(label.labelId),
                 }}
                 isFirst={i === 0}
                 onItemClick={id => console.log(id)}
@@ -116,7 +121,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         )}
 
         <div className="flex w-fit flex-wrap gap-y-1">
-          {attachedLabels.map(label => (
+          {attachedLabelList.map(label => (
             <Label
               key={label.labelId}
               labelName={label.labelName}
@@ -153,8 +158,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   item={{
                     id: milestone.milestoneId,
                     name: milestone.milestoneName,
-                    isClicked:
-                      attachedMilestone?.milestoneId === milestone.milestoneId,
+                    isClicked: milestoneIdClicked === milestone.milestoneId,
                   }}
                   isFirst={i === 0}
                   onItemClick={() => console.log('milestone')}

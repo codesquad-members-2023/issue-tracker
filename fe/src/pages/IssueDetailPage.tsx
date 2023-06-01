@@ -77,9 +77,9 @@ const IssueDetailPage = () => {
             {issueDetailData && (
               <IssueSubInfo
                 issue={issueDetailData.issue}
-                attachedLabels={issueDetailData.attachedLabelList}
+                attachedLabelList={issueDetailData.attachedLabelList}
                 attachedMilestone={issueDetailData.attachedMilestone}
-                attachedAssignees={issueDetailData.attachedAssigneeList}
+                attachedAssigneeList={issueDetailData.attachedAssigneeList}
               />
             )}
             <div className="flex justify-end pr-8">
@@ -90,7 +90,6 @@ const IssueDetailPage = () => {
                   await fetch(ISSUE_DETAIL_API, {
                     method: 'DELETE',
                   });
-                  // NOTE(Jayden): navigate로 메인페이지로 이동하는데 왜 렌더링이 되는지 확인하기
                   navigate('/');
                 }}
                 type="Ghost"
