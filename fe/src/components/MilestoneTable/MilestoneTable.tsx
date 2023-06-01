@@ -11,6 +11,7 @@ interface MilestoneTableProps {
 const MilestoneTable = (props: MilestoneTableProps) => {
   const { milestonesData, handleSetMilestoneData } = props;
   const [showOpenedMilestones, setShowOpenedMilestones] = useState(true);
+  console.log(milestonesData);
   return (
     <section className="rounded-2xl border border-gray-300">
       <div className="flex h-16 items-center gap-x-6 rounded-t-2xl bg-gray-100 px-6 py-2 text-gray-600">
@@ -38,7 +39,9 @@ const MilestoneTable = (props: MilestoneTableProps) => {
       <ul className="rounded-b-2xl bg-gray-50">
         {milestonesData.milestoneList.map(
           (milestone: any) =>
-            showOpenedMilestones === milestone.isOpen && (
+            // NOTE(Jayden): 현재 마일스톤 리스트에 isOpen이 없음
+            // showOpenedMilestones === milestone.isOpen
+            showOpenedMilestones && (
               <MilestoneItem
                 key={milestone.milestoneId}
                 milestoneInfo={milestone}
