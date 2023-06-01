@@ -10,7 +10,8 @@ import IssueTable, {
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 import { ReactComponent as XSquare } from '@assets/xSquare.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import PageNation from '@components/PageNation';
 
 const MainPage = () => {
   const [data, setData] = useState({} as any);
@@ -193,6 +194,12 @@ const MainPage = () => {
           setCheckedIssues={setCheckedIssues}
         />
       ) : null}
+      <PageNation
+        issueCount={
+          isOpenIssues ? data.countOpenedIssues : data.countClosedIssues
+        }
+        onPageClick={setPage}
+      />
     </>
   );
 };
