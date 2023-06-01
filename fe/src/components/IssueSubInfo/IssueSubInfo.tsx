@@ -6,6 +6,7 @@ import {
   Issue,
   AttachedLabelList,
   AttachedMilestone,
+  AttachedAssigneeList,
 } from '@customTypes/IssueDetailPage';
 import Label from '@common/Label';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
@@ -16,16 +17,18 @@ interface IssueSubInfoProps {
   issue: Issue;
   attachedLabels: AttachedLabelList;
   attachedMilestone: AttachedMilestone;
+  attachedAssignees: AttachedAssigneeList;
 }
 
 const IssueSubInfo = (props: IssueSubInfoProps) => {
-  const { issue, attachedLabels, attachedMilestone } = props;
+  const { issue, attachedLabels, attachedMilestone, attachedAssignees } = props;
   const issueDetailData = useContext(issueDetailDataContext);
   const [isDropDownOpen, setIsDropDownOpen] = useState({
     assignee: false,
     label: false,
     milestone: false,
   });
+  console.log(issueDetailData);
   return (
     <div className="h-fit w-fit rounded-2xl border border-gray-300">
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
@@ -57,7 +60,9 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                   imgUrl: user.profileUrl,
                   width: 20,
                   height: 20,
-                  isClicked: issueDetailData?.issue.userName === user.userName,
+                  isClicked: attachedAssignees.some(
+                    assignee => assignee.loginId === user.userName
+                  ),
                 }}
                 isFirst={i === 0}
                 onItemClick={id => console.log(id)}
@@ -65,10 +70,12 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             ))}
           </div>
         )}
-        <div className="flex gap-x-2">
-          <Profile url={issue.profileUrl} width={20} height={20} />
-          <span className="text-gray-900">{issue.userName}</span>
-        </div>
+        {attachedAssignees.map((assignee, i) => (
+          <div className="flex gap-x-2" key={assignee.id}>
+            <Profile url={assignee.profileUrl} width={20} height={20} />
+            <span className="text-gray-900">{assignee.loginId}</span>
+          </div>
+        ))}
       </section>
       <section className="relative flex flex-col justify-between border-b border-b-gray-300 p-8">
         <Button

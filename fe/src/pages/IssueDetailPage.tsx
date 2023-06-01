@@ -79,6 +79,7 @@ const IssueDetailPage = () => {
                 issue={issueDetailData.issue}
                 attachedLabels={issueDetailData.attachedLabelList}
                 attachedMilestone={issueDetailData.attachedMilestone}
+                attachedAssignees={issueDetailData.attachedAssigneeList}
               />
             )}
             <div className="flex justify-end pr-8">
