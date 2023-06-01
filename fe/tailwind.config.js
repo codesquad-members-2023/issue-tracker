@@ -30,6 +30,9 @@ export const theme = {
       'xl': ['24px', '40px'],
       '2xl': ['32px', '48px'],
     },
+    placeholderColor: {
+      DEFAULT: '#6E7191',
+    },
   },
 };
 export const safelist = [{ pattern: /(bg|text|border)-(blue|gray|red|navy)/ }];

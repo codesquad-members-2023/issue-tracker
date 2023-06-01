@@ -10,7 +10,7 @@ const LabelTable = (props: LabelTableProps) => {
   const { labelsData, handleSetLabelData } = props;
   return (
     <section className="rounded-2xl border border-gray-300">
-      <div className="flex h-16 items-center rounded-t-2xl bg-gray-100 px-6 py-2 text-gray-600">
+      <div className="flex h-16 items-center rounded-t-2xl bg-gray-100 px-6 py-2 font-bold text-gray-600">
         {labelsData.countAllLabels}개의 레이블
       </div>
       <ul className="rounded-b-2xl bg-gray-50">
