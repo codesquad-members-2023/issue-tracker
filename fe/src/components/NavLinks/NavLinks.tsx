@@ -10,8 +10,11 @@ interface Props {
 
 const NavLinks: React.FC<Props> = ({ countAllLabels, countAllMilestones }) => {
   return (
-    <div className="flex h-10 w-80 rounded-2xl border border-gray-200">
-      <Link to="/labels" className="flex w-1/2 justify-center  border-r">
+    <div className="flex h-10 w-80 rounded-2xl border border-gray-300">
+      <Link
+        to="/labels"
+        className="flex w-1/2 justify-center border-r border-gray-300"
+      >
         <Button
           title={`레이블(${countAllLabels || 0})`}
           onClick={() => console.log('레이블')}
