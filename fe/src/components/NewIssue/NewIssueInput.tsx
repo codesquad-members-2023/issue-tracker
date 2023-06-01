@@ -2,16 +2,25 @@ import React, { ChangeEvent, useState } from 'react';
 
 import Button from '@common/Button';
 
-const NewIssueInput: React.FC = () => {
-  const [issueTitle, setIssueTitle] = useState('');
-  const [issueComment, setIssueComment] = useState('');
+interface Props {
+  issueStates: {
+    issueTitle: string;
+    setIssueTitle: React.Dispatch<React.SetStateAction<string>>;
+    issueContent: string;
+    setIssueContent: React.Dispatch<React.SetStateAction<string>>;
+  };
+}
+
+const NewIssueInput: React.FC<Props> = ({ issueStates }) => {
+  const { issueTitle, setIssueTitle, issueContent, setIssueContent } =
+    issueStates;
 
   const [isTitleFocused, setTitleFocused] = useState(false);
-  const [isCommentFocused, setCommentFocused] = useState(false);
+  const [isContentFocused, setContentFocused] = useState(false);
 
   const isChangedTitle = isTitleFocused || issueTitle;
-  const isChangedComment = isCommentFocused || issueComment;
-  const commentBackgroundColor = `bg-gray-${isCommentFocused ? '90' : '200'}`;
+  const isChangedComment = isContentFocused || issueContent;
+  const contentBackgroundColor = `bg-gray-${isContentFocused ? '50' : '200'}`;
 
   const handleTitleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setIssueTitle(target.value);
@@ -20,15 +29,15 @@ const NewIssueInput: React.FC = () => {
   const handleCommentChange = ({
     target,
   }: ChangeEvent<HTMLTextAreaElement>) => {
-    setIssueComment(target.value);
+    setIssueContent(target.value);
   };
 
   const handleFocus = (element: string) => {
-    element === 'title' ? setTitleFocused(true) : setCommentFocused(true);
+    element === 'title' ? setTitleFocused(true) : setContentFocused(true);
   };
 
   const handleBlur = (element: string) => {
-    element === 'title' ? setTitleFocused(false) : setCommentFocused(false);
+    element === 'title' ? setTitleFocused(false) : setContentFocused(false);
   };
 
   return (
@@ -51,8 +60,8 @@ const NewIssueInput: React.FC = () => {
         />
       </label>
       <label
-        className={`h-[436px] overflow-hidden rounded-t-[14px] ${commentBackgroundColor} ${
-          isCommentFocused && 'border border-b-0 border-gray-300'
+        className={`h-[436px] overflow-hidden rounded-t-[14px] ${contentBackgroundColor} ${
+          isContentFocused && 'border border-b-0 border-gray-300'
         } px-6 py-3.5`}
       >
         <span
@@ -61,8 +70,8 @@ const NewIssueInput: React.FC = () => {
           코멘트를 입력하세요
         </span>
         <textarea
-          className={`h-[92%] w-full ${commentBackgroundColor} text-gray-900 focus:outline-none`}
-          value={issueComment}
+          className={`h-[92%] w-full ${contentBackgroundColor} text-gray-900 focus:outline-none`}
+          value={issueContent}
           onChange={handleCommentChange}
           onFocus={() => handleFocus('comment')}
           onBlur={() => handleBlur('comment')}
@@ -70,8 +79,8 @@ const NewIssueInput: React.FC = () => {
       </label>
       <label
         className={`h-[52px] w-full rounded-b-[14px] ${
-          isCommentFocused && 'border border-solid border-gray-300'
-        } ${commentBackgroundColor} pl-2 pr-4 pt-1`}
+          isContentFocused && 'border border-solid border-gray-300'
+        } ${contentBackgroundColor} pl-2 pr-4 pt-1`}
         style={{ borderTop: '1px dashed #D9DBE9' }}
       >
         <Button

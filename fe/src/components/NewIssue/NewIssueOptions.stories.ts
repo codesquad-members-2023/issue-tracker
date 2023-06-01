@@ -65,5 +65,13 @@ export const Primary: Story = {
         milestoneName: 'BE',
       },
     ],
+    optionsState: {
+      options: {
+        assignee: 3,
+        label: 2,
+        milestone: 1,
+      },
+      setOptions: () => console.log('setOptions'),
+    },
   },
 };

@@ -10,6 +10,7 @@ import IssueTable, {
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
 import { ReactComponent as XSquare } from '@assets/xSquare.svg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
   const [data, setData] = useState({} as any);
@@ -23,6 +24,7 @@ const MainPage = () => {
   const hasFilters = Boolean(
     checkedIssues.length || Object.keys(filterOptions).length
   );
+  const navigate = useNavigate();
 
   const mapIssues = (data: any) => {
     const issueItems: IssueRow[] = data.issues
@@ -115,11 +117,6 @@ const MainPage = () => {
           isOpen: Boolean(id),
         }));
 
-        console.log(
-          JSON.stringify({
-            issues: fetchData,
-          })
-        );
         const response = await fetch(`${BASE_API}issues`, {
           method: 'PATCH',
           headers: {
@@ -136,6 +133,10 @@ const MainPage = () => {
         console.log(error);
       }
     }
+  };
+
+  const onNewIssueClick = () => {
+    navigate('/new-issue');
   };
 
   useEffect(() => {
@@ -157,9 +158,7 @@ const MainPage = () => {
           />
           <Button
             title={'이슈 작성'}
-            onClick={() => {
-              console.log('test');
-            }}
+            onClick={onNewIssueClick}
             size={'Small'}
             iconName="plus"
             fontSize="text-xs"

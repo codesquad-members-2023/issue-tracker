@@ -11,7 +11,7 @@ import FilterItem from '@common/FilterItem/FilterItem';
 import Label from '@common/Label';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 
-interface Options {
+export interface Options {
   assignee: number;
   label: number;
   milestone: number;
@@ -21,22 +21,23 @@ interface Props {
   userList: UserRow[];
   labelList: LabelRow[];
   milestoneList: MilestoneRow[];
+  optionsState: {
+    options: Options;
+    setOptions: React.Dispatch<React.SetStateAction<Options>>;
+  };
 }
 
 const NewIssueOptions: React.FC<Props> = ({
   userList,
   labelList,
   milestoneList,
+  optionsState,
 }) => {
+  const { options, setOptions } = optionsState;
+
   const [isAssigneeOpen, setAssigneeOpen] = useState(false);
   const [isLabelOpen, setLabelOpen] = useState(false);
   const [isMilestoneOpen, setMilestoneOpen] = useState(false);
-
-  const [options, setOptions] = useState<Options>({
-    assignee: 0,
-    label: 0,
-    milestone: 0,
-  });
 
   const onItemClick = (option: keyof Options, id: number) => {
     if (option in options && options[option] === id) {
@@ -85,7 +86,7 @@ const NewIssueOptions: React.FC<Props> = ({
   }, [options, userList, labelList, milestoneList]);
 
   return (
-    <div className="flex h-fit w-72 min-w-[288px] flex-col rounded-[14px] border border-gray-200 bg-gray-50">
+    <div className="flex h-fit w-72 min-w-[288px] flex-col rounded-[14px] border border-gray-300 bg-gray-50">
       <button
         className="border-b border-gray-300 py-8"
         onClick={() => onOptionClick('assignee')}
@@ -190,11 +191,11 @@ const NewIssueOptions: React.FC<Props> = ({
           )}
         </div>
         {options.milestone > 0 && (
-          <div className="mx-8 mt-[18px] flex gap-x-2">
-            {/* <MilestoneProgressBar
-              progress={selectedOptionsInfo.selectedMilestone?.progress}
-            /> */}
-            <div className="text-sm font-medium text-gray-900">
+          <div className="mx-8 mt-[18px]">
+            <MilestoneProgressBar
+              progress={selectedOptionsInfo.selectedMilestone?.progress || 0}
+            />
+            <div className="mt-2 text-left text-sm font-medium text-gray-900">
               {selectedOptionsInfo.selectedMilestone?.milestoneName}
             </div>
           </div>

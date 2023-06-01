@@ -66,5 +66,19 @@ export const Primary: Story = {
         milestoneName: 'BE',
       },
     ],
+    issueStates: {
+      issueTitle: 'issue1',
+      setIssueTitle: () => console.log('setIssueTitle'),
+      issueContent: 'issue1',
+      setIssueContent: () => console.log('setIssueContent'),
+    },
+    optionsState: {
+      options: {
+        assignee: 3,
+        label: 2,
+        milestone: 1,
+      },
+      setOptions: () => console.log('setOptions'),
+    },
   },
 };
