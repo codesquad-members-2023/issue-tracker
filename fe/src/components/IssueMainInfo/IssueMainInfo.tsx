@@ -24,7 +24,7 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
   return (
     <div className="flex flex-col gap-y-5">
       {isIssueDetailTitleEdit ? (
-        <div className="flex h-10 w-fit justify-start rounded-2xl bg-gray-200 px-6">
+        <div className="flex h-10 w-full justify-start rounded-2xl bg-gray-200 px-6">
           <div className="flex w-[72px] items-center whitespace-nowrap text-sm">
             제목
           </div>
@@ -32,13 +32,13 @@ const IssueMainInfo = (props: IssueMainInfoProps) => {
             type="text"
             value={currentIssueTitle}
             onChange={handleChangeCurrentIssueTitle}
-            className="w-full bg-gray-200 text-2xl text-gray-900"
+            className="w-full bg-gray-200 text-gray-900 focus:outline-none"
           />
         </div>
       ) : (
         <h1 className="flex h-10 items-center text-2xl text-gray-900">
           {issue.title}
-          <span className="text-gray-600">#{issue.issueId}</span>
+          <span className="ml-2 text-gray-600">#{issue.issueId}</span>
         </h1>
       )}
       <div className="flex items-center gap-2">

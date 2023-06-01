@@ -46,7 +46,7 @@ const Issue: React.FC<Props> = ({
       } ${minutes}분 전, ${userName}님에 의해 닫혔습니다.`;
 
   return (
-    <div className="flex border-t px-8 py-4">
+    <div className="flex border-t border-gray-300 px-8 py-4">
       <div className="mr-8 mt-1">
         <input
           type="checkbox"

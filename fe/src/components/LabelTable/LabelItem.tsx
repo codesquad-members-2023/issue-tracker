@@ -99,7 +99,7 @@ const LabelItem = (props: LabelItemProps) => {
                 <input
                   type="text"
                   placeholder={newLabel.labelName}
-                  className="w-full bg-gray-200"
+                  className="w-full bg-gray-200 focus:outline-none"
                   value={newLabel.labelName}
                   onChange={e =>
                     setNewLabel({
@@ -114,7 +114,7 @@ const LabelItem = (props: LabelItemProps) => {
                 <input
                   type="text"
                   placeholder={newLabel.description}
-                  className="w-full bg-gray-200"
+                  className="w-full bg-gray-200 focus:outline-none"
                   value={newLabel.description}
                   onChange={e =>
                     setNewLabel({
