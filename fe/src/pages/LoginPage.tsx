@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 import Logo from '@common/Logo';
 import Button from '@common/Button';
 
@@ -11,10 +11,10 @@ const LoginPage = () => {
     <div className="flex flex-col items-center justify-center gap-y-16 bg-gray-100 px-80 py-40">
       <Logo size="Large" />
       <div className="flex flex-col items-center justify-center gap-y-4 ">
-        <Link to="/">
+        <Link to="https://github.com/login/oauth/authorize?client_id=cc0d42e5a617611e325a">
           <Button
             title="GitHub 계정으로 로그인"
-            onClick={() => console.log('깃헙 계정으로 로그인')}
+            onClick={() => console.log(11)}
             color="Gray"
             size="Large"
           />
