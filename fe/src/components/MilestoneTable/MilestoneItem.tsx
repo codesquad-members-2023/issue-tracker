@@ -54,7 +54,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
 
   return (
     <>
-      <div className="flex justify-between border-t border-t-gray-300 px-8 py-4">
+      <div className="flex justify-between border-t border-t-gray-300 px-8 py-4 hover:bg-gray-100">
         <section className="flex w-4/5 flex-col justify-center gap-y-2">
           <section className="flex items-center justify-start gap-x-2">
             <Milestone fill="#007AFF" />

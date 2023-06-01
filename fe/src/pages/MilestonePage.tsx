@@ -32,6 +32,7 @@ const MilestonePage = () => {
             <NavLinks
               countAllLabels={milestonesData.countAllLabels}
               countAllMilestones={milestonesData.countAllMilestones}
+              isMilestonesPage={true}
             />
             {isNewMilestone ? (
               <Button

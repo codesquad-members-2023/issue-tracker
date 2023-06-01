@@ -40,7 +40,7 @@ const LabelItem = (props: LabelItemProps) => {
   };
   return (
     <>
-      <div className="flex h-24 items-center justify-between border-t border-t-gray-300 px-8 py-10">
+      <div className="flex h-24 items-center justify-between border-t border-t-gray-300 px-8 py-10 hover:bg-gray-100">
         <div className="w-44">
           <Label
             labelName={name}

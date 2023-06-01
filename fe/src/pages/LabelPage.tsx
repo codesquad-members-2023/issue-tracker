@@ -40,6 +40,7 @@ const LabelPage = () => {
             <NavLinks
               countAllLabels={labelsData.countAllLabels}
               countAllMilestones={labelsData.countAllMilestones}
+              isLabelPage={true}
             />
             {isNewLabel ? (
               <Button
