@@ -11,7 +11,7 @@ const Profile: React.FC<Props> = ({ url, width = 32, height = 32 }) => {
     <img
       src={url}
       className="h-fit rounded-full"
-      style={{ width: width, height: height }}
+      style={{ width: width, height: height, maxWidth: width }}
       alt="profile"
     />
   );
