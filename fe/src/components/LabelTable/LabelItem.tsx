@@ -41,12 +41,17 @@ const LabelItem = (props: LabelItemProps) => {
   return (
     <>
       <div className="flex h-24 items-center justify-between border-t border-t-gray-300 px-8 py-10">
-        <Label
-          labelName={name}
-          fontColor={fontColor}
-          backgroundColor={backgroundColor}
-        />
-        <p className="w-3/5 text-gray-600">{description}</p>
+        <div className="w-44">
+          <Label
+            labelName={name}
+            fontColor={fontColor}
+            backgroundColor={backgroundColor}
+          />
+        </div>
+        <div className="flex grow">
+          <p className="w-3/5 text-gray-600">{description}</p>
+        </div>
+
         <section className="flex gap-x-4">
           <Button
             title="편집"
@@ -157,7 +162,7 @@ const LabelItem = (props: LabelItemProps) => {
                   hasDropDown={true}
                 />
                 {isFontColorDropdown && (
-                  <div className="absolute left-64 top-12 rounded-2xl border px-2">
+                  <div className="absolute left-64 top-12 w-full rounded-2xl border px-2">
                     <Button
                       title="dark text"
                       onClick={() => {
