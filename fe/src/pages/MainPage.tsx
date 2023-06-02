@@ -26,6 +26,7 @@ const MainPage = () => {
     checkedIssues.length || Object.keys(filterOptions).length
   );
   const navigate = useNavigate();
+  if (!localStorage.getItem('token')) navigate('/login');
 
   const mapIssues = (data: any) => {
     const issueItems: IssueRow[] = data.issues
@@ -143,7 +144,6 @@ const MainPage = () => {
   useEffect(() => {
     fetchFilteredData();
   }, [filterQueryString]);
-
   return (
     <>
       <div className="relative mb-[30px] flex justify-between">

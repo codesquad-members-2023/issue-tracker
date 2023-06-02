@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import Logo from '@common/Logo';
 import Button from '@common/Button';
 
@@ -11,6 +12,13 @@ const LoginPage = () => {
   const handleLogin = () => {
     window.location.href = LOGIN_URL;
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center gap-y-16 bg-gray-100 px-80 py-40">
       <Logo size="Large" />
