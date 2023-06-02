@@ -16,12 +16,12 @@ const Auth = () => {
         },
       });
       const data = await response.json();
-      localStorage.setItem('token', JSON.stringify(data));
+      await localStorage.setItem('token', JSON.stringify(data));
+      if (await localStorage.getItem('token')) {
+        navigate('/');
+      }
     };
     getDatas();
-    if (localStorage.getItem('token')) {
-      navigate('/');
-    }
   });
 
   return <div>로딩이래요</div>;
