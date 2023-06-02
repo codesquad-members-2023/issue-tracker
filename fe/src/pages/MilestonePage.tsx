@@ -32,11 +32,15 @@ const MilestonePage = () => {
             <NavLinks
               countAllLabels={milestonesData.countAllLabels}
               countAllMilestones={milestonesData.countAllMilestones}
+              isMilestonesPage={true}
             />
             {isNewMilestone ? (
               <Button
                 title="닫기"
-                onClick={handleIsNewMilestoneClick}
+                onClick={() => {
+                  handleIsNewMilestoneClick();
+                  setNewMilestone(INITIAL_MILESTONE);
+                }}
                 size="Small"
                 iconName="xsquare"
                 fontSize="text-sm"

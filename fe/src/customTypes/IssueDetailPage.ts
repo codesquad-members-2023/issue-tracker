@@ -24,8 +24,8 @@ export interface IssueDetailData {
   }[];
 
   attachedAssigneeList: {
-    userId: number;
-    userName: string;
+    id: number;
+    loginId: string;
     profileUrl: string;
   }[];
   commentList: {
@@ -60,5 +60,6 @@ export interface IssueDetailData {
 export type Issue = IssueDetailData['issue'];
 export type AttachedLabelList = IssueDetailData['attachedLabelList'];
 export type AttachedMilestone = IssueDetailData['attachedMilestone'];
+export type AttachedAssigneeList = IssueDetailData['attachedAssigneeList'];
 export type CommentList = IssueDetailData['commentList'];
 export type Comment = CommentList[number];
