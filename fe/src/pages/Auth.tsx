@@ -16,7 +16,8 @@ const Auth = () => {
         },
       });
       const data = await response.json();
-      await localStorage.setItem('token', JSON.stringify(data));
+      if (response.ok)
+        await localStorage.setItem('token', JSON.stringify(data));
       if (await localStorage.getItem('token')) {
         navigate('/');
       }

@@ -67,6 +67,7 @@ const dummyData = {
 };
 
 const NewIssue: React.FC = () => {
+  const [user, setUser] = useState(dummyData.user);
   const [optionList, setOptionList] = useState({
     userList: [],
     labelList: [],
@@ -148,13 +149,16 @@ const NewIssue: React.FC = () => {
 
   useEffect(() => {
     fetchData();
+    setUser({
+      ...JSON.parse(localStorage.getItem('token') as string),
+    });
   }, []);
 
   return (
     <div>
       <header className="text-2xl text-gray-900">새로운 이슈 작성</header>
       <NewIssueMain
-        user={dummyData.user}
+        user={user}
         userList={optionList.userList}
         labelList={optionList.labelList}
         milestoneList={optionList.milestoneList}
