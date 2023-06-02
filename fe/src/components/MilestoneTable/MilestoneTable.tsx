@@ -41,7 +41,7 @@ const MilestoneTable = (props: MilestoneTableProps) => {
           (milestone: any) =>
             // NOTE(Jayden): 현재 마일스톤 리스트에 isOpen이 없음
             // showOpenedMilestones === milestone.isOpen
-            showOpenedMilestones && (
+            showOpenedMilestones === milestone.isOpen && (
               <MilestoneItem
                 key={milestone.milestoneId}
                 milestoneInfo={milestone}

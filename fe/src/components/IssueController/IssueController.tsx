@@ -20,7 +20,6 @@ interface IssueControllerProps {
 }
 
 const IssueController = (props: IssueControllerProps) => {
-  // TODO(Jayden): 각 버튼마다 fetch 함수 연결 혹은 link 연결
   const {
     isIssueTitleEdit,
     handleClickIsIssueTitleEdit,
@@ -84,7 +83,7 @@ const IssueController = (props: IssueControllerProps) => {
           />
           <Button
             title={issueDetailData.issue.open ? '이슈 닫기' : '다시 열기'}
-            onClick={() => {
+            onClick={async () => {
               if (
                 confirm(
                   `이슈를 ${
@@ -94,7 +93,7 @@ const IssueController = (props: IssueControllerProps) => {
                   }`
                 )
               ) {
-                fetch(`${BASE_API}issues/${issueId}/status`, {
+                await fetch(`${BASE_API}issues/${issueId}/status`, {
                   method: 'PATCH',
                   headers: {
                     'Content-Type': 'application/json',
@@ -103,6 +102,10 @@ const IssueController = (props: IssueControllerProps) => {
                     isOpen: !issueDetailData.issue.open,
                   }),
                 });
+                await fetchSetData(
+                  `${BASE_API}issues/${issueId}`,
+                  setIssueDetailData
+                );
               }
             }}
             size="Small"

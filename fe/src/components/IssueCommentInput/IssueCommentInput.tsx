@@ -23,7 +23,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
   const [showCharCount, setShowCharCount] = useState(true);
   const commentTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const [commentFocused, setCommentFocused] = useState(false);
-
+  const user = JSON.parse(localStorage.getItem('token') as string);
   function clickOnOutside(ref: any) {
     useEffect(() => {
       function handleClickOutside(e: Event): void {
@@ -66,7 +66,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: 3, // FIXME(Jayden): 로그인한 유저의 id로 변경
+          userId: user.id, // FIXME(Jayden): 로그인한 유저의 id로 변경
           content: commentContent,
         }),
       });
