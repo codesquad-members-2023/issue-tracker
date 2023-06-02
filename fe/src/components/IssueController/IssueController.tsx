@@ -30,7 +30,6 @@ const IssueController = (props: IssueControllerProps) => {
     issueDetailData,
     setIssueDetailData,
   } = props;
-  console.log('issueDetailData', issueDetailData);
   return (
     <div className="flex gap-x-2">
       {isIssueTitleEdit ? (
@@ -95,7 +94,7 @@ const IssueController = (props: IssueControllerProps) => {
                   }`
                 )
               ) {
-                fetch(`${BASE_API}issues/${issueId}`, {
+                fetch(`${BASE_API}issues/${issueId}/status`, {
                   method: 'PATCH',
                   headers: {
                     'Content-Type': 'application/json',

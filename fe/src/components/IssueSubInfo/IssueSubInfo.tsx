@@ -55,38 +55,52 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
   const assigneeDropDownRef = useRef<HTMLDivElement>(null);
   const labelDropDownRef = useRef<HTMLDivElement>(null);
   const milestoneDropDownRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(assigneeDropDownRef, async () => {
-    setIsDropDownOpen({
-      ...isDropDownOpen,
-      assignee: false,
-    });
-    await fetch(`${ISSUE_DETAIL_API}/assignees`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userList: assigneeIdsClicked.map(id => ({ userId: id })),
-      }),
-    });
-    await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
-  });
-  useOutsideClick(labelDropDownRef, async () => {
-    setIsDropDownOpen({
-      ...isDropDownOpen,
-      label: false,
-    });
-    await fetch(`${ISSUE_DETAIL_API}/labels`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        labelList: labelIdsClicked.map(id => ({ labelId: id })),
-      }),
-    });
-    await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
-  });
+  useOutsideClick(
+    assigneeDropDownRef,
+    async () => {
+      setIsDropDownOpen({
+        ...isDropDownOpen,
+        assignee: false,
+      });
+      const res = await fetch(`${ISSUE_DETAIL_API}/assignees`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userList: assigneeIdsClicked.map(id => ({ userId: id })),
+        }),
+      });
+      if (res.ok) await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+    },
+    assigneeIdsClicked
+  );
+  useOutsideClick(
+    labelDropDownRef,
+    async () => {
+      setIsDropDownOpen({
+        ...isDropDownOpen,
+        label: false,
+      });
+      console.log(
+        'labelIdsClicked',
+        JSON.stringify({
+          labelList: labelIdsClicked.map(id => ({ labelId: id })),
+        })
+      );
+      const res = await fetch(`${ISSUE_DETAIL_API}/labels`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          labelList: labelIdsClicked.map(id => ({ labelId: id })),
+        }),
+      });
+      if (res.ok) await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+    },
+    labelIdsClicked
+  );
   useOutsideClick(milestoneDropDownRef, () => {
     setIsDropDownOpen({
       ...isDropDownOpen,
@@ -142,7 +156,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
             ))}
           </div>
         )}
-        {attachedAssigneeList.map((assignee, i) => (
+        {attachedAssigneeList.map(assignee => (
           <div className="flex gap-x-2" key={assignee.id}>
             <Profile url={assignee.profileUrl} width={20} height={20} />
             <span className="text-gray-900">{assignee.loginId}</span>
@@ -239,16 +253,19 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                     isClicked: milestoneIdClicked === milestone.milestoneId,
                   }}
                   isFirst={i === 0}
-                  onItemClick={id => {
-                    fetch(`${BASE_API}issues/${issue.issueId}/milestones`, {
-                      method: 'PATCH',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        milestoneId: id,
-                      }),
-                    });
+                  onItemClick={async id => {
+                    const res = await fetch(
+                      `${BASE_API}issues/${issue.issueId}/milestones`,
+                      {
+                        method: 'PATCH',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          milestoneId: id,
+                        }),
+                      }
+                    );
                     setMilestoneIdClicked(id);
                     setIsDropDownOpen({
                       ...isDropDownOpen,
@@ -256,7 +273,8 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
                       assignee: false,
                       label: false,
                     });
-                    fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
+                    if (res.ok)
+                      await fetchSetData(ISSUE_DETAIL_API, setIssueDetailData);
                   }}
                 />
               ))}
