@@ -50,7 +50,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
     attachedLabelList.map(label => label.labelId)
   );
   const [milestoneIdClicked, setMilestoneIdClicked] = useState<number>(
-    attachedMilestone.milestoneId
+    attachedMilestone?.milestoneId
   );
   const assigneeDropDownRef = useRef<HTMLDivElement>(null);
   const labelDropDownRef = useRef<HTMLDivElement>(null);
@@ -284,10 +284,10 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
         <div className="flex w-full flex-wrap gap-y-2">
           {/* TODO(Jayden): attachedMilstone에도 deleted 유무가 들어오게 요청하기 */}
           <MilestoneProgressBar
-            progress={issueDetailData?.attachedMilestone.progress as number}
+            progress={issueDetailData?.attachedMilestone?.progress as number}
           />
           <div className="text-sm">
-            {issueDetailData?.attachedMilestone.milestoneName}
+            {issueDetailData?.attachedMilestone?.milestoneName}
           </div>
         </div>
       </section>
