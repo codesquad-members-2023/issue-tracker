@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         path: '/issues/:issueId',
         element: <IssueDetailPage />,
       },
-      { path: '/new-issue', element: <NewIssue /> },
+      { path: '/create', element: <NewIssue /> },
       { path: '/labels', element: <LabelPage /> },
       { path: '/milestones', element: <MilestonePage /> },
     ],

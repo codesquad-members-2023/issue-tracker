@@ -137,7 +137,7 @@ const MainPage = () => {
   };
 
   const onNewIssueClick = () => {
-    navigate('/new-issue');
+    navigate('/create');
   };
 
   useEffect(() => {

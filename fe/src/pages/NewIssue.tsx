@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import NewIssueMain from '../components/NewIssue/NewIssueMain';
 import NewIssueNav from '../components/NewIssue/NewIssueNav';
@@ -70,6 +70,12 @@ const dummyData = {
 };
 
 const NewIssue: React.FC = () => {
+  const [optionList, setOptionList] = useState({
+    userList: [],
+    labelList: [],
+    milestoneList: [],
+  });
+
   const [issueTitle, setIssueTitle] = useState('');
   const [issueContent, setIssueContent] = useState('');
   const [options, setOptions] = useState<Options>({
@@ -126,14 +132,35 @@ const NewIssue: React.FC = () => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`${BASE_API}issues/create`);
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setOptionList({
+          userList: data.userList,
+          labelList: data.labelList,
+          milestoneList: data.milestoneList,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div>
       <header className="text-2xl text-gray-900">새로운 이슈 작성</header>
       <NewIssueMain
         user={dummyData.user}
-        userList={dummyData.userList}
-        labelList={dummyData.labelList}
-        milestoneList={dummyData.milestoneList}
+        userList={optionList.userList}
+        labelList={optionList.labelList}
+        milestoneList={optionList.milestoneList}
         issueStates={issueStates}
         optionsState={optionsState}
       />
