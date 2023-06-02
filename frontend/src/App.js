@@ -4,8 +4,8 @@ import { routes } from '@constants/routes';
 import { getToken } from '@services/login';
 
 const RequireAuth = ({ children }) => {
-  const token = getToken();
-  if (!token) {
+  const isLogin = !!getToken();
+  if (!isLogin) {
     return <Navigate to="/login" replace />;
   }
   return children;

@@ -17,19 +17,15 @@ export const checkValidation = (target, value) => {
 };
 
 export const getToken = () => {
-  const value = window.localStorage.getItem('loginToken');
-  if (value === 'undefined') return null;
-  return value;
+  return window.localStorage.getItem('loginToken');
 };
 
 export const getLoginToken = async (queryCode) => {
-  const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-
   try {
     const data = await customFetch({
       path: '/oauth/result',
       method: 'GET',
-      queries: { code: queryCode, env },
+      queries: { code: queryCode },
     });
     return data;
   } catch (error) {
