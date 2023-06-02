@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import Button from '@common/Button';
 
@@ -17,6 +17,8 @@ const NewIssueInput: React.FC<Props> = ({ issueStates }) => {
 
   const [isTitleFocused, setTitleFocused] = useState(false);
   const [isContentFocused, setContentFocused] = useState(false);
+  const [showCharacterCount, setShowCharacterCount] = useState(false);
+  const [characterCount, setCharacterCount] = useState(0);
 
   const isChangedTitle = isTitleFocused || issueTitle;
   const isChangedComment = isContentFocused || issueContent;
@@ -40,6 +42,25 @@ const NewIssueInput: React.FC<Props> = ({ issueStates }) => {
     element === 'title' ? setTitleFocused(false) : setContentFocused(false);
   };
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    const handleContentChange = () => {
+      clearTimeout(timer as NodeJS.Timeout);
+      setShowCharacterCount(false);
+      setCharacterCount(issueContent.length);
+      timer = setTimeout(() => {
+        setShowCharacterCount(true);
+      }, 2000);
+    };
+
+    handleContentChange();
+
+    return () => {
+      clearTimeout(timer as NodeJS.Timeout);
+    };
+  }, [issueContent]);
+
   return (
     <form className="mx-6 flex w-full max-w-[912px] flex-col">
       <label
@@ -60,7 +81,7 @@ const NewIssueInput: React.FC<Props> = ({ issueStates }) => {
         />
       </label>
       <label
-        className={`h-[436px] overflow-hidden rounded-t-[14px] ${contentBackgroundColor} ${
+        className={`relative h-[436px] overflow-hidden rounded-t-[14px] ${contentBackgroundColor} ${
           isContentFocused && 'border border-b-0 border-gray-300'
         } px-6 py-3.5`}
       >
@@ -76,6 +97,11 @@ const NewIssueInput: React.FC<Props> = ({ issueStates }) => {
           onFocus={() => handleFocus('comment')}
           onBlur={() => handleBlur('comment')}
         ></textarea>
+        {showCharacterCount && Boolean(characterCount) && (
+          <span className="absolute right-10 top-[400px] text-sm text-gray-600">
+            띄어쓰기 포함 {characterCount}자
+          </span>
+        )}
       </label>
       <label
         className={`h-[52px] w-full rounded-b-[14px] ${

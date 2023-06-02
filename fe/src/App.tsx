@@ -9,16 +9,13 @@ import MilestonePage from './pages/MilestonePage';
 import ErrorPage from './pages/ErrorPage';
 import NewIssue from './pages/NewIssue';
 import LoginPage from './pages/LoginPage';
-import AuthWrapperPage from './pages/AuthWrapperPage';
+
+import Auth from './pages/Auth';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <AuthWrapperPage>
-        <RootPage />
-      </AuthWrapperPage>
-    ),
+    element: <RootPage />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -35,6 +32,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
+  { path: '/oauth', element: <Auth />, errorElement: <ErrorPage /> },
 ]);
 
 function App() {
