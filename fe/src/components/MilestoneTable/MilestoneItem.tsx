@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { ReactComponent as Milestone } from '@assets/milestone.svg';
 import { ReactComponent as Calendar } from '@assets/calendar.svg';
+import { ReactComponent as Archive } from '@assets/archive.svg';
 import Button from '@common/Button';
 import MilestoneProgressBar from '@components/MilestoneProgressBar/MilestoneProgressBar';
 import { BASE_API } from '../../api';
@@ -61,7 +62,11 @@ const MilestoneItem = (props: MilestoneItemProps) => {
       <div className="flex justify-between border-t border-t-gray-300 px-8 py-4 hover:bg-gray-100">
         <section className="flex w-4/5 flex-col justify-center gap-y-2">
           <section className="flex items-center justify-start gap-x-2">
-            <Milestone fill="#007AFF" />
+            {milestoneInfo.isOpen ? (
+              <Milestone fill="#007AFF" />
+            ) : (
+              <Archive stroke="#FF3B30" />
+            )}
             <p className="font-bold">{name}</p>
             <div className="flex items-center gap-x-2 text-sm text-gray-600">
               <Calendar stroke="#6E7191" />
@@ -75,7 +80,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
         <section className="w-1/5">
           <section className="mb-1 flex items-center justify-end gap-x-6">
             <Button
-              title="닫기"
+              title={isOpen ? '닫기' : '열기'}
               onClick={async () => {
                 if (!confirm('정말로 닫으시겠습니까?')) return;
                 await fetch(`${BASE_API}milestones/${milestoneId}`, {
@@ -98,7 +103,7 @@ const MilestoneItem = (props: MilestoneItemProps) => {
               type="Ghost"
               gap="gap-x-1"
               condition="Press"
-              iconName="archive"
+              iconName={isOpen ? 'archive' : 'milestone'}
               fontSize={'text-sm'}
             />
             <Button
