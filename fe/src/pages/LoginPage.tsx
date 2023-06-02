@@ -54,14 +54,18 @@ const LoginPage = () => {
         </div>
         <Button
           title="아이디로 로그인"
-          onClick={() => console.log('아이디로 로그인')}
+          onClick={() =>
+            alert(
+              '로그인 기능은 추가 예정입니다! 깃헙 계정으로 로그인 부탁드립니다! ✨'
+            )
+          }
           color="Blue"
           size="Large"
           condition={userLoginId && userLoginPassword ? 'Enabled' : 'Disabled'}
         />
         <Button
           title="회원가입"
-          onClick={() => console.log('회원가입')}
+          onClick={() => alert('회원가입 기능은 추가 예정입니다! ✨')}
           color="Gray"
           size="Small"
           iconName="plus"

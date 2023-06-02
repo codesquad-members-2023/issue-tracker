@@ -245,6 +245,7 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
               ref={milestoneDropDownRef}
             >
               {issueDetailData?.milestoneList.map((milestone, i) => (
+                // FIXME(Jayden): 이슈 상세 attachedMilestoneList에도 isOpen 요청하기
                 <FilterItem
                   key={milestone.milestoneId}
                   item={{
@@ -282,7 +283,6 @@ const IssueSubInfo = (props: IssueSubInfoProps) => {
           </>
         )}
         <div className="flex w-full flex-wrap gap-y-2">
-          {/* TODO(Jayden): attachedMilstone에도 deleted 유무가 들어오게 요청하기 */}
           <MilestoneProgressBar
             progress={issueDetailData?.attachedMilestone?.progress as number}
           />
