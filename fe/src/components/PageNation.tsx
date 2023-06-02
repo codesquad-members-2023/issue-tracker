@@ -14,7 +14,7 @@ const PageNation: React.FC<Props> = ({ issueCount, onPageClick }) => {
         const pageNum = index + 1;
         return (
           <button
-            className="mr-5 flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-gray-50"
+            className="mr-5 flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-gray-50 hover:bg-gray-100"
             key={index}
             onClick={() => onPageClick(pageNum)}
           >

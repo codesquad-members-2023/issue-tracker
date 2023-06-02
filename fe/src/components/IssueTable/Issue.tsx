@@ -82,7 +82,6 @@ const Issue: React.FC<Props> = ({
             })}
           </div>
         </div>
-        {/* TODO: issue info 세로 가운데 정렬 */}
         <div className="flex">
           <span className="mr-4 text-gray-600">#{issueId}</span>
           <span className="mr-4 text-gray-600">{elapsedMessage}</span>
