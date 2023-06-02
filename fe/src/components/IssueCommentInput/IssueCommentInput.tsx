@@ -5,11 +5,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
+
 import Button from '@common/Button';
 import { issueDetailDataContext } from '../../pages/IssueDetailPage';
 import { BASE_API } from '../../api';
 import fetchSetData from '@utils/fetchSetData';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
+import { ReactComponent as Grip } from '@assets/grip.svg';
 
 interface IssueCommentInputProps {
   setIssueDetailData: Dispatch<IssueDetailData>;
@@ -64,7 +66,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: 3, // TODO(Jayden): 로그인한 유저의 id로 변경
+          userId: 3, // FIXME(Jayden): 로그인한 유저의 id로 변경
           content: commentContent,
         }),
       });
@@ -94,6 +96,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
             commentFocused ? 'bg-white' : 'bg-gray-200'
           } p-4 placeholder-gray-600 outline-0 focus:outline-none`}
           ref={commentTextAreaRef}
+          style={{ resize: 'none' }}
         />
         {showCharCount && (
           <div
@@ -101,7 +104,7 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
               commentFocused ? 'bg-white' : 'bg-gray-200'
             } h-8`}
           >
-            띄어쓰기 포함 {commentContent.length}자
+            띄어쓰기 포함 {commentContent.length}자{<Grip />}
           </div>
         )}
         <section
