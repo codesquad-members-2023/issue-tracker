@@ -9,21 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team01.issuetracker.service.AssigneeService;
-import team01.issuetracker.service.dto.response.AssigneesResponseDTO;
+import team01.issuetracker.service.WriterService;
+import team01.issuetracker.service.dto.response.WritersResponseDTO;
 
 @Slf4j
-@Tag(name = "Assignee", description = "담당자 관련 API")
+@Tag(name = "Writer", description = "작성자 관련 API")
 @RequiredArgsConstructor
-@RequestMapping("/api/assignees")
+@RequestMapping("/api/writers")
 @RestController
-public class AssigneeController {
+public class WriterController {
 
-    private final AssigneeService assigneeService;
+    private final WriterService writerService;
 
     @GetMapping
-    public ResponseEntity<AssigneesResponseDTO> assigneesView() {
-        log.debug("담당자 조회");
-        return ResponseEntity.ok(assigneeService.getAssignees());
+    public ResponseEntity<WritersResponseDTO> writersView() {
+        log.debug("작성자 조회");
+        return ResponseEntity.ok(writerService.getWriters());
     }
 }

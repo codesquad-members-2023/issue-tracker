@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class AssigneesResponseDTO {
+public class WritersResponseDTO {
 
-    private final List<MemberDTO> assignees;
+    private final List<MemberDTO> writers;
 }

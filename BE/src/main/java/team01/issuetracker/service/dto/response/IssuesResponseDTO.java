@@ -14,7 +14,6 @@ public class IssuesResponseDTO {
 
     private final Count count;
     private final List<IssueResponseDTO> issues;
-//    private final Logger logger = LoggerFactory.getLogger(IssuesResponseDTO.class);
 
     public static IssuesResponseDTO of(Count count, List<IssueResponseDTO> issues) {
         return IssuesResponseDTO.builder()
@@ -22,6 +21,5 @@ public class IssuesResponseDTO {
                 .issues(issues)
                 .build();
     }
-
 
 }

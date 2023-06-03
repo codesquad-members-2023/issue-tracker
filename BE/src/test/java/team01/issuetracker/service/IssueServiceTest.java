@@ -68,9 +68,8 @@ class IssueServiceTest {
                 .map(issueLabelList -> issueLabelList.stream().map(l -> MiniLabel.of(labels.get(l.getLabelId()))).collect(Collectors.toList()))
                 .collect(Collectors.toList());
 
-
         //작성자 전체 조회
-        List<Member> writers = issues.stream().map(writer -> writer.getMemberId().getId())
+        List<Member> writers = issues.stream().map(writer -> writer.getWriterId().getId())
                 .map(l -> members.get(l))
                 .collect(Collectors.toList());
         //마일스톤 전체 조회

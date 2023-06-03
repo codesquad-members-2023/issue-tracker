@@ -1,48 +1,52 @@
 package team01.issuetracker.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team01.issuetracker.service.IssueService;
 import team01.issuetracker.service.dto.request.FilterRequestDTO;
+import team01.issuetracker.service.dto.request.IssueRequestDTO;
+import team01.issuetracker.service.dto.response.CreateIssueDTO;
+import team01.issuetracker.service.dto.response.IssueDetailResponseDTO;
+import team01.issuetracker.service.dto.response.IssuesResponseDTO;
 
+@Slf4j
+@Tag(name = "Issue", description = "이슈 관련 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/issues")
 @RestController
 public class IssueController {
 
     private final IssueService issueService;
-    private final Logger logger = LoggerFactory.getLogger(IssueController.class);
 
+    @Operation(summary = "이슈 목록 조회")
     @GetMapping
-    public ResponseEntity<?> view(FilterRequestDTO requestDTO) {
-        logger.info("그 리퀘파람 테스트 임돠");
-
-        /*
-        TODO: 기존 열림/닫힘 통합 기능으로 합쳐야함
-         */
-        if (requestDTO.getStatus().equals("open")) {
-            logger.info("오픈 이슈 페이지");
-            return ResponseEntity.ok(issueService.openIssues());
-        }
-        if (requestDTO.getStatus().equals("closed")){
-            logger.info("클로즈 이슈 페이지");
-            return ResponseEntity.ok(issueService.closeIssues());
-        }
-
-//        System.out.println(requestDTO.getStatus());
-//        System.out.println(requestDTO.getAssignee());
-//        System.out.println(requestDTO.getLabel());
-//        System.out.println(requestDTO.getMilestone());
-//        System.out.println(requestDTO.getWriters());
-
-        /*
-        TODO: 통합 기능으로 구현시 사용되는 부분, 필터의 값들은 id로 들어간다!(open/closed 빼고)
-         */
+    public ResponseEntity<IssuesResponseDTO> view(FilterRequestDTO requestDTO) {
+        log.debug("이슈 필터 호출");
         return ResponseEntity.ok(issueService.getIssues(requestDTO));
+    }
+
+    @Operation(summary = "새로운 이슈 작성")
+    @PostMapping
+    public ResponseEntity<CreateIssueDTO> create(@RequestBody IssueRequestDTO issueDTO) {
+        log.debug("이슈 생성");
+        issueService.create(issueDTO);
+
+        Long creatIssueId = issueService.create(issueDTO);
+
+        // 생성된 이슈 번호를 응답으로 반환
+        CreateIssueDTO responseDTO = new CreateIssueDTO(creatIssueId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    @Operation(summary = "이슈 상세 보기")
+    @GetMapping("/{id}")
+    public ResponseEntity<IssueDetailResponseDTO> detailView(@PathVariable Long id) {
+        log.debug("이슈 상세보기");
+        return ResponseEntity.ok(issueService.getIssue(id));
     }
 }

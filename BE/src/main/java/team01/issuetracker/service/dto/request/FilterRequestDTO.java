@@ -8,9 +8,9 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class FilterRequestDTO {
-    private final String status;
-    private final Long assignee;
-    private final Long label;
-    private final Long milestone;
+    private final Boolean isOpen;
+    private final Long assignees;
+    private final Long labels;
+    private final Long milestones;
     private final Long writers;
 }

@@ -8,11 +8,12 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @ToString
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,7 +23,7 @@ public class Issue {
     @Column("id")
     private Long id;
     @Column("writer_id")
-    private AggregateReference<Member, @NonNull Long> memberId;
+    private AggregateReference<Member, @NonNull Long> writerId;
     @Column("title")
     private String title;
     @Column("description")
@@ -31,24 +32,37 @@ public class Issue {
     private boolean isOpen;
     @Column("create_date_time")
     private LocalDateTime createAt;
+    @Column("file_url")
+    private String fileUrl;
     @Column("milestone_id")
     private AggregateReference<Milestone, @NonNull Long> milestoneId;
 
     //1:N 관계, idColumn : 자식 엔티티가 가지는 외래키 keyColumn : 자식 엔티티의 기본키
     @MappedCollection(idColumn = "issue_id", keyColumn = "id")
     @Builder.Default
-    private List<Assignee> assignees = new ArrayList<>();
+    private Set<Assignee> assignees = new HashSet<>();
 
     @MappedCollection(idColumn = "issue_id", keyColumn = "id")
     @Builder.Default
-    private List<IssueLabel> issueLabels = new ArrayList<>();
+    private Set<IssueLabel> issueLabels = new HashSet<>();
 
+    public static Issue create(Long writerId, String title, String description, String fileUrl, Long milestoneId) {
+        AggregateReference<Milestone, @NonNull Long> milestoneParam
+                = milestoneId == null ? null: AggregateReference.to(milestoneId);
+        return Issue.builder()
+                .writerId(AggregateReference.to(writerId))
+                .title(title)
+                .description(description)
+                .isOpen(true)
+                .createAt(LocalDateTime.now())
+                .fileUrl(fileUrl)
+                .milestoneId(milestoneParam)
+                .build();
+    }
 
-//    private void addManager(Member member) {
-//        managers.add(createManager(member));
-//    }
-//
-//    private Assignee createManager(Member member) {
-//        return Assignee.builder().memberId(memberId.getId()).build();
-//    }
+    // milestoneId 삭제전 해당 값 -> null
+    public void setMilestoneId(AggregateReference<Milestone, @NonNull Long> milestoneId) {
+        this.milestoneId = milestoneId;
+    }
+
 }

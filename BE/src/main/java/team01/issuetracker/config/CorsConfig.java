@@ -9,11 +9,9 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // 리액트 애플리케이션의 URL로 변경해야 합니다.
+        registry.addMapping("/api/**") // /api 경로에 대해서만 CORS 설정을 적용합니다.
+                .allowedOrigins("http://3.39.73.49") // 프론트 주소
                 .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600);
+                .allowedHeaders("*");
     }
 }
