@@ -8,14 +8,14 @@
 import Combine
 import Foundation
 
-final class MockIssueListUseCase: IssueListUseCaseType {
+final class MockIssueListUseCase: IssueUseCase {
     var isFetchIssueListCalled: Bool
     
     init() {
         self.isFetchIssueListCalled = false
     }
     
-    func fetchIssueList() -> AnyPublisher<IssueCollection, Error> {
+    func requestIssues() -> AnyPublisher<IssueCollection, IssueUseCaseError> {
         self.isFetchIssueListCalled = true
         return Future { promise in
             promise(.success(IssueCollection()))
