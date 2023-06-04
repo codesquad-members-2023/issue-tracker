@@ -30,6 +30,7 @@ const FilterList: React.FC<Props> = ({
   setOpenedFilterList,
   onItemClick,
 }) => {
+  if (!isOpen) return null;
   const ref = useRef<HTMLDivElement | null>(null);
 
   const onItemClickHandler = (id: number) => {
@@ -56,7 +57,7 @@ const FilterList: React.FC<Props> = ({
 
   useOutsideClick(ref, handleOutsideClick);
 
-  return isOpen ? (
+  return (
     <div
       ref={ref}
       className={`absolute ${
@@ -77,7 +78,7 @@ const FilterList: React.FC<Props> = ({
         ))}
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default FilterList;

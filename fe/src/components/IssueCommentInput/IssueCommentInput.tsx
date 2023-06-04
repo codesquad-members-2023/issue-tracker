@@ -12,6 +12,7 @@ import { BASE_API } from '../../api';
 import fetchSetData from '@utils/fetchSetData';
 import { IssueDetailData } from '@customTypes/IssueDetailPage';
 import { ReactComponent as Grip } from '@assets/grip.svg';
+import useOutsideClick from '@hooks/useOutsideClick';
 
 interface IssueCommentInputProps {
   setIssueDetailData: Dispatch<IssueDetailData>;
@@ -24,21 +25,10 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
   const commentTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const [commentFocused, setCommentFocused] = useState(false);
   const user = JSON.parse(localStorage.getItem('token') as string);
-  function clickOnOutside(ref: any) {
-    useEffect(() => {
-      function handleClickOutside(e: Event): void {
-        if (ref.current && !ref.current.contains(e.target)) {
-          setCommentFocused(false);
-        }
-      }
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [ref]);
-  }
 
-  clickOnOutside(commentTextAreaRef);
+  useOutsideClick(commentTextAreaRef, () => {
+    setCommentFocused(false);
+  });
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -59,22 +49,20 @@ const IssueCommentInput = (props: IssueCommentInputProps) => {
   const ISSUE_DETAIL_API = `${BASE_API}issues/${issueDetailData?.issue.issueId}`;
 
   const postComment = async () => {
-    {
-      const temp = await fetch(ISSUE_DETAIL_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: user.id, // FIXME(Jayden): 로그인한 유저의 id로 변경
-          content: commentContent,
-        }),
-      });
-      if (temp.ok) {
-        fetchSetData(temp.url, setIssueDetailData);
-      }
-      setCommentContent('');
+    const temp = await fetch(ISSUE_DETAIL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: user.id, // FIXME(Jayden): 로그인한 유저의 id로 변경
+        content: commentContent,
+      }),
+    });
+    if (temp.ok) {
+      fetchSetData(temp.url, setIssueDetailData);
     }
+    setCommentContent('');
   };
 
   return (

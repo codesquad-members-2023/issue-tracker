@@ -47,7 +47,7 @@ const IssueCommentItem = (props: IssueCommentItemProps) => {
   clickOnOutside(commentTextAreaRef);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
 
     const handleTyping = () => {
       clearTimeout(timer);
