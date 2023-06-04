@@ -1,12 +1,14 @@
-package issuetracker.issuetracker.domain.issue.comment.dto;
+package issuetracker.issuetracker.domain.issue.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter
-@Setter
+@Builder
 public class CommentInIssueDTO {
     // 유저 pk,유저 이름, 유저 url, (작성자)
     @NotNull
@@ -18,6 +20,7 @@ public class CommentInIssueDTO {
     // 댓글 제목, 내용,
     @NotNull
     private String replyContents;
+    private LocalDateTime createTime;
 
     // 이모지 (모양, 개수)
     private String emojiShape;

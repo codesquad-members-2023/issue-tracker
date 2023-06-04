@@ -1,6 +1,7 @@
 package issuetracker.issuetracker.domain.issue.dto;
 
 import issuetracker.issuetracker.domain.label.dto.LabelDTO;
+import issuetracker.issuetracker.domain.milestone.dto.MileStoneDTO;
 import issuetracker.issuetracker.domain.user.dto.AssigneeDTO;
 import issuetracker.issuetracker.domain.user.dto.AuthorDTO;
 import lombok.*;
@@ -22,6 +23,7 @@ public class IssueDTO {
     private Long id;
     @NotNull
     private String title;
+    private String description;
     @NotNull
     private LocalDateTime createTime;
     @NotNull
@@ -29,8 +31,7 @@ public class IssueDTO {
     @NotNull
     private Boolean isOpen;
 
-
-    private String milestone;
+    private MileStoneDTO milestone;
     @NotNull
     private AuthorDTO author;
 

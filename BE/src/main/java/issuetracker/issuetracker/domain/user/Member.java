@@ -1,43 +1,31 @@
 package issuetracker.issuetracker.domain.user;
 
-
-import issuetracker.issuetracker.domain.issue.Issue;
-import issuetracker.issuetracker.domain.issue.IssueAttachedLabel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.*;
 
 @Getter
 @ToString
 @Table(name = "member")
 @AllArgsConstructor
-public class Member {
+public class Member implements Persistable {
     @Id
-    private Long memberId;
+    @Column("member_id")
+    private Long id;
 
     @NotBlank
-    private String loginId;
-
-    @NotBlank
-    private String memberName;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String email;
+    @Column("member_name")
+    private String name;
 
     @Column("profile_url")
     private String profileUrl;
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }
