@@ -1,7 +1,5 @@
 package com.example.be.comment;
 
-import com.example.be.issue.Issue;
-import com.example.be.user.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -38,4 +36,23 @@ public class Comment {
         return deleted;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setCreatedData(LocalDateTime createdData) {
+        this.createdData = createdData;
+    }
+
+    public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

@@ -27,11 +27,11 @@ public class IssueRepositoryImpl implements IssueRepositoryCustom{
     public int save(IssueCreateFormDTO issueCreateFormDTO) {
         issueMapper.save(issueCreateFormDTO);
 
-        if (issueCreateFormDTO.getLabelNames() != null && issueCreateFormDTO.getLabelNames().size() != 0) {
+        if (issueCreateFormDTO.hasLabels()) {
             issueMapper.saveIssueLabelRelation(issueCreateFormDTO);
         }
 
-        if (issueCreateFormDTO.getAssignees() != null && issueCreateFormDTO.getAssignees().size() != 0) {
+        if (issueCreateFormDTO.hasAssigns()) {
             issueMapper.saveAssignee(issueCreateFormDTO);
         }
 
@@ -43,7 +43,7 @@ public class IssueRepositoryImpl implements IssueRepositoryCustom{
         if (issueMapper.validIssue(issueUpdateFormDTO.getIssueNumber()) != 1) {
             return false;
         }
-        if (issueUpdateFormDTO.getMilestoneName() != null && issueMapper.validMilestone(issueUpdateFormDTO.getMilestoneName()) != 1) {
+        if (issueUpdateFormDTO.getMilestoneName() != null && !issueUpdateFormDTO.getMilestoneName().equals("$none") && issueMapper.validMilestone(issueUpdateFormDTO.getMilestoneName()) != 1) {
             return false;
         }
         return issueMapper.updateIssue(issueUpdateFormDTO) == 1;
@@ -68,14 +68,18 @@ public class IssueRepositoryImpl implements IssueRepositoryCustom{
             return false;
         }
 
+        // 유효성 검사와 비지니스 로직을 같은 계층에서 하니까 코드가 난잡해지는 것 같습니다.
+        // 다음 프로젝트에서는 유효성 검사와 비지니스 로직 부분을 분리하도록 하겠습니다.
+        if (issueLabelRelationUpdateFormDTO.getLabelNames().size() == 0) {
+            issueMapper.deleteIssueLabelRelation(issueLabelRelationUpdateFormDTO);
+            return true;
+        }
+
         if (issueMapper.validLabels(issueLabelRelationUpdateFormDTO.getLabelNames()) != issueLabelRelationUpdateFormDTO.getLabelNames().size()) {
             return false;
         }
-
         issueMapper.deleteIssueLabelRelation(issueLabelRelationUpdateFormDTO);
-        if (issueLabelRelationUpdateFormDTO.getLabelNames().size() != 0) {
-            return issueMapper.insertIssueLabelRelation(issueLabelRelationUpdateFormDTO) == issueLabelRelationUpdateFormDTO.getLabelNames().size();
-        }
+        issueMapper.insertIssueLabelRelation(issueLabelRelationUpdateFormDTO);
         return true;
     }
 

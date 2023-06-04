@@ -17,12 +17,23 @@ public class IssueCreateFormDTO {
     private String milestoneName;
     private List<String> labelNames;
 
+    public IssueCreateFormDTO() {
+    }
+
     public IssueCreateFormDTO(String title, String contents, List<String> assignees, String milestoneName, List<String> labelNames) {
         this.title = title;
         this.contents = contents;
         this.assignees = assignees;
         this.milestoneName = milestoneName;
         this.labelNames = labelNames;
+    }
+
+    public boolean hasLabels() {
+        return (labelNames != null && labelNames.size() != 0);
+    }
+
+    public boolean hasAssigns() {
+        return (assignees != null && assignees.size() != 0);
     }
 
     public int getIssueNumber() {

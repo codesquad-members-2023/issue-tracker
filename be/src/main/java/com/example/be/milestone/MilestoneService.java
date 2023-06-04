@@ -12,7 +12,6 @@ public class MilestoneService {
 
     private final MilestoneRepository milestoneRepository;
 
-    @Autowired
     public MilestoneService(MilestoneRepository milestoneRepository) {
         this.milestoneRepository = milestoneRepository;
     }

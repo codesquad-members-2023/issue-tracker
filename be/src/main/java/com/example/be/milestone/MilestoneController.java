@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 public class MilestoneController {
     private final MilestoneService milestoneService;
 
-    @Autowired
     public MilestoneController(MilestoneService milestoneService) {
         this.milestoneService = milestoneService;
     }

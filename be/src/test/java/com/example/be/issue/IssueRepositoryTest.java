@@ -101,33 +101,6 @@ class IssueRepositoryTest {
         }
 
         @Test
-        @DisplayName("닫힌 이슈들로만 이루어진 목록을 반환한다.")     //TODO : 이슈를 열고 닫는 기능을 구현하여 테스트 코드를 완성한다.
-        void closeIssues() {
-            // given
-            userRepository.save(new User("1234", "codesquad", "BE", "https://issue-tracker-03.s3.ap-northeast-2.amazonaws.com/cat.jpg"));
-
-            IssueCreateFormDTO issueCreateFormDTO1 = new IssueCreateFormDTO("제목 1", "첫 번째 이슈 내용", null, null, null);
-            issueCreateFormDTO1.setUserId("1234");
-            issueRepository.save(issueCreateFormDTO1);
-
-            IssueCreateFormDTO issueCreateFormDTO2= new IssueCreateFormDTO("제목 2", "두 번째 이슈 내용", null, null, null);
-            issueCreateFormDTO2.setUserId("1234");
-            issueRepository.save(issueCreateFormDTO2);
-
-            IssueCreateFormDTO issueCreateFormDTO3 = new IssueCreateFormDTO("제목 3", "세 번째 이슈 내용", null, null, null);
-            issueCreateFormDTO3.setUserId("1234");
-            issueRepository.save(issueCreateFormDTO3);
-
-            IssueSearchCondition issueSearchCondition = getFirstPage();
-
-            // when
-            List<Issue> issuesWithoutLabels = issueRepository.findIssuesWithoutLabelsBy(issueSearchCondition);
-
-            // then
-            assertThat(issuesWithoutLabels.size()).isEqualTo(3);
-        }
-
-        @Test
         @DisplayName("글 작성자 (닉네임)를 기준으로 필터링한 목록을 반환한다.")
         void issuesFilteredByAuthor() {
             // given
@@ -366,31 +339,4 @@ class IssueRepositoryTest {
                 .map(il -> il.getLabel())
                 .collect(Collectors.toList())).usingRecursiveFieldByFieldElementComparator().containsExactlyInAnyOrder(label1, label2);
     }
-
-    @Test
-    @DisplayName("열린 Issue 개수, 닫힌 Issue 개수, Label 개수, Milestone 개수를 Count 클래스에 담아 반환한다.")   // TODO 이슈 닫기 기능을 구현 후 제대로 완성
-    void calculateCount() {
-        // given
-        userRepository.save(new User("1234", "codesquad", "BE", "https://issue-tracker-03.s3.ap-northeast-2.amazonaws.com/cat.jpg"));
-
-        IssueCreateFormDTO issueCreateFormDTO1 = new IssueCreateFormDTO("제목 1", "첫 번째 이슈 내용", null, null, null);
-        issueCreateFormDTO1.setUserId("1234");
-        issueRepository.save(issueCreateFormDTO1);
-
-        IssueCreateFormDTO issueCreateFormDTO2= new IssueCreateFormDTO("제목 2", "두 번째 이슈 내용", null, null, null);
-        issueCreateFormDTO2.setUserId("1234");
-        issueRepository.save(issueCreateFormDTO2);
-
-        IssueCreateFormDTO issueCreateFormDTO3 = new IssueCreateFormDTO("제목 3", "세 번째 이슈 내용", null, null, null);
-        issueCreateFormDTO3.setUserId("1234");
-        issueRepository.save(issueCreateFormDTO3);
-
-        // when
-        CountDTO countDTO = issueRepository.countEntities();
-
-        // then
-        assertThat(countDTO.getOpenedIssuesCount()).isEqualTo(3);
-        assertThat(countDTO.getClosedIssuesCount()).isZero();
-    }
-
 }

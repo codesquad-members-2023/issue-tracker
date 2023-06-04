@@ -11,7 +11,6 @@ public class IssueUpdateFormDTO {
     private Integer issueNumber;
 
     private Boolean state;
-    @NotBlank(message = "이슈 제목을 입력해주세요.")
     @Size(max = 45, message = "이슈 제목의 길이는 45자를 넘을 수 없습니다.")
     private String title;
     @Size(max = 16777215, message = "이슈 내용의 길이는 1677,7215자를 넘을 수 없습니다.")

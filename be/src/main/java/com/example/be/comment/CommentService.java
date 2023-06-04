@@ -12,7 +12,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    @Autowired
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }

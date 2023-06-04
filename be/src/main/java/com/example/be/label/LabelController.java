@@ -11,7 +11,6 @@ public class LabelController {
 
     public final LabelService labelService;
 
-    @Autowired
     public LabelController(LabelService labelService) {
         this.labelService = labelService;
     }
