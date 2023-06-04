@@ -3,6 +3,7 @@ package com.issuetracker.service;
 import com.issuetracker.domain.Milestone;
 import com.issuetracker.dto.milestone.MilestoneDto;
 import com.issuetracker.dto.milestone.MilestonePageDto;
+import com.issuetracker.repository.LabelRepository;
 import com.issuetracker.repository.MilestoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MilestoneService {
 
     private final MilestoneRepository milestoneRepository;
+    private final LabelRepository labelRepository;
 
     public MilestonePageDto findAllMilestones() {
 
@@ -34,21 +36,24 @@ public class MilestoneService {
                     milestone.getName(),
                     milestone.getDescription(),
                     milestone.getCompletedAt(),
+                    milestone.isOpened(),
                     countOpenedIssues, countClosedIssues, progress));
         }
 
         int countOpenedMilestones = milestoneRepository.countOpenedMilestones();
         int countClosedMilestones = milestoneRepository.countClosedMilestones();
+        int countAllMilestones = countOpenedMilestones + countClosedMilestones;
+        int countAllLabels = labelRepository.countAllLabels();
 
-        return new MilestonePageDto(milestoneDtoList, countOpenedMilestones, countClosedMilestones);
+        return new MilestonePageDto(milestoneDtoList, countOpenedMilestones, countClosedMilestones, countAllMilestones, countAllLabels);
     }
 
     public void createMilestone(MilestoneDto milestoneDto) {
-        milestoneRepository.save(Milestone.createAutoIncrementedMilestone(milestoneDto.getName(), milestoneDto.getDescription(), milestoneDto.getCompletedAt()));
+        milestoneRepository.save(Milestone.ofCreated(milestoneDto.getName(), milestoneDto.getDescription(), milestoneDto.getCompletedAt()));
     }
 
     public void updateMilestone(int milestoneId, MilestoneDto milestoneDto) {
-        milestoneRepository.save(Milestone.createUpdateMilestone(milestoneId, milestoneDto.getName(), milestoneDto.getDescription(), milestoneDto.getCompletedAt()));
+        milestoneRepository.save(Milestone.ofUpdated(milestoneId, milestoneDto.getName(), milestoneDto.getDescription(), milestoneDto.getCompletedAt(), milestoneDto.getIsOpen()));
     }
 
     public void deleteMilestone(int milestoneId) {
