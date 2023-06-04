@@ -1,34 +1,63 @@
 export const fetchData = async (path) => {
-  const response = await fetch(path);
+  const response = await fetch(path, {
+    method: 'GET',
+    header: {
+      Authorization: `Bearer ${localStorage.jwtToken}`
+    }
+  });
   const resData = await response.json();
   return resData;
 };
 
 export const fetchAll = async (...url) => {
-  const response = [...url].map((url) => fetch(url));
-  const resData = await Promise.all(response);
-  const jsonObject = await Promise.all(resData.map((obj) => obj.json()));
-  return jsonObject;
-};
-
-const getFilterdIssues = async (tabId, filterOption) => {
-  const response = await fetchData(`${tabId}`);
+  const response = await Promise.all(url.map((path) => fetchData(path)));
   return response;
 };
 
-export const fetchPost = async (url, body) => {
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    quries: { code: queryCode }
-  };
-  const res = await fetch(url, options);
-  const data = await res.json();
-  if (res.ok) {
-    return data;
-  } else {
-    throw Error(data);
+export const fetchPost = async ({ path, data }) => {
+  try {
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    // console.error('Error:', error);
+  }
+};
+export const fetchPut = async ({ path, data }) => {
+  try {
+    const response = await fetch(path, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    // console.error('Error:', error);
+  }
+};
+export const fetchDelete = async ({ path, data }) => {
+  try {
+    const response = await fetch(path, {
+      method: 'DELETE',
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    // console.error('Error:', error);
+  }
+};
+
+export const fetchPatch = async ({ path, data }) => {
+  try {
+    const response = await fetch(path, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    // console.error('Error:', error);
   }
 };

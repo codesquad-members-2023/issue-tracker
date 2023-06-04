@@ -22,18 +22,42 @@ export const checkBoxReducer = (state, action) => {
         checkedIssues: updateCheckedIssues
       };
     }
-    case 'ALL_CHECK': {
-      const updatecheckedIssues = payload.reduce((acc, issue) => {
-        if (issue.isOpen) acc.push(issue.id);
+    case 'ALL-CHECK': {
+      const updateCheckedIssues = payload.map(({ id }) => id);
+      return {
+        isAllChecked: true,
+        checkedIssues: updateCheckedIssues
+      };
+    }
+    case 'ALL-UNCHECK': {
+      return { isAllChecked: false, checkedIssues: [] };
+    }
+    case 'SWITCH-OPEN': {
+      const updateCheckedIssues = payload.reduce((acc, issue) => {
+        if (checkedIssues.includes(issue.id) && issue.isOpen !== true) {
+          issue.isOpen = true;
+        }
+        acc.push(issue);
         return acc;
       }, []);
       return {
-        isAllChecked: true,
-        checkedIssues: updatecheckedIssues
+        isAllChecked: false,
+        checkedIssues: []
       };
     }
-    case 'ALL_UNCHECK': {
-      return { isAllChecked: false, checkedIssues: [] };
+    case 'SWITCH-CLOSE': {
+      // TODO: 업데이트한 데이터 POST하고, 그 값을 다시 받아서 리렌더
+      const updateCheckedIssues = payload.reduce((acc, issue) => {
+        if (checkedIssues.includes(issue.id) && issue.isOpen !== false) {
+          issue.isOpen = false;
+        }
+        acc.push(issue);
+        return acc;
+      }, []);
+      return {
+        isAllChecked: false,
+        checkedIssues: []
+      };
     }
     default:
       return state;

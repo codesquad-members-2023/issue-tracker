@@ -1,18 +1,11 @@
-import { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Button } from '../button/Button';
 
-export const NewIssueFooter = ({ titleValue, commentValue }) => {
+export const NewIssueFooter = ({ titleValue }) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [addIssue, setAddIssue] = useState({});
 
-  const handleSubmit = (e) => {
-    setLoading(true);
-  };
   return (
     <MyNewIssueFooter>
       <Button
@@ -25,12 +18,12 @@ export const NewIssueFooter = ({ titleValue, commentValue }) => {
         onClick={() => navigate(-1)}
       />
       <Button
-        disabled={titleValue.length < 1 || commentValue.length < 1}
+        disabled={titleValue.length < 1}
         size={'m'}
         color={'containerBlue'}
         isIcon={false}
         buttonText={'완료'}
-        onClick={() => navigate('/issueDetail/:id')}
+        buttonType={'submit'}
       />
     </MyNewIssueFooter>
   );
