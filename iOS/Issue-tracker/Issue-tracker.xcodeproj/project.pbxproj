@@ -27,7 +27,7 @@
 		DB902B772A16AF0F0007BEB9 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB902B762A16AF0F0007BEB9 /* UIFont+Extension.swift */; };
 		DB902B832A16BF540007BEB9 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB902B822A16BF540007BEB9 /* FilterTableViewController.swift */; };
 		DBCF80F72A11D1F8008BED58 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCF80F62A11D1F5008BED58 /* UIColor+Extension.swift */; };
-		DBFACA962A1F1AA800D60438 /* CustomNaviFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFACA952A1F1AA800D60438 /* CustomNaviFilter.swift */; };
+		DBFACA962A1F1AA800D60438 /* CustomNavigationFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFACA952A1F1AA800D60438 /* CustomNavigationFilter.swift */; };
 		DBFACA982A1F2F2F00D60438 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFACA972A1F2F2F00D60438 /* PaddingLabel.swift */; };
 		E05346E5DBC8E9DFC642EE57 /* Pods_Issue_tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B94F74D84E2128C77C308753 /* Pods_Issue_tracker.framework */; };
 /* End PBXBuildFile section */
@@ -58,7 +58,7 @@
 		DB902B762A16AF0F0007BEB9 /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		DB902B822A16BF540007BEB9 /* FilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		DBCF80F62A11D1F5008BED58 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
-		DBFACA952A1F1AA800D60438 /* CustomNaviFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNaviFilter.swift; sourceTree = "<group>"; };
+		DBFACA952A1F1AA800D60438 /* CustomNavigationFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationFilter.swift; sourceTree = "<group>"; };
 		DBFACA972A1F2F2F00D60438 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -174,7 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				DB902B822A16BF540007BEB9 /* FilterTableViewController.swift */,
-				DBFACA952A1F1AA800D60438 /* CustomNaviFilter.swift */,
+				DBFACA952A1F1AA800D60438 /* CustomNavigationFilter.swift */,
 			);
 			path = FilterIssueTable;
 			sourceTree = "<group>";
@@ -312,7 +312,7 @@
 				DB902B832A16BF540007BEB9 /* FilterTableViewController.swift in Sources */,
 				DBCF80F72A11D1F8008BED58 /* UIColor+Extension.swift in Sources */,
 				DB0C2AE32A226C6900D4D0F2 /* IssueData.swift in Sources */,
-				DBFACA962A1F1AA800D60438 /* CustomNaviFilter.swift in Sources */,
+				DBFACA962A1F1AA800D60438 /* CustomNavigationFilter.swift in Sources */,
 				DB0C2AE72A227D5800D4D0F2 /* PrivateURL.swift in Sources */,
 				DB44ABF62A0CA8C9004F3353 /* TabBarViewController.swift in Sources */,
 				DB4C5B912A0B82EC0064C242 /* AppDelegate.swift in Sources */,

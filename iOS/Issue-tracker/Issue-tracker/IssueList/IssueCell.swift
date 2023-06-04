@@ -62,7 +62,7 @@ class IssueCell: UICollectionViewCell {
         return stackView
     }()
     
-    func makeLabel(labels: [Label]) {
+    func makeLabel(labels: [IssueList.Label]) {
         for label in labels {
             var tagLabel: UILabel = {
                 let tags = PaddingLabel(withInsets: 4, 4, 16, 16)
@@ -87,6 +87,11 @@ class IssueCell: UICollectionViewCell {
             tagLabelStackView.addArrangedSubview(tagLabel)
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        tagLabelStackView.arrangedSubviews.forEach { view in view.removeFromSuperview() }
+      }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

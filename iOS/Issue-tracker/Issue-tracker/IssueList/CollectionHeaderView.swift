@@ -8,9 +8,10 @@ protocol CustomViewDelegate: AnyObject {
     func buttonTapped()
 }
 
+
 import UIKit
 
-class CollectionHeaderView: UICollectionReusableView {
+class CollectionHeaderView: UICollectionReusableView, UISearchBarDelegate {
     weak var delegate: CustomViewDelegate?
     static let identifier = "IssueHeader"
     
@@ -20,6 +21,11 @@ class CollectionHeaderView: UICollectionReusableView {
         label.font = UIFont.semiBoldXXL
         label.textColor = .neutralTextStrong
         return label
+    }()
+    
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        return searchBar
     }()
     
     private let filterButton: UIButton = {
@@ -42,10 +48,15 @@ class CollectionHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        [titleLabel, filterButton, choiceButton].forEach {
+        [titleLabel, filterButton, choiceButton, searchBar].forEach {
             addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        searchBar.delegate = self
+        addSubview(searchBar)
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        
         layout()
     }
     
@@ -53,6 +64,7 @@ class CollectionHeaderView: UICollectionReusableView {
         setFilterButtonConstraint()
         setChioceButtonConstraint()
         setTitleLabelConstraint()
+        searchBarConstraint()
         self.backgroundColor = UIColor.neutralBackground
     }
     func setFilterButtonConstraint() {
@@ -60,7 +72,7 @@ class CollectionHeaderView: UICollectionReusableView {
             filterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             filterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -325),
             filterButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            filterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -62)
+            filterButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
     
@@ -69,18 +81,29 @@ class CollectionHeaderView: UICollectionReusableView {
             choiceButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 325),
             choiceButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             choiceButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            choiceButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -62)
+            choiceButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
     
     func setTitleLabelConstraint() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
+            titleLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 0),
             titleLabel.heightAnchor.constraint(equalToConstant: 48),
             titleLabel.widthAnchor.constraint(equalToConstant: 59)
         ])
     }
+    
+    func searchBarConstraint() {
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            searchBar.heightAnchor.constraint(equalToConstant: 48),
+            searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
+            searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    
     
     @objc private func buttonTapped() {
         delegate?.buttonTapped()

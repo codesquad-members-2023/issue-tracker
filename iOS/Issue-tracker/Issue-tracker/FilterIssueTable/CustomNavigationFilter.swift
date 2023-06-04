@@ -1,12 +1,12 @@
 import UIKit
 
-protocol CustomNaviDelegate: AnyObject {
+protocol CustomNavigationDelegate: AnyObject {
     func cancelButtonTapped()
     func saveButtonTapped()
 }
 
-class CustomNaviFilter: UIView {
-    weak var delegate: CustomNaviDelegate?
+class CustomNavigationFilter: UIView {
+    weak var delegate: CustomNavigationDelegate?
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()

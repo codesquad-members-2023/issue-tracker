@@ -7,16 +7,23 @@
 
 import UIKit
 
-class FilterTableViewController: UIViewController, CustomNaviDelegate {
-    private let customView = CustomNaviFilter()
+protocol UploadData: AnyObject {
+    func uploadIssue(url: String)
+}
+
+class FilterTableViewController: UIViewController, CustomNavigationDelegate {
+    weak var delegate: UploadData?
+    
+    private let networkManager = NetworkManager.shared
+    private let customView = CustomNavigationFilter()
     private let tableView = UITableView()
     
-    private let sectionKind = ["상태", "담당자", "레이블"]
-    private let status = ["열린 이슈", "내가 작성한 이슈", "내가 댓글을 남긴 이슈", "닫힌 이슈"]
-    private var manager = ["chloe", "head", "sam", "zello"]
-    private var labelKind = ["레이블 없음", "그룹프로젝트:이슈트래커"]
-    
-    private lazy var filterMenu = [status, manager, labelKind]
+    private let sectionKind = ["상태", "담당자", "레이블", "마일스톤", "작성자"]
+    private let status = ["열린 이슈", "닫힌 이슈"]
+    private var assigneeArray: [APIData] = []
+    private var labelArray: [APIData] = []
+    private var milestoneArray: [APIData] = []
+    private var writerArray: [APIData] = []
     
     private let filterListCellIdentifier = "filterListCell"
     private let filterListHeaderIdentifier = "filterListHeader"
@@ -26,9 +33,11 @@ class FilterTableViewController: UIViewController, CustomNaviDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         customView.delegate = self
-        
+       
         customViewLayout()
         tableViewLayout()
+        setupData()
+        
     }
     
     func customViewLayout() {
@@ -62,12 +71,106 @@ class FilterTableViewController: UIViewController, CustomNaviDelegate {
         ])
     }
     
+    func setupData() {
+        let group = DispatchGroup()
+        group.enter()
+        networkManager.performRequest(searchTerm: PrivateURL.label) { result in
+            switch result {
+            case .success(let labelData):
+                self.labelArray = labelData
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            group.leave()
+        }
+        
+        group.enter()
+        networkManager.performRequest(searchTerm: PrivateURL.allAssignee) { result in
+            switch result {
+            case .success(let assigneeData):
+                self.assigneeArray = assigneeData
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            group.leave()
+        }
+        
+        group.enter()
+        networkManager.performRequest(searchTerm: PrivateURL.milestone) { result in
+            switch result {
+            case .success(let milestoneData):
+                self.milestoneArray = milestoneData
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            group.leave()
+        }
+        
+        group.enter()
+        networkManager.performRequest(searchTerm: PrivateURL.writer) { result in
+            switch result {
+            case .success(let writerData):
+                self.writerArray = writerData
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            self.tableView.reloadData()
+        }
+    }
+    
+    
     func cancelButtonTapped() {
         self.dismiss(animated: true)
     }
     
     func saveButtonTapped() {
-        print("저장은 추후 구현")
+//        api수정되면 주석처리된 코드로 해야함
+//        var issueUrl = PrivateURL.issue
+        //현재코드는 임의로 오픈클로즈이슈 아무것도 선택하지 않았을때 open이슈대상으로 보여주는코드
+        var issueUrl = PrivateURL.openIssue
+        var assigneeUrl = ""
+        var labelUrl = ""
+        var milestoneUrl = ""
+        var writeUrl = ""
+        var selectedRows: [IndexPath] = []
+           
+           for section in 0..<sectionKind.count {
+               let rows = tableView.numberOfRows(inSection: section)
+               for row in 0..<rows {
+                   let indexPath = IndexPath(row: row, section: section)
+                   if let cell = tableView.cellForRow(at: indexPath), cell.tintColor == .accentTextPrimary {
+                       selectedRows.append(indexPath)
+                   }
+               }
+           }
+
+        
+        for item in selectedRows {
+            switch item.first {
+            case 0:
+                if item.last == 0 {
+                    issueUrl = PrivateURL.openIssue
+                }else {
+                    issueUrl = PrivateURL.closedIssue
+                }
+            case 1:
+                assigneeUrl = "&assignees=\((item.last ?? 0) + 1)"
+            case 2:
+                labelUrl = "&labels=\((item.last ?? 0) + 1)"
+            case 3:
+                milestoneUrl = "&milestones=\((item.last ?? 0) + 1)"
+            case 4:
+                writeUrl = "&writers=\((item.last ?? 0) + 1)"
+            default:
+                break
+            }
+        }
+        dismiss(animated: true)
+        delegate?.uploadIssue(url: issueUrl + assigneeUrl + labelUrl + milestoneUrl + writeUrl)
     }
 }
 
@@ -78,18 +181,47 @@ extension FilterTableViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filterMenu[section].count
+        switch section {
+        case 0:
+            return status.count
+        case 1:
+            return assigneeArray.count
+        case 2:
+            return labelArray.count
+        case 3:
+            return milestoneArray.count
+        case 4:
+            return writerArray.count
+            
+        default:
+            return 0
+        }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.filterListCellIdentifier, for: indexPath)
         
-        cell.textLabel?.text = filterMenu[indexPath.section][indexPath.row]
-        let image = UIImage(systemName: "checkmark")
-        cell.accessoryView = UIImageView(image: image)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        
+        switch indexPath.section {
+        case 0:
+            cell.textLabel?.text = status[indexPath.row]
+        case 1:
+            cell.textLabel?.text = (assigneeArray as? [AssigneeList.Assignee])?[indexPath.row].name
+        case 2:
+            cell.textLabel?.text = (labelArray as? [LabelList.Label])?[indexPath.row].title
+        case 3:
+            cell.textLabel?.text = (milestoneArray as? [MilestoneList.Milestone])?[indexPath.row].title
+        case 4:
+            cell.textLabel?.text = (writerArray as? [WriterList.Writer])?[indexPath.row].name
+        default:
+            break
+        }
+        
+        cell.accessoryType = .checkmark
+        cell.tintColor = .neutralTextWeak
         
         return cell
-        
     }
     
 }
@@ -118,5 +250,28 @@ extension FilterTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        // 토글형식
+        if cell?.tintColor == .accentTextPrimary{
+            cell?.tintColor = .neutralTextWeak
+        }else{
+            cell?.tintColor = .accentTextPrimary
+        }
+        // 섹션마다 단일선택
+        let section = indexPath.section
+        let rows = tableView.numberOfRows(inSection: section)
+        
+        for row in 0..<rows {
+            if let currentCell = tableView.cellForRow(at: IndexPath(row: row, section: section)) {
+                if currentCell != cell && currentCell.tintColor == .accentTextPrimary {
+                    currentCell.tintColor = .neutralTextWeak
+                }
+            }
+        }
+        //클릭하기 쉽도록 스크롤 컨트롤
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
     }
 }
