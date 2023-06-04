@@ -9,13 +9,14 @@ import UIKit
 
 class IssueListCollectionViewCell: UICollectionViewCell {
    static var cellId: String = "IssueListCollectionViewCell"
+   let imageInset = UIEdgeInsets(top: -7, left: -7, bottom: -7, right: -7)
    
    @IBOutlet var titleLabel: UILabel!
    @IBOutlet var checkBoxImageView: UIImageView!
    @IBOutlet var descriptionLabel: UILabel!
    @IBOutlet var milestoneLabel: UILabel!
    @IBOutlet var labelStackView: UIStackView!
-   @IBOutlet weak var labelStackContainer: UIView!
+   @IBOutlet weak var emptyView: UIView!
    
    override func awakeFromNib() {
       super.awakeFromNib()
@@ -25,8 +26,9 @@ class IssueListCollectionViewCell: UICollectionViewCell {
    
    override func prepareForReuse() {
       super.prepareForReuse()
-      labelStackContainer.isHidden = false
+      labelStackView.isHidden = false
       emptyLabelStack()
+      didDeSelect()
    }
    
    func configureFont() {
@@ -40,32 +42,51 @@ class IssueListCollectionViewCell: UICollectionViewCell {
    
    func configureImage() {
       guard let chevron = UIImage(systemName: "chevron.right") else { return }
-      let imageInset = UIEdgeInsets(top: -7, left: -7, bottom: -7, right: -7)
       self.checkBoxImageView.image = chevron.withAlignmentRectInsets(imageInset)
    }
    
    func addLabel(name: String, color: String) {
       let label = IssueLabel(name: name, color: color)
-      self.labelStackView.addArrangedSubview(label)
+      self.labelStackView.insertArrangedSubview(label, at: 0)
    }
    
    func emptyLabelStack() {
-      labelStackView.arrangedSubviews.forEach { view in view.removeFromSuperview() }
+      labelStackView.arrangedSubviews.forEach { view in
+         guard let label = view as? IssueLabel else { return }
+         view.removeFromSuperview()
+      }
    }
    
-   func configure(issue: IssueList.Issue) {
-      titleLabel.text = issue.title
+   func configure(issue: IssueSummary, isSelected: Bool) {
+      titleLabel.text = "#\(issue.issueId) \(issue.title)"
       descriptionLabel.text = issue.content
       milestoneLabel.text = issue.milestoneName
       
       if issue.labelList.isEmpty {
-         labelStackContainer.isHidden = true
+         labelStackView.isHidden = true
          return
       }
       
-      for label in issue.labelList {
+      for label in issue.labelList.reversed() {
          addLabel(name: label.labelName, color: label.backgroundColor)
       }
+      
       labelStackView.sizeToFit()
+      guard isSelected else { return }
+      didSelect()
+   }
+   
+   func didSelect() {
+      let filledCheckmark = UIImage(systemName: "checkmark.circle.fill")
+      self.checkBoxImageView.image = filledCheckmark?.withAlignmentRectInsets(imageInset)
+      self.checkBoxImageView.tintColor = .systemBlue
+      self.backgroundColor = Color.gray100.color
+      self.emptyView.backgroundColor = Color.gray100.color
+   }
+   
+   func didDeSelect() {
+      configureImage()
+      self.backgroundColor = .systemBackground
+      self.emptyView.backgroundColor = .systemBackground
    }
 }

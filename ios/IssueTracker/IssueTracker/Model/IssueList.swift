@@ -6,60 +6,60 @@
 //
 
 import Foundation
+import OrderedCollections
+
+class CompactLabel {
+   let labelName: String
+   let backgroundColor: String
+   
+   init(labelName: String, backgroundColor: String) {
+      self.labelName = labelName
+      self.backgroundColor = backgroundColor
+   }
+}
+
+class IssueSummary: Hashable {
+   let issueId: Int
+   var title: String
+   let content: String
+   var isOpen: Bool
+   let milestoneName: String?
+   let labelList: [CompactLabel]
+   
+   init(issueId: Int, title: String, content: String, isOpen: Bool, milestoneName: String?, labelList: [CompactLabel]) {
+      self.issueId = issueId
+      self.title = title
+      self.content = content
+      self.isOpen = isOpen
+      self.milestoneName = milestoneName
+      self.labelList = labelList
+   }
+   
+   static func == (lhs: IssueSummary, rhs: IssueSummary) -> Bool {
+      return lhs.issueId == rhs.issueId
+   }
+   
+   func hash(into hasher: inout Hasher) {
+      hasher.combine(issueId)
+   }
+   
+   func open() {
+      self.isOpen = true
+   }
+   
+   func close() {
+      self.isOpen = false
+   }
+}
 
 class IssueList {
-   class Issue: Hashable {
-      class Label {
-         let labelName: String
-         let backgroundColor: String
-         
-         init(labelName: String, backgroundColor: String) {
-            self.labelName = labelName
-            self.backgroundColor = backgroundColor
-         }
-      }
-      
-      let issueId: Int
-      var title: String
-      let content: String
-      var isOpen: Bool
-      let milestoneName: String?
-      let labelList: [Label]
-      
-      init(issueId: Int, title: String, content: String, isOpen: Bool, milestoneName: String?, labelList: [Label]) {
-         self.issueId = issueId
-         self.title = title
-         self.content = content
-         self.isOpen = isOpen
-         self.milestoneName = milestoneName
-         self.labelList = labelList
-      }
-      
-      static func == (lhs: Issue, rhs: Issue) -> Bool {
-         return lhs.issueId == rhs.issueId
-      }
-      
-      func hash(into hasher: inout Hasher) {
-         hasher.combine(issueId)
-      }
-      
-      func open() {
-         self.isOpen = true
-      }
-      
-      func close() {
-         self.isOpen = false
-      }
+   private(set) var issues: OrderedSet<IssueSummary>
+   
+   init(issues: [IssueSummary] = []) {
+      self.issues = OrderedSet(issues)
    }
    
-   private(set) var issues: [Issue]
-   private(set) var selectedIssues: [Issue] = []
-   
-   init(issues: [Issue] = []) {
-      self.issues = issues
-   }
-   
-   private func issue(at index: Int) -> Issue? {
+   private func issue(at index: Int) -> IssueSummary? {
       guard index < issues.count else { return nil }
       return issues[index]
    }
@@ -70,6 +70,11 @@ extension IssueList {
       static let didAddIssues = Notification.Name(rawValue: "didAddIssues")
       static let didOpenIssue = Notification.Name("didOpenIssue")
       static let didCloseIssue = Notification.Name("didCloseIssue")
+      static let didAddFilteredIssues = Notification.Name(rawValue: "didAddFilteredIssues")
+      static let didEmptyIssue = Notification.Name(rawValue: "didEmptyIssue")
+      static let didDeleteIssue = Notification.Name(rawValue: "didDeleteIssue")
+      static let didAddIssue = Notification.Name(rawValue: "didAddIssue")
+      static let didEditIssue = Notification.Name(rawValue: "didEditIssue")
    }
    
    enum Keys {
@@ -79,29 +84,33 @@ extension IssueList {
 }
 
 extension IssueList {
-   private func append(_ newIssues: [Issue]) {
+   private func append(_ newIssues: [IssueSummary], _ isFiltered: Bool = false) {
+      if isFiltered { self.empty() }
       self.issues.append(contentsOf: newIssues)
       
+      let notiName = isFiltered ? Notifications.didAddFilteredIssues : Notifications.didAddIssues
+      
       NotificationCenter.default.post(
-         name: Notifications.didAddIssues,
+         name: notiName,
          object: self,
          userInfo: [Keys.Issues: self.issues])
    }
    
-   func add(issues: [Issue]) {
-      self.append(issues)
+   func add(issues: [IssueSummary], isFiltered: Bool = false) {
+      self.append(issues, isFiltered)
    }
    
-   private func append(_ issue: Issue) {
+   private func append(_ issue: IssueSummary) {
       self.issues.append(issue)
    }
    
-   func add(issue: Issue) {
+   func add(issue: IssueSummary) {
       self.append(issue)
    }
    
    private func empty() {
       self.issues = []
+      NotificationCenter.default.post(name: Notifications.didEmptyIssue, object: self)
    }
    
    func emptyList() {
@@ -127,7 +136,7 @@ extension IssueList {
    func closeIssue(at index: Int) {
       close(at: index)
    }
-
+   
    private func delete(at index: Int) {
       guard index < issues.count else { return }
       issues.remove(at: index)
@@ -136,43 +145,29 @@ extension IssueList {
    func deleteIssue(at index: Int) {
       self.delete(at: index)
    }
+   
+   func findIssue(row: Int) -> Int {
+      return self.issue(at: row)?.issueId ?? 0
+   }
 }
 
 extension IssueList {
-   private func select(at index: Int) {
-      guard let target = issue(at: index) else { return }
-      guard selectedIssues.contains(target) == false else { return }
-      selectedIssues.append(target)
+   func getIssueId(of index: Int) -> Int? {
+      guard index < issues.count else { return nil }
+      return issues[index].issueId
    }
    
-   private func deselect(at index: Int) {
-      guard index < issues.count else { return }
-      let target = issues[index]
-      guard let index = selectedIssues.firstIndex(where: { issue in issue == target }) else { return }
-      selectedIssues.remove(at: index)
+   private func getIndexOfIssue(withId id: Int) -> Int? {
+      self.issues.firstIndex(where: { issue in issue.issueId == id })
    }
    
-   func addSelection(at index: Int) {
-      self.select(at: index)
+   private func remove(at index: Int) {
+      self.issues.remove(at: index)
+      NotificationCenter.default.post(name: Notifications.didDeleteIssue, object: self)
    }
    
-   func subSelection(at index: Int) {
-      self.deselect(at: index)
-   }
-   
-   func selectAll() {
-      selectedIssues = issues
-   }
-   
-   func deselectAll() {
-      selectedIssues = []
-   }
-   
-   func openSelectedIssues() {
-      selectedIssues.forEach { target in target.open() }
-   }
-   
-   func closeSelectedIssues() {
-      selectedIssues.forEach { target in target.close() }
+   func deleteIssue(id: Int) {
+      guard let index = self.getIndexOfIssue(withId: id) else { return }
+      self.remove(at: index)
    }
 }

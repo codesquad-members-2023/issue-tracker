@@ -2,8 +2,10 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="I7B-VG-nnl">
-                        <rect key="frame" x="24" y="16" width="615" height="107"/>
+                        <rect key="frame" x="24" y="16" width="615" height="116"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5L8-B3-LIn">
                                 <rect key="frame" x="0.0" y="0.0" width="615" height="21.666666666666668"/>
@@ -39,14 +41,14 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="설명(최대 두 줄까지 보여줄 수 있다)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XvL-EA-VVf">
-                                <rect key="frame" x="0.0" y="30.333333333333336" width="615" height="17"/>
+                                <rect key="frame" x="0.0" y="33.333333333333336" width="615" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <lineBreakStrategy key="lineBreakStrategy" hangulWordPriority="YES"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="PXH-uF-cRC">
-                                <rect key="frame" x="0.0" y="56.333333333333329" width="615" height="18"/>
+                                <rect key="frame" x="0.0" y="62.333333333333329" width="615" height="18"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="milestone" translatesAutoresizingMaskIntoConstraints="NO" id="dst-1V-35T">
                                         <rect key="frame" x="0.0" y="0.0" width="17" height="18"/>
@@ -63,30 +65,25 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uuh-kf-CLw">
-                                <rect key="frame" x="0.0" y="83" width="615" height="24"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dyV-HA-oXT">
+                                <rect key="frame" x="0.0" y="92" width="615" height="24"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dyV-HA-oXT">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mao-sz-PeT">
                                         <rect key="frame" x="0.0" y="0.0" width="615" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="GeG-PP-kVI"/>
-                                        </constraints>
-                                    </stackView>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="dyV-HA-oXT" firstAttribute="top" secondItem="Uuh-kf-CLw" secondAttribute="top" id="REp-FS-OJ8"/>
-                                    <constraint firstItem="dyV-HA-oXT" firstAttribute="leading" secondItem="Uuh-kf-CLw" secondAttribute="leading" id="gGN-Ty-jzK"/>
-                                    <constraint firstAttribute="bottom" secondItem="dyV-HA-oXT" secondAttribute="bottom" id="szN-FZ-x4f"/>
-                                    <constraint firstAttribute="trailing" secondItem="dyV-HA-oXT" secondAttribute="trailing" priority="250" id="xn9-la-G5B"/>
+                                    <constraint firstAttribute="height" constant="24" id="GeG-PP-kVI"/>
                                 </constraints>
-                            </view>
+                            </stackView>
                         </subviews>
                     </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="I7B-VG-nnl" firstAttribute="top" secondItem="URj-8g-Jwl" secondAttribute="top" constant="16" id="I7g-G5-OZH"/>
                     <constraint firstAttribute="trailing" secondItem="I7B-VG-nnl" secondAttribute="trailing" constant="16" id="XNa-JK-xw5"/>
-                    <constraint firstAttribute="bottom" secondItem="I7B-VG-nnl" secondAttribute="bottom" constant="25" id="XOq-77-NKw"/>
+                    <constraint firstAttribute="bottom" secondItem="I7B-VG-nnl" secondAttribute="bottom" priority="250" constant="16" id="XOq-77-NKw"/>
                     <constraint firstItem="I7B-VG-nnl" firstAttribute="leading" secondItem="URj-8g-Jwl" secondAttribute="leading" constant="24" id="ac5-HC-Jl4"/>
                 </constraints>
             </collectionViewCellContentView>
@@ -95,7 +92,7 @@
             <connections>
                 <outlet property="checkBoxImageView" destination="k11-4I-sMu" id="oKp-AC-9Jh"/>
                 <outlet property="descriptionLabel" destination="XvL-EA-VVf" id="Ymn-pc-caw"/>
-                <outlet property="labelStackContainer" destination="Uuh-kf-CLw" id="rEu-5P-fWP"/>
+                <outlet property="emptyView" destination="mao-sz-PeT" id="ctI-bN-RP9"/>
                 <outlet property="labelStackView" destination="dyV-HA-oXT" id="gDG-qO-tJL"/>
                 <outlet property="milestoneLabel" destination="9CR-Vp-wLF" id="NNp-8o-Vfb"/>
                 <outlet property="titleLabel" destination="exc-QW-s87" id="AyX-53-RFb"/>
@@ -109,5 +106,8 @@
         <namedColor name="gray700">
             <color red="0.54117647058823526" green="0.54117647058823526" blue="0.58431372549019611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

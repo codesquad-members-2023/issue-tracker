@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol DataSenderDelegate {
-   func receive() -> IssueListDTO
+protocol DataSenderDelegate: NSObject {
+   associatedtype DataType
+   
+   func send() -> DataType
 }

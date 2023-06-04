@@ -9,7 +9,7 @@ import UIKit
 
 class LabelListViewController: UIViewController {
    private var collectionView: UICollectionView!
-   private var dataSource: DataSource!
+   private var dataSource: DataSource?
    
    var observers: [NSObjectProtocol] = []
    
@@ -60,9 +60,18 @@ extension LabelListViewController {
 
 extension LabelListViewController {
    func createSwipeActionProvider() -> UICollectionLayoutListConfiguration.SwipeActionsConfigurationProvider {
-      return { _ in
-         let delete = SwiptAction.delete.makeAction(hasImage: false, withHandler: { _, _, _ in })
-         let edit = SwiptAction.edit.makeAction(hasImage: false, withHandler: { _, _, _ in })
+      return { indexPath in
+         var delete = SwipeAction.delete.makeAction(hasImage: false) { [weak self] _, _, _ in
+            guard let labelId = self?.list.getLabelId(of: indexPath.item) else { return }
+            self?.networkManager?.deleteLabel( id: labelId) { self?.list.deleteLabel(id: labelId) }
+         }
+         
+         let edit = SwipeAction.edit.makeAction(hasImage: false, withHandler: { [weak self] _, _, complete in
+            let detail = self?.list.getLabelDetail(of: indexPath.item)
+            let viewController = LabelEditViewController.instantiate(detail: detail)
+            self?.navigationController?.pushViewController(viewController, animated: true)
+            complete(true)
+         })
          let config = UISwipeActionsConfiguration(actions: [delete, edit])
          config.performsFirstActionWithFullSwipe = false
          return config
@@ -78,7 +87,7 @@ extension LabelListViewController {
    }
    
    private enum Item: Hashable {
-      case label(label: LabelList.Label)
+      case label(label: LabelDetail)
    }
    
    private class DataSource: UICollectionViewDiffableDataSource<Section, Item> { }
@@ -111,21 +120,35 @@ extension LabelListViewController {
       var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
       snapshot.appendSections([.label])
       snapshot.appendItems(list.labels.map { label in Item.label(label: label) }, toSection: .label)
-      dataSource.apply(snapshot, animatingDifferences: animated)
+      dataSource?.apply(snapshot, animatingDifferences: animated)
    }
 }
 
 extension LabelListViewController {
    private func addObservers() {
-      let noti = NotificationCenter.default.addObserver(
+      self.observers.append(NotificationCenter.default.addObserver(
          forName: LabelList.Notifications.didAddLabels,
          object: list,
          queue: .main,
-         using: { [weak self] _ in
-            self?.applyUpdatedSnapshot()
-            
-         })
-      self.observers.append(noti)
+         using: { [weak self] _ in self?.applyUpdatedSnapshot() }))
+      
+      self.observers.append(NotificationCenter.default.addObserver(
+         forName: LabelList.Notifications.didAddLabel,
+         object: nil,
+         queue: .main,
+         using: { [weak self] _ in self?.fetchLabels() }))
+      
+      self.observers.append(NotificationCenter.default.addObserver(
+         forName: LabelList.Notifications.didEditLabel,
+         object: nil,
+         queue: .main,
+         using: { [weak self] _ in self?.fetchLabels() }))
+      
+      self.observers.append(NotificationCenter.default.addObserver(
+         forName: LabelList.Notifications.didDeleteLabel,
+         object: list,
+         queue: .main,
+         using: { [weak self] _ in self?.applyUpdatedSnapshot() }))
    }
 }
 
@@ -144,8 +167,7 @@ extension LabelListViewController {
 
 extension LabelListViewController {
    @objc func presentCreateEditVC() {
-      let storyboard = UIStoryboard(name: "LabelCreateEditViewController", bundle: nil)
-      guard let viewController = storyboard.instantiateInitialViewController() as? LabelEditViewController else { return }
+      let viewController = LabelEditViewController.instantiate()
       self.navigationController?.pushViewController(viewController, animated: true)
    }
    
