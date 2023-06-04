@@ -1,12 +1,17 @@
 import React from 'react';
 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootPage from './pages/RootPage';
 import MainPage from './pages/MainPage';
 import IssueDetailPage from './pages/IssueDetailPage';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LabelPage from './pages/LabelPage';
+import MilestonePage from './pages/MilestonePage';
 import ErrorPage from './pages/ErrorPage';
+import NewIssue from './pages/NewIssue';
+import LoginPage from './pages/LoginPage';
 
-// NOTE(Jayden): React Router 설정
+import Auth from './pages/Auth';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -16,15 +21,18 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <MainPage />,
-        errorElement: <ErrorPage />,
       },
       {
         path: '/issues/:issueId',
         element: <IssueDetailPage />,
-        errorElement: <ErrorPage />,
       },
+      { path: '/create', element: <NewIssue /> },
+      { path: '/labels', element: <LabelPage /> },
+      { path: '/milestones', element: <MilestonePage /> },
     ],
   },
+  { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
+  { path: '/oauth', element: <Auth />, errorElement: <ErrorPage /> },
 ]);
 
 function App() {

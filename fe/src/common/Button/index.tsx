@@ -40,6 +40,7 @@ interface Props {
   hasDropDown?: boolean;
   onClick: () => void;
   gap?: string;
+  disabled?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -54,6 +55,7 @@ const Button: React.FC<Props> = ({
   hasDropDown = false,
   onClick,
   gap = 'gap-x-2',
+  disabled = false,
 }) => {
   const widthHeight = getWidthHeight(size);
   const opacity = getOpacity(condition);
@@ -65,6 +67,7 @@ const Button: React.FC<Props> = ({
         getColor(color)
       )} ${opacity} flex items-center justify-center ${gap} rounded-2xl font-bold`}
       onClick={onClick}
+      disabled={disabled}
     >
       {getSvgComponent(iconName, getHexByType(color, type))}
       <span className={`${fontSize} whitespace-nowrap`}>{title}</span>
@@ -150,7 +153,7 @@ function getType(type: string, color: string) {
     case 'Contained':
       return `bg-${color} text-white`;
     case 'Outline':
-      return `bg-white border-[1px] border-${color} text-${color}`;
+      return `border-[1px] border-${color} text-${color}`;
     case 'Ghost':
       return `bg-transparent text-${color}`;
     default:

@@ -7,19 +7,26 @@ import IssueTable, {
   FilterOptions,
   IssueRow,
 } from '@components/IssueTable/IssueTable';
-import FilterList from '@components/FilterList/FilterList';
 import { BASE_API } from 'src/api';
 import { getTimeElapsed } from '@utils/getTimeElapsed';
+import { ReactComponent as XSquare } from '@assets/xSquare.svg';
+import { useNavigate } from 'react-router-dom';
+import PageNation from '@components/PageNation';
 
 const MainPage = () => {
-  // TODO: 올바른 타입 명시
   const [data, setData] = useState({} as any);
   const [issueItems, setIssueItems] = useState<IssueRow[]>([]);
   const [isOpenIssues, setIsOpenIssues] = useState(true);
-
-  const handleClickStatusTab = (status: boolean) => {
-    setIsOpenIssues(status);
-  };
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
+  const [checkedIssues, setCheckedIssues] = useState<number[]>([]);
+  const [page, setPage] = useState(1);
+  const BASE_QUERY_STRING = 'issues/?';
+  const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
+  const hasFilters = Boolean(
+    checkedIssues.length || Object.keys(filterOptions).length
+  );
+  const navigate = useNavigate();
+  if (!localStorage.getItem('token')) navigate('/login');
 
   const mapIssues = (data: any) => {
     const issueItems: IssueRow[] = data.issues
@@ -39,29 +46,9 @@ const MainPage = () => {
     setIssueItems(issueItems);
   };
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`${BASE_API}`);
-      // const res = await fetch('/issues');
-      const data = await res.json();
-      if (res.status === 200) {
-        setData(data);
-        mapIssues(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const handleClickStatusTab = (status: boolean) => {
+    setIsOpenIssues(status);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [isOpenIssues]);
-
-  // TODO(Lily): 아래 코드들은 정리 예정
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
-  const [page, setPage] = useState(1);
-  const BASE_QUERY_STRING = 'issues/?offset=10';
-  const pageQueryString = `${BASE_QUERY_STRING}&pageNum=${page}&`;
 
   const updateFilterOption = (type: keyof FilterOptions, id: number) => {
     const updatedFilterOptions = { ...filterOptions };
@@ -76,7 +63,7 @@ const MainPage = () => {
   };
 
   const filterQueryString = useMemo(() => {
-    const statusOption = isOpenIssues ? 'open' : 'closed';
+    const statusOption = isOpenIssues ? 'open' : 'close';
     const queryStrings = {
       status: statusOption,
       ...filterOptions,
@@ -88,11 +75,11 @@ const MainPage = () => {
     return `${pageQueryString}${queryString}`;
   }, [filterOptions, isOpenIssues, pageQueryString]);
 
-  const generateFilterString = (
+  const generateFilterBarString = (
     isOpenIssues: boolean,
     filterOptions: FilterOptions
   ): string => {
-    const isOpen = isOpenIssues ? ' is:open' : ' is:closed';
+    const isOpen = isOpenIssues ? ' is:open' : ' is:close';
 
     const formattedOptions = Object.entries(filterOptions)
       .map(([key, value]) => `${key}:${value}`)
@@ -101,31 +88,70 @@ const MainPage = () => {
     return `is:issue${isOpen} ${formattedOptions}`;
   };
 
-  const filterString = useMemo(() => {
-    return generateFilterString(isOpenIssues, filterOptions);
+  const filterBarString = useMemo(() => {
+    return generateFilterBarString(isOpenIssues, filterOptions);
   }, [filterQueryString]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${BASE_API}${filterQueryString}`);
-        const data = await res.json();
+  const onFilterResetClick = () => {
+    setCheckedIssues([]);
+    setFilterOptions({});
+  };
 
-        if (res.status === 200) {
-          mapIssues(data);
-        }
+  const fetchFilteredData = async () => {
+    try {
+      const res = await fetch(`${BASE_API}${filterQueryString}`);
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setData(data);
+        mapIssues(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatedIssues = async (id: number) => {
+    if (!isOpenIssues === Boolean(id)) {
+      try {
+        const fetchData = checkedIssues.map(checkedIssue => ({
+          issueId: checkedIssue,
+          isOpen: Boolean(id),
+        }));
+
+        const response = await fetch(`${BASE_API}issues`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            issues: fetchData,
+          }),
+        });
+
+        fetchFilteredData();
+        setCheckedIssues([]);
       } catch (error) {
         console.log(error);
       }
-    };
+    }
+  };
 
-    fetchData();
+  const onNewIssueClick = () => {
+    navigate('/create');
+  };
+
+  useEffect(() => {
+    fetchFilteredData();
   }, [filterQueryString]);
-
   return (
     <>
-      <div className="relative mb-6 flex justify-between">
-        <FilterBar searchValue={filterString} onClick={() => console.log('')} />
+      <div className="relative mb-[30px] flex justify-between">
+        <FilterBar
+          searchValue={filterBarString}
+          filterOptions={filterOptions}
+          updateFilterOption={updateFilterOption}
+        />
         <div className="flex gap-x-4">
           <NavLinks
             countAllMilestones={data.countAllMilestones}
@@ -133,16 +159,25 @@ const MainPage = () => {
           />
           <Button
             title={'이슈 작성'}
-            onClick={() => {
-              console.log('test');
-            }}
+            onClick={onNewIssueClick}
             size={'Small'}
             iconName="plus"
             fontSize="text-xs"
           />
         </div>
       </div>
-      {Object.keys(data).length && (
+      {hasFilters && (
+        <button
+          className="mb-[30px] flex items-center"
+          onClick={onFilterResetClick}
+        >
+          <XSquare className="mr-1" stroke="#4E4B66" />
+          <span className="text-sm font-bold text-gray-700">
+            현재의 검색 필터 및 정렬 지우기
+          </span>
+        </button>
+      )}
+      {Object.keys(data).length ? (
         <IssueTable
           issues={issueItems}
           users={data.userList}
@@ -152,10 +187,19 @@ const MainPage = () => {
           countClosedIssues={data.countClosedIssues}
           status={isOpenIssues}
           filterOptions={filterOptions}
+          checkedIssues={checkedIssues}
+          updateIssueStatus={updatedIssues}
           onStatusTabClick={handleClickStatusTab}
           updateFilterOption={updateFilterOption}
+          setCheckedIssues={setCheckedIssues}
         />
-      )}
+      ) : null}
+      <PageNation
+        issueCount={
+          isOpenIssues ? data.countOpenedIssues : data.countClosedIssues
+        }
+        onPageClick={setPage}
+      />
     </>
   );
 };

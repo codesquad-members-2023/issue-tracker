@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import Issue from './Issue';
 import Button from '@common/Button';
 import FilterList from '@components/FilterList/FilterList';
 import { ElapseTime } from '@utils/getTimeElapsed';
+import { STATUS_DROPDOWN_LIST } from '@constants/Constants';
 
 export interface FilterOptions {
   page?: number;
+  status?: number;
+  issue?: number;
   filter?: number;
   assignee?: number;
   label?: number;
@@ -36,13 +39,14 @@ export interface IssueRow {
 export interface UserRow {
   userId: number;
   userName: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export interface MilestoneRow {
   milestoneId: number;
   milestoneName: string;
   description?: string;
+  progress?: number;
 }
 
 interface Props {
@@ -54,8 +58,11 @@ interface Props {
   countClosedIssues: number;
   status: boolean;
   filterOptions: FilterOptions;
+  checkedIssues: number[];
+  updateIssueStatus: (id: number, checkedIssues: number[]) => void;
   onStatusTabClick: (status: boolean) => void;
   updateFilterOption: (type: keyof FilterOptions, id: number) => void;
+  setCheckedIssues: Dispatch<SetStateAction<number[]>>;
 }
 
 const IssueTable: React.FC<Props> = ({
@@ -67,154 +74,229 @@ const IssueTable: React.FC<Props> = ({
   countClosedIssues,
   status,
   filterOptions,
+  checkedIssues,
+  updateIssueStatus,
   updateFilterOption,
   onStatusTabClick,
+  setCheckedIssues,
 }) => {
   const [openedFilterList, setOpenedFilterList] = useState('');
+  const allChecked =
+    checkedIssues.length > 0 && checkedIssues.length === issues.length;
 
   const onItemClick = (type: keyof FilterOptions, id: number) => {
-    updateFilterOption(type, id);
+    if (type === 'status') {
+      updateIssueStatus(id, checkedIssues);
+    } else {
+      updateFilterOption(type, id);
+    }
     setOpenedFilterList('');
   };
 
+  const handleItemChecked = (id: number) => {
+    setCheckedIssues(prevCheckedIssues => {
+      const isChecked = prevCheckedIssues.includes(id);
+
+      return isChecked
+        ? prevCheckedIssues.filter(issueId => issueId !== id)
+        : [...prevCheckedIssues, id];
+    });
+  };
+
+  const handleAllItemChecked = () => {
+    if (allChecked) {
+      setCheckedIssues([]);
+    } else {
+      const issueIds = issues.map(({ issueId }) => issueId);
+      setCheckedIssues(issueIds);
+    }
+  };
+
   return (
-    <div className="w-160 box-border rounded-2xl border">
+    <div className="w-160 box-border rounded-2xl border border-gray-300 bg-gray-50">
       <div className="box-border rounded-t-2xl bg-gray-100 px-8 py-4">
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="mr-8">
               <input
+                className="focus:outline-none"
                 type="checkbox"
-                checked={false}
-                onChange={() => console.log('check')}
+                checked={allChecked}
+                onChange={handleAllItemChecked}
               />
             </div>
-            <div className="flex gap-x-3">
-              <Button
-                title={`열린 이슈(${countOpenedIssues || 0})`}
-                type="Ghost"
-                color="Gray"
-                size="Small"
-                iconName="alertcircle"
-                condition={status ? 'Enabled' : 'Press'}
-                onClick={() => onStatusTabClick(true)}
-              />
-              <Button
-                title={`닫힌 이슈(${countClosedIssues || 0})`}
-                type="Ghost"
-                color="Gray"
-                size="Small"
-                iconName="archive"
-                condition={!status ? 'Enabled' : 'Press'}
-                onClick={() => onStatusTabClick(false)}
-              />
-            </div>
+            {!checkedIssues.length ? (
+              <div className="flex gap-x-3">
+                <Button
+                  title={`열린 이슈(${countOpenedIssues || 0})`}
+                  type="Ghost"
+                  color="Gray"
+                  size="Small"
+                  iconName="alertcircle"
+                  condition={status ? 'Enabled' : 'Press'}
+                  onClick={() => onStatusTabClick(true)}
+                />
+                <Button
+                  title={`닫힌 이슈(${countClosedIssues || 0})`}
+                  type="Ghost"
+                  color="Gray"
+                  size="Small"
+                  iconName="archive"
+                  condition={!status ? 'Enabled' : 'Press'}
+                  onClick={() => onStatusTabClick(false)}
+                />
+              </div>
+            ) : (
+              <div className="font-bold text-gray-600">
+                {checkedIssues.length}개 이슈 선택
+              </div>
+            )}
           </div>
-          <div className="flex justify-end gap-6">
+          {!checkedIssues.length ? (
+            <div className="flex justify-end gap-6">
+              <div className="relative">
+                <Button
+                  title="담당자"
+                  onClick={() => setOpenedFilterList('assignee')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="assignee"
+                  items={users.map(user => {
+                    const { userId, userName, profileUrl } = user;
+                    return {
+                      id: userId,
+                      name: userName,
+                      width: 20,
+                      height: 20,
+                      isClicked:
+                        filterOptions['assignee'] === userId ? true : false,
+                      imgUrl: profileUrl,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'assignee' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="레이블"
+                  onClick={() => setOpenedFilterList('label')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="label"
+                  items={labels.map(label => {
+                    const { labelId, labelName, backgroundColor } = label;
+                    return {
+                      id: labelId,
+                      name: labelName,
+                      isClicked:
+                        filterOptions['label'] === labelId ? true : false,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: backgroundColor,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'label' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="마일스톤"
+                  onClick={() => setOpenedFilterList('milestone')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="milestone"
+                  items={milestones.map(milestone => {
+                    const { milestoneId, milestoneName } = milestone;
+                    return {
+                      id: milestoneId,
+                      name: milestoneName,
+                      isClicked:
+                        filterOptions['milestone'] === milestoneId
+                          ? true
+                          : false,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'milestone' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+              <div className="relative">
+                <Button
+                  title="작성자"
+                  onClick={() => setOpenedFilterList('writer')}
+                  type="Ghost"
+                  color="Gray"
+                  hasDropDown={true}
+                  condition="Press"
+                  isFlexible={true}
+                />
+                <FilterList
+                  title="writer"
+                  items={users.map(user => {
+                    const { userId, userName, profileUrl } = user;
+                    return {
+                      id: userId,
+                      name: userName,
+                      width: 20,
+                      height: 20,
+                      isClicked:
+                        filterOptions['writer'] === userId ? true : false,
+                      imgUrl: profileUrl,
+                    };
+                  })}
+                  isOpen={openedFilterList === 'writer' ? true : false}
+                  setOpenedFilterList={setOpenedFilterList}
+                  onItemClick={onItemClick}
+                />
+              </div>
+            </div>
+          ) : (
             <div className="relative">
               <Button
-                title="담당자"
-                onClick={() => setOpenedFilterList('assignee')}
+                title="상태 수정"
                 type="Ghost"
                 color="Gray"
                 hasDropDown={true}
                 condition="Press"
                 isFlexible={true}
+                onClick={() => setOpenedFilterList('status')}
               />
               <FilterList
-                title="assignee"
-                items={users.map(user => {
-                  const { userId, userName, profileUrl } = user;
+                title="status"
+                items={STATUS_DROPDOWN_LIST.map(item => {
+                  const { id, name } = item;
                   return {
-                    id: userId,
-                    name: userName,
-                    isClicked:
-                      filterOptions['assignee'] === userId ? true : false,
-                    imgUrl: profileUrl,
+                    id,
+                    name,
+                    isMultipleItemSelectable: false,
                   };
                 })}
-                isOpen={openedFilterList === 'assignee' ? true : false}
+                isOpen={openedFilterList === 'status' ? true : false}
+                setOpenedFilterList={setOpenedFilterList}
                 onItemClick={onItemClick}
               />
             </div>
-            <div className="relative">
-              <Button
-                title="레이블"
-                onClick={() => setOpenedFilterList('label')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="label"
-                items={labels.map(label => {
-                  const { labelId, labelName, backgroundColor } = label;
-                  return {
-                    id: labelId,
-                    name: labelName,
-                    isClicked:
-                      filterOptions['label'] === labelId ? true : false,
-                    backgroundColor: backgroundColor,
-                  };
-                })}
-                isOpen={openedFilterList === 'label' ? true : false}
-                onItemClick={onItemClick}
-              />
-            </div>
-            <div className="relative">
-              <Button
-                title="마일스톤"
-                onClick={() => setOpenedFilterList('milestone')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="milestone"
-                items={milestones.map(milestone => {
-                  const { milestoneId, milestoneName } = milestone;
-                  return {
-                    id: milestoneId,
-                    name: milestoneName,
-                    isClicked:
-                      filterOptions['milestone'] === milestoneId ? true : false,
-                  };
-                })}
-                isOpen={openedFilterList === 'milestone' ? true : false}
-                onItemClick={onItemClick}
-              />
-            </div>
-            <div className="relative">
-              <Button
-                title="작성자"
-                onClick={() => setOpenedFilterList('writer')}
-                type="Ghost"
-                color="Gray"
-                hasDropDown={true}
-                condition="Press"
-                isFlexible={true}
-              />
-              <FilterList
-                title="writer"
-                items={users.map(user => {
-                  const { userId, userName, profileUrl } = user;
-                  return {
-                    id: userId,
-                    name: userName,
-                    isClicked:
-                      filterOptions['writer'] === userId ? true : false,
-                    imgUrl: profileUrl,
-                  };
-                })}
-                isOpen={openedFilterList === 'writer' ? true : false}
-                onItemClick={onItemClick}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
       {issues.length ? (
@@ -229,6 +311,7 @@ const IssueTable: React.FC<Props> = ({
             milestoneName,
             labelList,
           } = issue;
+          const isClicked = checkedIssues.includes(issueId);
           return (
             <Issue
               key={issueId}
@@ -240,12 +323,14 @@ const IssueTable: React.FC<Props> = ({
               elapseTime={elapseTime}
               milestoneName={milestoneName}
               labelList={labelList}
+              isChecked={isClicked}
+              onIssueChecked={handleItemChecked}
               onIssueTitleClick={() => console.log('')}
             />
           );
         })
       ) : (
-        <div className="my-5 text-center text-neutral-weak">
+        <div className="my-5 text-center text-gray-600">
           검색과 일치하는 결과가 없습니다.
         </div>
       )}
