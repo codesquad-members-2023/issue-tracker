@@ -19,7 +19,7 @@ class IssueCollectionViewCell: SwipeCollectionViewCell {
     
     var isCheckmarked: Bool = false
     
-    var badges = ["sfgs","gggassfsdfg","adfqewersdfsqasd"]
+    var badges: [Label] = []
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -129,8 +129,8 @@ class IssueCollectionViewCell: SwipeCollectionViewCell {
     }
     
     private func setBadge() {
-        for item in badges {
-            labelsStackView.addArrangedSubview(BadgeLabel(name: item))
+        for label in badges {
+            labelsStackView.addArrangedSubview(BadgeLabel(label: label))
         }
         labelsStackView.addArrangedSubview(UIView(frame: CGRect()))
     }
@@ -139,7 +139,7 @@ class IssueCollectionViewCell: SwipeCollectionViewCell {
         title.text = issueFrame.title
         contents.text = issueFrame.contents
         milestone.text = issueFrame.milestone?.name
-        badges = issueFrame.labels.map { $0.name }
+        badges = issueFrame.labels
         setBadge()
     }
 }

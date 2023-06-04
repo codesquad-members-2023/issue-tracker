@@ -8,5 +8,5 @@
 import Foundation
 
 struct IssueFrameHolder: Codable {
-    let issues: [IssueFrame]
+    let issues: [IssueFrame]?
 }

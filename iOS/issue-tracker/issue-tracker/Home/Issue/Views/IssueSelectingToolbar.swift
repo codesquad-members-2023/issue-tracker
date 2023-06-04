@@ -26,7 +26,6 @@ class IssueSelectingToolbar: UIToolbar {
     
     private func setToolBarItems() -> [UIBarButtonItem] {
         rightItem = UIBarButtonItem(image: UIImage(systemName: "archivebox"), style: .plain, target: nil, action: nil)
-        //TODO: 이슈 선택 개수에 따라 title 변경 기능
         titleItem.isEnabled = false
         leftItem = UIBarButtonItem(image: UIImage(systemName: "checkmark.circle"), style: .plain, target: nil, action: nil)
         
@@ -41,6 +40,14 @@ class IssueSelectingToolbar: UIToolbar {
     }
     
     func updateTitle(isPlus: Bool) {
+        
+        guard let rightItem = self.rightItem else {
+            return
+        }
+        guard let leftItem = self.leftItem else {
+            return
+        }
+        
         if isPlus == true {
             self.selectedCellCount += 1
             self.titleItem.title = "\(self.selectedCellCount)개의 이슈가 선택됨"
@@ -61,14 +68,13 @@ class IssueSelectingToolbar: UIToolbar {
             titleItem.isEnabled = false
         }
         
-        guard let rightItem = self.rightItem else {
-            return
-        }
-        guard let leftItem = self.leftItem else {
-            return
-        }
-        
         self.setItems([leftItem, flexibleSpace, titleItem, flexibleSpace, rightItem], animated: true)
+    }
+    
+    func resetTitle(){
+        self.titleItem.title = "이슈를 선택하세요."
+        titleItem.isEnabled = false
+        self.selectedCellCount = 0
     }
     
     private func setToolBarProPerties() {

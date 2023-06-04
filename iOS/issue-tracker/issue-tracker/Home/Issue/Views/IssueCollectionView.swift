@@ -39,7 +39,6 @@ extension IssueCollectionView: UICollectionViewDelegate {
 extension IssueCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.issueFrames.count
-        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -126,5 +125,21 @@ extension IssueCollectionView: SwipeCollectionViewCellDelegate {
         options.expansionStyle = .destructive
         options.transitionStyle = .border
         return options
+    }
+}
+
+
+extension IssueCollectionView: UIScrollViewDelegate {
+    /// https://stackoverflow.com/questions/39015228/detect-when-uitableview-has-scrolled-to-the-bottom
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+        let contentYOffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYOffset
+        
+        if distanceFromBottom < height {
+            if collectionViewDelegate?.networkManager.networkingState == .fetchingDataEnded {
+                collectionViewDelegate?.fetchData()
+            }
+        }
     }
 }

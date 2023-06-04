@@ -26,5 +26,6 @@ struct User: Codable {
     let password: String
     let nickname: String
     let imgUrl: String
+    let new: Bool
 }
 

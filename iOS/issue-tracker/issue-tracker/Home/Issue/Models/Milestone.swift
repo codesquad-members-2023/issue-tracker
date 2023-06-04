@@ -12,4 +12,6 @@ struct Milestone: Codable {
     let scheduledCompletionDate: String
     let descriptionForLabel: String
     let empty: Bool
+    let id: String
+    let new: Bool
 }
