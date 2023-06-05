@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../../common';
+import { ContainerButton, GhostButton } from '../../common';
 import { ReactComponent as label } from '../../../assets/label.svg';
 import { ReactComponent as mileStone } from '../../../assets/mileStone.svg';
 import { ReactComponent as plus } from '../../../assets/plus.svg';
-import { MainPageContext } from '../../../context/MainPage/MainPageContext';
+import { MainPageStateContext } from '../../../context/MainPage/MainPageStateContext';
 
 const NabTab = () => {
-  const { allLabels, allMilestones } = useContext(MainPageContext);
+  const { allLabels, allMilestones } = useContext(MainPageStateContext);
 
   const totalLabel = allLabels?.length > 0 ? allLabels.length : 0;
   const totalMileStone = allMilestones?.length > 0 ? allMilestones.length : 0;
@@ -16,8 +16,7 @@ const NabTab = () => {
   return (
     <NabTabBox>
       <div>
-        <Button
-          type="ghostButton"
+        <GhostButton
           size="S"
           gap="4px"
           color="neutralText"
@@ -26,9 +25,8 @@ const NabTab = () => {
         >
           <LableIcon />
           {`레이블(${totalLabel})`}
-        </Button>
-        <Button
-          type="ghostButton"
+        </GhostButton>
+        <GhostButton
           size="S"
           gap="4px"
           color="neutralText"
@@ -37,20 +35,13 @@ const NabTab = () => {
         >
           <MileStoneIcon />
           {`마일스톤(${totalMileStone})`}
-        </Button>
+        </GhostButton>
       </div>
       <Link to="/add-issue">
-        <Button
-          type="containerButton"
-          size="S"
-          gap="7px"
-          color="accentText"
-          backgroundColor="accentBackground"
-          hoverColor="neutralText"
-        >
+        <ContainerButton>
           <PlusIcon />
           이슈작성
-        </Button>
+        </ContainerButton>
       </Link>
     </NabTabBox>
   );

@@ -1,46 +1,43 @@
-// TODO: Lint 속성 점검 필요
-/* eslint-disable camelcase */
 import styled from 'styled-components';
 import React from 'react';
-import CheckBox from '../CheckBox/CheckBox';
+import { Link } from 'react-router-dom';
 import { ReactComponent as alertCircle } from '../../../assets/alertCircle.svg';
 import { ReactComponent as mileStone } from '../../../assets/mileStone.svg';
 import { ReactComponent as archive } from '../../../assets/archive.svg';
 import { Label, UserIcon } from '../../common';
+import { CheckBoxActive, CheckBoxInitial } from '../CheckBox';
+import { getElapsedTime } from '../../../utils';
 
-// TODO(덴): 방어로직 구현 필요
 const IssueItem = ({
   state,
   number,
   title,
   createdDate,
-  lastUpdatedDate,
   labels,
   milestone,
   user,
+  handleCheckBoxClick,
+  isChecked,
 }) => {
-  const getTimeDifference = () => {
-    const currentTime = new Date();
-    const issueTime = new Date(lastUpdatedDate || createdDate);
-    const timeDifference = Math.floor((currentTime - issueTime) / (1000 * 60));
-    return timeDifference;
-  };
-
-  const getTimeAgoString = () => {
-    const timeDifference = getTimeDifference();
-    if (timeDifference < 1) return '방금 전';
-    if (timeDifference < 60) return `${timeDifference}분 전`;
-    if (timeDifference < 1440) return `${Math.floor(timeDifference / 60)}시간 전`;
-    return `${Math.floor(timeDifference / 1440)}일 전`;
-  };
+  const CheckBox = isChecked ? (
+    <CheckBoxActive
+      handleCheckBoxClick={() => handleCheckBoxClick(number, false)}
+    />
+  ) : (
+    <CheckBoxInitial
+      handleCheckBoxClick={() => handleCheckBoxClick(number, true)}
+    />
+  );
 
   return (
     <IssueItemBox>
-      <CheckBox />
+      {CheckBox}
       <IssueItemBody>
         <IssueItemTitle>
           {state ? <AlertCircleIcon /> : <Archive />}
-          <p>{title}</p>
+          <IssueItemLink to={`/issue-detail/${number}`}>
+            <p>{title}</p>
+          </IssueItemLink>
           {labels.map((labelInfo) => (
             <Label key={labelInfo.name} {...labelInfo} />
           ))}
@@ -51,14 +48,16 @@ const IssueItem = ({
             {number}
           </span>
           <span>
-            {`이 이슈가 ${getTimeAgoString()}, ${
+            {`이 이슈가 ${getElapsedTime(createdDate)}, ${
               user.nickname
             }에 의해 작성되었습니다.`}
           </span>
-          <span>
-            <MileStoneIcon />
-            {milestone?.name}
-          </span>
+          {milestone && (
+            <span>
+              <MileStoneIcon />
+              {milestone.name}
+            </span>
+          )}
         </IssueItemAttributes>
       </IssueItemBody>
       <div>
@@ -76,7 +75,14 @@ const IssueItemBox = styled.li`
   flex-direction: row;
 
   padding: 24px;
-  background: ${({ theme }) => theme.color.neutralBackgroundStrong};
+  border-right: 1px solid ${({ theme }) => theme.color.neutralBorder};
+  border-left: 1px solid ${({ theme }) => theme.color.neutralBorder};
+  border-bottom: 1px solid ${({ theme }) => theme.color.neutralBorder};
+  background-color: ${({ theme }) => theme.color.neutralBackgroundStrong};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.neutralBackground};
+  }
 
   > div {
     padding: 0 33px;
@@ -100,6 +106,12 @@ const IssueItemTitle = styled.div`
   color: ${({ theme }) => theme.color.neutralTextStrong};
   gap: 10px;
   flex-direction: row;
+`;
+
+const IssueItemLink = styled(Link)`
+  &:hover {
+    color: ${({ theme }) => theme.color.iconBackgoundBlue};
+  }
 `;
 
 const IssueItemAttributes = styled.div`

@@ -2,9 +2,9 @@ import {
   SET_WRITTEN_BY_ME_FILTER_OPTION,
   SET_ASSIGNED_TO_ME_FILTER_OPTION,
   SET_COMMENTED_BY_ME_FILTER_OPTION,
-  SET_ASSIGNEE_FILTER_OPTION,
+  SET_ASSIGNEES_FILTER_OPTION,
   SET_LABELS_FILTER_OPTION,
-  SET_MILESTONE_FILTER_OPTION,
+  SET_MILESTONE_NAME_FILTER_OPTION,
   SET_AUTHOR_FILTER_OPTION,
   SET_PAGE_FILTER_OPTION,
   SET_MAIN_PAGE_STATE,
@@ -53,16 +53,16 @@ export const filterOptions = {
     type: SET_COMMENTED_BY_ME_FILTER_OPTION,
     payload: value,
   }),
-  assignee: (value) => ({
-    type: SET_ASSIGNEE_FILTER_OPTION,
+  assignees: (value) => ({
+    type: SET_ASSIGNEES_FILTER_OPTION,
     payload: value,
   }),
-  labels: (value) => ({
+  labelNames: (value) => ({
     type: SET_LABELS_FILTER_OPTION,
     payload: value,
   }),
-  milestone: (value) => ({
-    type: SET_MILESTONE_FILTER_OPTION,
+  milestoneName: (value) => ({
+    type: SET_MILESTONE_NAME_FILTER_OPTION,
     payload: value,
   }),
   author: (value) => ({

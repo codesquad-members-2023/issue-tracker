@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import FilterBar from './FilterBar/FilterBar';
-import NabTab from './NavTab/NabTab';
+import FilterBar from './FilterBar';
+import NabTab from './NavTab';
 
 const TabBar = () => {
   return (

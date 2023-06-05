@@ -6,8 +6,9 @@ import { darkTheme, lightTheme } from './style';
 import IssueList from './pages/IssueList';
 import AddIssue from './pages/AddIssue';
 import { PageLayout } from './components/common';
-import MainPageProvider from './context/MainPage/MainPageContext';
 import IssueDetail from './pages/IssueDetail';
+import MainPageStateProvider from './context/MainPage/MainPageStateContext';
+import MainPageFilterProvider from './context/MainPage/MainPageFilterContext';
 
 const router = createBrowserRouter([
   {
@@ -17,13 +18,15 @@ const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <MainPageProvider>
-            <IssueList />
-          </MainPageProvider>
+          <MainPageStateProvider>
+            <MainPageFilterProvider>
+              <IssueList />
+            </MainPageFilterProvider>
+          </MainPageStateProvider>
         ),
       },
       { path: '/add-issue', element: <AddIssue /> },
-      { path: '/issue-detail', element: <IssueDetail /> },
+      { path: '/issue-detail/:issuenumber', element: <IssueDetail /> },
     ],
   },
 ]);

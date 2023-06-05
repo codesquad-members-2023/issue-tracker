@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { ChevronDown } from '../common';
-import DropDownHeader from './DropDownContent/DropDownHeader/DropDownHeader';
-import DropDownBody from './DropDownContent/DropDownBody/DropDownBody';
-import DropDownContent from './DropDownContent/DropDownContent';
+import DropDownHeader from './DropDownContent/DropDownHeader';
+import DropDownBody from './DropDownContent/DropDownBody';
+import DropDownContent from './DropDownContent';
 
 const DropDown = ({
   className,
@@ -19,7 +19,7 @@ const DropDown = ({
       if (!DropDownRef.current?.contains(target)) setIsOpen(false);
     };
 
-    document.addEventListener('click', handleClickOutside, true);
+    document.addEventListener('click', handleClickOutside);
 
     return () => {
       document.removeEventListener('click', handleClickOutside);

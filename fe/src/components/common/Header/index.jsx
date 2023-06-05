@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { UserIcon } from '../UserIcon/UserIcon';
+import { UserIcon } from '../UserIcon';
 import { ReactComponent as Logo } from '../../../assets/logotypeMedium.svg';
 import userImageLarge from '../../../assets/userImageLarge.svg';
-import Toggle from '../Toggle/Toggle';
+import Toggle from '../Toggle';
 
 export const Header = () => {
   return (

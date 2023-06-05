@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 import { useEffect, useState, useContext } from 'react';
 import { ReactComponent as Search } from '../../../../assets/search.svg';
-import { generateQueryString } from '../../../../utils/utils';
-import { MainPageContext } from '../../../../context/MainPage/MainPageContext';
+import { generateQueryString } from '../../../../utils';
+import { MainPageStateContext } from '../../../../context/MainPage/MainPageStateContext';
+import { MainPageFilterContext } from '../../../../context/MainPage/MainPageFilterContext';
 
-// TODO(덴): api 객체 형태에 맞게 상태 수정 작업 진행 했으나 리팩 필요해보임.
 const changeAssigneeIdToName = (allUsers, filterOptions) => {
   const currentFilterOptions = { ...filterOptions };
   allUsers.forEach((userInfo) => {
@@ -31,9 +31,9 @@ const getModifiedQueryString = (queryString) => {
 };
 
 const FilterInput = () => {
-  const { allUsers, filterOptions } = useContext(MainPageContext);
+  const { allUsers } = useContext(MainPageStateContext);
+  const filterOptions = useContext(MainPageFilterContext);
   const [inputValue, setInputValue] = useState('');
-
   // ?: useEffect를 제대로 사용한건지?
   useEffect(() => {
     const modifiedFilterOptions = changeAssigneeIdToName(

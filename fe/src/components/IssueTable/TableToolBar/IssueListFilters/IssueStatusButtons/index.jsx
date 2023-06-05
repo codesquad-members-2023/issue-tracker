@@ -1,30 +1,28 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
-import { ReactComponent as alertCircle } from '../../../../assets/alertCircle.svg';
-import { ReactComponent as archive } from '../../../../assets/archive.svg';
-import { Button } from '../../../common';
-import { CLOSED, ISSUE_STATE, OPENED } from '../../../../constants';
+import { ReactComponent as alertCircle } from '../../../../../assets/alertCircle.svg';
+import { ReactComponent as archive } from '../../../../../assets/archive.svg';
+import { GhostButton } from '../../../../common';
+import { CLOSED, ISSUE_STATE, OPENED } from '../../../../../constants';
+import { setFilterOption } from '../../../../../context/MainPage/MainPageActions';
+import { MainPageStateContext } from '../../../../../context/MainPage/MainPageStateContext';
 import {
-  MainPageContext,
-  MainPageDispatchContext,
-} from '../../../../context/MainPage/MainPageContext';
-import { setFilterOption } from '../../../../context/MainPage/MainPageActions';
+  MainPageFilterContext,
+  MainPageFilterDispatchContext,
+} from '../../../../../context/MainPage/MainPageFilterContext';
 
 const IssueStatusButtons = () => {
   const {
     counts: { openedIssuesCount, closedIssuesCount },
-    filterOptions,
-  } = useContext(MainPageContext);
-  const dispatch = useContext(MainPageDispatchContext);
+  } = useContext(MainPageStateContext);
+  const { issueState } = useContext(MainPageFilterContext);
+  const dispatch = useContext(MainPageFilterDispatchContext);
 
-  const isOpened = filterOptions.issueState !== CLOSED;
+  const isOpened = issueState !== CLOSED;
 
   return (
     <IssueStatusButtonsBox>
-      <Button
-        type="ghostButton"
-        size="M"
-        gap="10px"
+      <GhostButton
         color={isOpened ? 'neutralTextStrong' : 'neutralText'}
         hoverColor={isOpened ? 'neutralText' : 'neutralTextStrong'}
         onclick={() => {
@@ -35,11 +33,8 @@ const IssueStatusButtons = () => {
         열린이슈 (
         {openedIssuesCount}
         )
-      </Button>
-      <Button
-        type="ghostButton"
-        size="M"
-        gap="10px"
+      </GhostButton>
+      <GhostButton
         color={!isOpened ? 'neutralTextStrong' : 'neutralText'}
         hoverColor={isOpened ? 'neutralTextStrong' : 'neutralText'}
         onclick={() => {
@@ -50,7 +45,7 @@ const IssueStatusButtons = () => {
         닫힌이슈 (
         {closedIssuesCount}
         )
-      </Button>
+      </GhostButton>
     </IssueStatusButtonsBox>
   );
 };

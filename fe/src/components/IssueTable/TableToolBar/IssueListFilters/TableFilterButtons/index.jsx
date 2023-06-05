@@ -6,16 +6,16 @@ import {
   ISSUE_TABLE_FILTER_OPTIONS,
   LABELS,
   MILESTONE,
-  NONE,
-} from '../../../../constants';
-import { setFilterOption } from '../../../../context/MainPage/MainPageActions';
+} from './constant';
+import { setFilterOption } from '../../../../../context/MainPage/MainPageActions';
 import {
-  MainPageContext,
-  MainPageDispatchContext,
-} from '../../../../context/MainPage/MainPageContext';
-import DropDown from '../../../DropDown/DropDown';
+  MainPageFilterContext,
+  MainPageFilterDispatchContext,
+} from '../../../../../context/MainPage/MainPageFilterContext';
+import { MainPageStateContext } from '../../../../../context/MainPage/MainPageStateContext';
+import DropDown from '../../../../DropDown';
+import { NONE } from '../../../../../constants';
 
-// TODO(덴): DropDown Config 변환해주는 함수 유틸로 빼보기.
 const convertOptionItems = (
   optionItems,
   filterOptionState,
@@ -45,18 +45,18 @@ const convertOptionItems = (
 };
 
 const TableFilterButtons = () => {
-  const {
-    allUsers, allLabels, allMilestones, filterOptions,
-  } = useContext(MainPageContext);
-  const dispatch = useContext(MainPageDispatchContext);
+  const { allUsers, allLabels, allMilestones } = useContext(MainPageStateContext);
+  const filterOptions = useContext(MainPageFilterContext);
+  const dispatch = useContext(MainPageFilterDispatchContext);
 
+  const targetFilterOptions = { ...filterOptions };
   const filterDropDownConfigList = ISSUE_TABLE_FILTER_OPTIONS.map(
     (filterOption) => {
-      const targetFilterOption = filterOptions[filterOption.KEY];
+      const targetFilterOption = targetFilterOptions[filterOption.KEY];
 
       const isChecked = targetFilterOption === null
         ? false
-        : filterOptions[filterOption.KEY].includes(NONE);
+        : targetFilterOptions[filterOption.KEY].includes(NONE);
 
       let bodyItems = filterOption.KO !== AUTHOR.KO
         ? [

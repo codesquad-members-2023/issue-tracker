@@ -1,20 +1,15 @@
+/* eslint-disable no-console */
 import { styled } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, UserIcon } from '../components/common';
+import { GhostButton, UserIcon } from '../components/common';
 import largeUserImage from '../assets/userImageLarge.svg';
-import SideBar from '../components/SideBar/SideBar';
-import CommentTextArea from '../components/CommentTextArea/CommentTextArea';
-import TitleInput from '../components/TitleInput/TitleInput';
+import SideBar from '../components/SideBar';
+import CommentTextArea from '../components/CommentTextArea';
+import TitleInput from '../components/TitleInput';
 
 const AddIssue = () => {
   const [form, setForm] = useState({ title: '', comment: '' });
-
-  // TODO: 여기부터
-  const [users, setUsers] = useState([]);
-  const [labels, setLabels] = useState([]);
-  const [milestones, setMilestones] = useState([]);
-  // TODO: 여기까지 sidebar로 상태 내리기
 
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -49,20 +44,6 @@ const AddIssue = () => {
   };
 
   // TODO: 이름 바꾸기
-  // TODO: loader로 뺄지 고민해보기?
-  const fetchAddIssueData = async () => {
-    // TODO: url 바꾸기
-    const data = await fetch('http://3.38.73.117:8080/api-fe/issues');
-    const res = await data.json();
-
-    setLabels(res.allLabels);
-    setMilestones(res.allMilestones);
-    setUsers(res.allUsers);
-  };
-
-  useEffect(() => {
-    fetchAddIssueData();
-  }, []);
 
   const createIssue = () => {
     const body = {
@@ -73,7 +54,6 @@ const AddIssue = () => {
       labelNames: selectedLabels.map(({ id }) => id),
     };
 
-    // TODO: 서버에 물어보고 서버 문제면 지우기 (빈 배열일 경우 cors 오류 뜸)
     if (body.assignees.length === 0) {
       delete body.assignees;
     }
@@ -124,23 +104,18 @@ const AddIssue = () => {
             placeholder="코멘트를 입력하세요"
           />
         </InputBox>
-        <SideBar
-          labels={labels}
+        <AddIssueSideBar
           selectedLabels={selectedLabels}
           onLabelClick={onLabelClick}
-          milestones={milestones}
           selectedMilestone={selectedMilestone}
           onMilestoneClick={onMilestoneClick}
-          users={users}
           selectedUsers={selectedUsers}
           onUserClick={onUserClick}
         />
       </SectionBox>
       <ButtonBox>
         <Link to="/">
-          <Button type="ghostButton" size="M">
-            x 작성 취소
-          </Button>
+          <GhostButton>x 작성 취소</GhostButton>
         </Link>
         <MyButton disabled={form.title.length <= 0} onClick={createIssue}>
           완료
@@ -207,4 +182,8 @@ const MyButton = styled.button`
   &:hover {
     opacity: ${({ disabled }) => (disabled ? '1' : '0.8')};
   }
+`;
+
+const AddIssueSideBar = styled(SideBar)`
+  flex-grow: 1;
 `;

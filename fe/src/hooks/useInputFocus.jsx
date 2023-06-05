@@ -7,15 +7,15 @@ const useInputFocus = () => {
 
   useEffect(() => {
     const handleDocumentClick = ({ target }) => {
-      if (inputBoxRef.current.contains(target)) {
+      if (inputBoxRef.current?.contains(target)) {
         setIsInputFocused(true);
-        inputRef.current.focus();
+        inputRef.current?.focus();
       } else {
         setIsInputFocused(false);
       }
     };
 
-    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('click', handleDocumentClick, true);
 
     return () => {
       document.removeEventListener('click', handleDocumentClick);
