@@ -2,7 +2,9 @@ package com.team6.issue_tracker.domain.comment.domain;
 
 import com.team6.issue_tracker.domain.issue.domain.Issue;
 import com.team6.issue_tracker.domain.member.domain.Member;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.*;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Embedded;
@@ -15,7 +17,6 @@ import java.time.Instant;
 @Getter
 @Builder
 @ToString
-@NoArgsConstructor
 @Table("comment")
 public class Comment {
 
@@ -39,27 +40,24 @@ public class Comment {
     @PastOrPresent
     private Instant editedAt;
 
-    private Boolean isDeleted;
-
-    private Comment(String contents, AggregateReference<Issue, @NotNull Long> issueIdx, AggregateReference<Member, @NotNull Long> createdBy, Instant createdAt) {
+    private Comment(String contents, AggregateReference<Issue, @NotNull Long> issueIdx, AggregateReference<Member, @NotNull Long> createdBy) {
         this.contents = new CommentContents(contents);
         this.issueIdx = issueIdx;
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
+        this.createdAt = Instant.now();
     }
 
     @PersistenceCreator
-    public Comment(Long commentIdx, CommentContents contents, AggregateReference<Issue, @NotNull Long> issueIdx, AggregateReference<Member, @NotNull Long> createdBy, Instant createdAt, Instant editedAt, Boolean isDeleted) {
+    public Comment(Long commentIdx, CommentContents contents, AggregateReference<Issue, @NotNull Long> issueIdx, AggregateReference<Member, @NotNull Long> createdBy, Instant createdAt, Instant editedAt) {
         this.commentIdx = commentIdx;
         this.contents = contents;
         this.issueIdx = issueIdx;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
-        this.isDeleted = isDeleted;
     }
 
     public static Comment newComment(String contents, Long issueIdx, Long memberIdx) {
-        return new Comment(contents, AggregateReference.to(issueIdx), AggregateReference.to(memberIdx), Instant.now());
+        return new Comment(contents, AggregateReference.to(issueIdx), AggregateReference.to(memberIdx));
     }
 }

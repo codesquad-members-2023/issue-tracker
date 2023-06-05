@@ -3,11 +3,10 @@ package com.team6.issue_tracker.domain.issue.dto;
 import com.team6.issue_tracker.domain.comment.dto.CommentDto;
 import com.team6.issue_tracker.domain.issue.domain.Issue;
 import com.team6.issue_tracker.domain.issue.domain.Labeling;
-import com.team6.issue_tracker.domain.label.dto.LabelSummary;
+import com.team6.issue_tracker.domain.label.dto.LabelDto;
 import com.team6.issue_tracker.domain.member.domain.Member;
-import com.team6.issue_tracker.domain.member.dto.MemberDetail;
+import com.team6.issue_tracker.domain.member.dto.MemberDto;
 import com.team6.issue_tracker.domain.milestone.domain.Milestone;
-import com.team6.issue_tracker.domain.milestone.dto.MilestoneDetail;
 import com.team6.issue_tracker.domain.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +15,9 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -28,17 +28,18 @@ public class IssueDetail {
     private Long index;
     private String title;
     private String contents;
-    private MemberDetail writer;
-    private MemberDetail assignee;
+    private MemberDto writer;
+    private MemberDto assignee;
     private Status status;
     private Instant createdAt;
     private Instant editedAt;
-    private MilestoneDetail milestone;
-    private List<LabelSummary> labelList;
+    //TODO milestone dto로 바꾸기
+    private Milestone milestone;
+    private List<LabelDto> labelList;
     private List<CommentDto> commentList;
 
-    public static IssueDetail toDetails(Issue issue, MemberDetail writer, MemberDetail assignee,
-                                        List<LabelSummary> labels, MilestoneDetail milestone,
+    public static IssueDetail toDetails(Issue issue, MemberDto writer, MemberDto assignee,
+                                        List<LabelDto> labels, Milestone milestone,
                                         List<CommentDto> coments) {
         return IssueDetail.builder()
                 .index(issue.getIssueIdx())
@@ -64,26 +65,26 @@ public class IssueDetail {
                 .isOpen(dto.getStatus() == Status.OPEN)
                 .createdAt(dto.getCreatedAt())
                 .labelOnIssue(getLabelOnIssue(dto.getLabelList()))
-                .milestone(nullableMilestone(dto.getMilestone()))
+                .milestoneIdx(nullableMilestone(dto.getMilestone()))
                 .editedAt(Instant.now())
                 .isDeleted(false)
                 .build();
     }
 
-    private AggregateReference<Milestone, Long> nullableMilestone(MilestoneDetail milestone) {
+    private AggregateReference<Milestone, Long> nullableMilestone(Milestone milestone) {
         if (milestone != null) {
             return AggregateReference.to(milestone.getMilestoneIdx());
         }
         return null;
     }
 
-    private List<Labeling> getLabelOnIssue(List<LabelSummary> labelList) {
-        List<Labeling> labelingMap = new ArrayList<>();
-        labelList.forEach(l -> labelingMap.add(new Labeling(AggregateReference.to(l.getLabelIdx()))));
+    private Map<Long, Labeling> getLabelOnIssue(List<LabelDto> labelList) {
+        Map<Long, Labeling> labelingMap = new HashMap<>();
+        labelList.forEach(l -> labelingMap.put(l.getLabelIdx(), new Labeling(l.getLabelIdx())));
         return labelingMap;
     }
 
-    private AggregateReference<Member, @NotNull Long> nullableMember(MemberDetail m) {
+    private AggregateReference<Member, @NotNull Long> nullableMember(MemberDto m) {
         if (m != null) {
             return AggregateReference.to(m.getMemberIdx());
         }

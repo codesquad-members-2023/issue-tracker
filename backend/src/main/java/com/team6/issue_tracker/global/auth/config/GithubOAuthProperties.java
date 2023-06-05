@@ -1,12 +1,19 @@
 package com.team6.issue_tracker.global.auth.config;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class GithubOAuthProperties {
-    private String clientId;
-    private String clientSecret;
-    private String redirectUri;
+
+    String clientId;
+
+    String clientSecret;
+
+    String redirectUri;
+
+    public GithubOAuthProperties(String clientId, String clientSecret, String redirectUri) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.redirectUri = redirectUri;
+    }
 }

@@ -21,9 +21,4 @@ public class CommentService {
     public void saveComment(Comment newComment) {
         commentRepository.save(newComment);
     }
-
-    public void deleteComment(long commentIdx) {
-        commentRepository.softDeleteById(commentIdx);
-    }
-
 }

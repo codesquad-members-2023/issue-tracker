@@ -2,12 +2,13 @@ package com.team6.issue_tracker.domain.label.service;
 
 import com.team6.issue_tracker.domain.issue.domain.Labeling;
 import com.team6.issue_tracker.domain.label.domain.Label;
-import com.team6.issue_tracker.domain.label.dto.LabelDetail;
-import com.team6.issue_tracker.domain.label.dto.LabelSummary;
+import com.team6.issue_tracker.domain.label.dto.LabelDto;
 import com.team6.issue_tracker.domain.label.repository.LabelRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,21 +20,15 @@ public class LabelService {
         this.labelRepository = labelRepository;
     }
 
-    public Map<Long, LabelSummary> getAllLabelSummaries() {
-        Map<Long, LabelSummary> labels = new HashMap<>();
-        labelRepository.findAllByIsDeletedFalse().forEach(label -> labels.put(label.getLabelIdx(), LabelSummary.fromLabel(label)));
+    public Map<Long, LabelDto> getAllLabels() {
+        Map<Long, LabelDto> labels = new HashMap<>();
+        labelRepository.findAllByIsDeletedFalse().forEach(l -> labels.put(l.getLabelIdx(), LabelDto.of(l)));
         return labels;
     }
 
     public Iterable<Label> findAllById(Collection<Labeling> values) {
-        return labelRepository.findAllByLabelIdxInAndIsDeleted(values.stream()
+        return labelRepository.findAllByLabelIdxInAndAndIsDeleted(values.stream()
                 .map(Labeling::getLabelIdx)
                 .collect(Collectors.toList()), false);
-    }
-
-    public List<LabelDetail> getAllLabelDetails() {
-        List<LabelDetail> list = new ArrayList<>();
-        labelRepository.findAllByIsDeletedFalse().forEach(label -> list.add(LabelDetail.fromLabel(label)));
-        return list;
     }
 }

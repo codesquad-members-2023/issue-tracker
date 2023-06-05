@@ -19,17 +19,15 @@ USE
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `issue_tracker_schema`.`member`
 (
-    `member_idx`        BIGINT  NOT NULL auto_increment,
+    `member_idx`        BIGINT       NOT NULL AUTO_INCREMENT,
     `id`                VARCHAR(32)  NOT NULL,
-    `name`              VARCHAR(32)  NOT NULL,
-    `password`          VARCHAR(24)  NULL,
+    `password`          VARCHAR(24)  NOT NULL,
     `profile_image_url` VARCHAR(200) NULL DEFAULT NULL,
-    `access_token`      VARCHAR(250) NULL ,
-    `created_at`    DATETIME     NOT NULL,
-    `edited_at`     DATETIME     NULL     DEFAULT NULL,
+    `github_join`       boolean      NOT NULL,
     PRIMARY KEY (`member_idx`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
 ) ENGINE = InnoDB;
+#데이터베이스 테이블이 저장될 때 사용되는 저장 엔진
 
 
 -- -----------------------------------------------------
@@ -42,7 +40,7 @@ CREATE TABLE `issue_tracker_schema`.`label`
     `title`            VARCHAR(1000) NOT NULL,
     `description`      VARCHAR(1000) NULL     DEFAULT NULL,
     `background_color` VARCHAR(40)   NOT NULL,
-    `style`            VARCHAR(40)   NOT NULL,
+    `text_color`       VARCHAR(40)   NOT NULL,
     `is_deleted`       boolean       NOT NULL default false,
     PRIMARY KEY (`label_idx`)
 ) ENGINE = InnoDB;
@@ -77,15 +75,15 @@ CREATE TABLE `issue_tracker_schema`.`issue`
     `is_open`       boolean      NOT NULL default true,
     `created_at`    DATETIME     NOT NULL,
     `edited_at`     DATETIME     NULL     DEFAULT NULL,
-    milestone BIGINT       NULL,
+    `milestone_idx` BIGINT       NULL,
     writer          BIGINT       NOT NULL,
     assignee        BIGINT       NULL,
     `is_deleted`    boolean      NOT NULL DEFAULT FALSE,
-    INDEX `fk_issue_milestone1_idx` (milestone ASC) VISIBLE,
+    INDEX `fk_issue_milestone1_idx` (`milestone_idx` ASC) VISIBLE,
     INDEX `fk_issue_writer_idx` (writer ASC) VISIBLE,
     INDEX `fk_issue_assignee_idx` (assignee ASC) VISIBLE,
     CONSTRAINT `fk_issue_milestone`
-        FOREIGN KEY (milestone)
+        FOREIGN KEY (`milestone_idx`)
             REFERENCES `issue_tracker_schema`.`milestone` (`milestone_idx`),
     CONSTRAINT `fk_issue_member_writer`
         FOREIGN KEY (writer)

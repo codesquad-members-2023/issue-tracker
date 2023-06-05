@@ -4,26 +4,22 @@ import com.team6.issue_tracker.domain.comment.domain.Comment;
 import com.team6.issue_tracker.domain.comment.service.CommentService;
 import com.team6.issue_tracker.domain.comment.dto.CommentDto;
 import com.team6.issue_tracker.domain.issue.domain.Issue;
-import com.team6.issue_tracker.domain.milestone.dto.MilestoneDetail;
 import com.team6.issue_tracker.domain.model.Status;
 import com.team6.issue_tracker.domain.page.dto.IssueFilter;
 import com.team6.issue_tracker.domain.issue.dto.IssueDetail;
 import com.team6.issue_tracker.domain.issue.repository.IssueRepository;
 import com.team6.issue_tracker.domain.label.service.LabelService;
-import com.team6.issue_tracker.domain.label.dto.LabelSummary;
+import com.team6.issue_tracker.domain.label.dto.LabelDto;
 import com.team6.issue_tracker.domain.member.service.MemberService;
 import com.team6.issue_tracker.domain.member.domain.Member;
-import com.team6.issue_tracker.domain.member.dto.MemberDetail;
+import com.team6.issue_tracker.domain.member.dto.MemberDto;
+import com.team6.issue_tracker.domain.milestone.domain.Milestone;
 import com.team6.issue_tracker.domain.milestone.service.MilestoneService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IssueService {
@@ -64,15 +60,16 @@ public class IssueService {
         Issue issue = findIssueById(issueIdx);
 
         List<Comment> comments = commentService.getCommentsOnIssue(issueIdx);
-        Map<Long, Member> members = findMembers(issue);
+        Map<Long, Member> members = memberService.findMembers(issue.getWriter(), issue.getAssignee());
 
         Member writer = members.get(issue.getWriter().getId());
-        Member assignee = getAssignee(members, issue);
-        MilestoneDetail milestone = getMilestone(issue);
+        Member assignee = members.get(issue.getAssignee().getId());
 
-        List<LabelSummary> labelDtoList = new ArrayList<>();
-        labelService.findAllById(issue.getLabelOnIssue())
-                .forEach(l -> labelDtoList.add(LabelSummary.fromLabel(l)));
+        Milestone milestone = getMilestone(issue);
+
+        List<LabelDto> labelDtoList = new ArrayList<>();
+        labelService.findAllById(issue.getLabelOnIssue().values())
+                .forEach(l -> labelDtoList.add(LabelDto.of(l)));
 
         List<CommentDto> commentDtos = new ArrayList<>();
         for (Comment comment : comments) {
@@ -81,39 +78,19 @@ public class IssueService {
             commentDtos.add(dto);
         }
 
-        return IssueDetail.toDetails(issue, MemberDetail.from(writer), MemberDetail.from(assignee), labelDtoList, milestone, commentDtos);
+        return IssueDetail.toDetails(issue, MemberDto.from(writer), MemberDto.from(assignee), labelDtoList, milestone, commentDtos);
     }
 
-    private Map<Long, Member> findMembers(Issue issue) {
-        Set<Long> findList = new HashSet<>();
-
-        findList.add(issue.getWriter().getId());
-
-        if (issue.getAssignee() != null) {
-            findList.add(issue.getAssignee().getId());
-        }
-
-        return memberService.findMembers(findList);
-    }
-
-    private Member getAssignee(Map<Long, Member> members, Issue issue) {
-        Member assginee = null;
-        if (issue.getAssignee() != null) {
-            assginee = members.get(issue.getAssignee().getId());
-        }
-        return assginee;
-    }
-
-    private MilestoneDetail getMilestone(Issue issue) {
-        MilestoneDetail milestone = null;
-        if (issue.getMilestone() != null) {
-            milestone =milestoneService.findByIdWithIssueCount(issue.getMilestone().getId());
+    private Milestone getMilestone(Issue issue) {
+        Milestone milestone = null;
+        if (issue.getMilestoneIdx() != null) {
+            milestone =milestoneService.findById(issue.getMilestoneIdx().getId());
         }
         return milestone;
     }
 
-    public Issue saveIssue(Issue toIssue) {
-        return issueRepository.save(toIssue);
+    public void saveIssue(Issue toIssue) {
+        issueRepository.save(toIssue);
     }
 
     public long getIssueNum(Status status) {

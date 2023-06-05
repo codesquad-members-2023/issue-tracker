@@ -89,7 +89,7 @@ class IssueRepositoryTest {
                 .createdAt(Instant.now())
                 .isOpen(true)
                 .isDeleted(false)
-//                .labelOnIssue(Map.of(1L, new Labeling(1L)))
+                .labelOnIssue(Map.of(1L, new Labeling(1L)))
                 .build();
 
         Issue save = issueRepository.save(newIssue);
@@ -114,7 +114,7 @@ class IssueRepositoryTest {
                 .writer(issue.getWriter())
                 .assignee(issue.getAssignee())
                 .createdAt(issue.getCreatedAt())
-                .milestone(issue.getMilestone())
+                .milestoneIdx(issue.getMilestoneIdx())
                 .labelOnIssue(issue.getLabelOnIssue())
                 .editedAt(Instant.now())
                 .isOpen(issue.getIsOpen())
@@ -144,7 +144,7 @@ class IssueRepositoryTest {
                 .writer(issue.getWriter())
                 .assignee(issue.getAssignee())
                 .createdAt(issue.getCreatedAt())
-                .milestone(issue.getMilestone())
+                .milestoneIdx(issue.getMilestoneIdx())
                 .labelOnIssue(issue.getLabelOnIssue())
                 .editedAt(Instant.now())
                 .isOpen(issue.getIsOpen())

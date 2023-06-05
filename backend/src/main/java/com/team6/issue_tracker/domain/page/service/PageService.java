@@ -6,9 +6,9 @@ import com.team6.issue_tracker.domain.model.Status;
 import com.team6.issue_tracker.domain.page.dto.IssueDto;
 import com.team6.issue_tracker.domain.page.dto.IssueFilter;
 import com.team6.issue_tracker.domain.label.service.LabelService;
-import com.team6.issue_tracker.domain.label.dto.LabelSummary;
+import com.team6.issue_tracker.domain.label.dto.LabelDto;
 import com.team6.issue_tracker.domain.member.service.MemberService;
-import com.team6.issue_tracker.domain.member.dto.MemberDetail;
+import com.team6.issue_tracker.domain.member.dto.MemberDto;
 import com.team6.issue_tracker.domain.milestone.domain.Milestone;
 import com.team6.issue_tracker.domain.milestone.service.MilestoneService;
 import com.team6.issue_tracker.domain.page.dto.IssuePageResponse;
@@ -31,33 +31,33 @@ public class PageService {
     private final LabelService labelService;
     private final MilestoneService milestoneService;
 
-    public IssuePageResponse getAPage(int page, IssueFilter filter) {
+    public IssuePageResponse getAPage(Integer offset, IssueFilter filter) {
 
-        Map<Long, MemberDetail> members = memberService.getAllMembers();
+        Map<Long, MemberDto> members = memberService.getAllMembers();
         Map<Long, Milestone> milestones = milestoneService.getAllMilestones();
-        Map<Long, LabelSummary> labels = labelService.getAllLabelSummaries();
+        Map<Long, LabelDto> labels = labelService.getAllLabels();
 
-        List<Issue> issueList = issueService.findByfilterWithPage(page*PAGE_SIZE, PAGE_SIZE, filter);
+        List<Issue> issueList = issueService.findByfilterWithPage(offset, PAGE_SIZE, filter);
         long openIssueNum = issueService.getIssueNum(Status.OPEN);
         long closedIssueNum = issueService.getIssueNum(Status.CLOSE);
 
         List<IssueDto> issueDtos = new ArrayList<>();
 
         for (Issue issue : issueList) {
-            MemberDetail writer = getWriter(members, issue);
-            MemberDetail assignee = getAssignee(members, issue);
+            MemberDto writer = getWriter(members, issue);
+            MemberDto assignee = getAssignee(members, issue);
             Milestone milestone = getMilestone(milestones, issue);
-            List<LabelSummary> labelList = getLabelList(labels, issue);
+            List<LabelDto> labelList = getLabelList(labels, issue);
 
             IssueDto issueDto = IssueDto.toDto(issue, writer, assignee, labelList, milestone);
             issueDtos.add(issueDto);
         }
 
         return IssuePageResponse.builder()
-                .issueList(issueDtos)
+                .issuesList(issueDtos)
                 .openIssueCount(openIssueNum)
                 .closedIssueCount(closedIssueNum)
-                .page(page)
+                .page(offset)
                 .openIssueMaxPage(getIssueMaxPage(openIssueNum))
                 .closeIssueMaxPage(getIssueMaxPage(closedIssueNum))
                 .userList(new ArrayList<>(members.values()))
@@ -66,27 +66,27 @@ public class PageService {
                 .build();
     }
 
-    private List<LabelSummary> getLabelList(Map<Long, LabelSummary> labels, Issue issue) {
-        return issue.getLabelOnIssue()
+    private List<LabelDto> getLabelList(Map<Long, LabelDto> labels, Issue issue) {
+        return issue.getLabelOnIssue().values()
                         .stream()
                         .map(e -> labels.get(e.getLabelIdx()))
                         .collect(Collectors.toList());
     }
 
-    private MemberDetail getWriter(Map<Long, MemberDetail> members, Issue issue) {
+    private MemberDto getWriter(Map<Long, MemberDto> members, Issue issue) {
         return members.get(issue.getWriter().getId());
     }
 
     private Milestone getMilestone(Map<Long, Milestone> milestones, Issue issue) {
         Milestone milestone = null;
-        if (issue.getMilestone() != null) {
-            milestone = milestones.get(issue.getMilestone().getId());
+        if (issue.getMilestoneIdx() != null) {
+            milestone = milestones.get(issue.getMilestoneIdx().getId());
         }
         return milestone;
     }
 
-    private MemberDetail getAssignee(Map<Long, MemberDetail> members, Issue issue) {
-        MemberDetail assignee = null;
+    private MemberDto getAssignee(Map<Long, MemberDto> members, Issue issue) {
+        MemberDto assignee = null;
         if (issue.getAssignee() != null) {
             assignee = members.get(issue.getAssignee().getId());
         }

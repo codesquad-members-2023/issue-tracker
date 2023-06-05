@@ -1,8 +1,8 @@
 package com.team6.issue_tracker.domain.page.dto;
 
 import com.team6.issue_tracker.domain.issue.domain.Issue;
-import com.team6.issue_tracker.domain.label.dto.LabelSummary;
-import com.team6.issue_tracker.domain.member.dto.MemberDetail;
+import com.team6.issue_tracker.domain.label.dto.LabelDto;
+import com.team6.issue_tracker.domain.member.dto.MemberDto;
 import com.team6.issue_tracker.domain.milestone.domain.Milestone;
 import com.team6.issue_tracker.domain.model.Status;
 import lombok.Builder;
@@ -18,16 +18,16 @@ public class IssueDto {
 
     private Long index;
     private String title;
-    private MemberDetail writer;
-    private MemberDetail assignee;
+    private MemberDto writer;
+    private MemberDto assignee;
     private Status status;
     private Instant createdAt;
     private Instant editedAt;
     //TODO milestone dto로 바꾸기
     private Milestone milestone;
-    private List<LabelSummary> labelList;
+    private List<LabelDto> labelList;
 
-    public IssueDto(Long index, String title, MemberDetail writer, MemberDetail assignee, Status status, Instant createdAt, Instant edditedAt, Milestone milestone, List<LabelSummary> labelList) {
+    public IssueDto(Long index, String title, MemberDto writer, MemberDto assignee, Status status, Instant createdAt, Instant edditedAt, Milestone milestone, List<LabelDto> labelList) {
         this.index = index;
         this.title = title;
         this.writer = writer;
@@ -39,8 +39,8 @@ public class IssueDto {
         this.labelList = labelList;
     }
 
-    public static IssueDto toDto(Issue issue, MemberDetail writer, MemberDetail assignee,
-                                 List<LabelSummary> labels, Milestone milestone) {
+    public static IssueDto toDto(Issue issue, MemberDto writer, MemberDto assignee,
+                                 List<LabelDto> labels, Milestone milestone) {
         return IssueDto.builder()
                 .index(issue.getIssueIdx())
                 .title(issue.getTitle())
